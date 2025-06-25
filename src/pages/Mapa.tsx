@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Filter, X, MapPin, DollarSign, Home, Plane, Globe } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Country {
   id: string;
@@ -16,6 +17,7 @@ interface Country {
 }
 
 const Mapa = () => {
+  const { t } = useLanguage();
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterContinent, setFilterContinent] = useState('all');
@@ -108,34 +110,36 @@ const Mapa = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 py-8">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-orange-200 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-black mb-4">MAPA INTERACTIVO MUNDIAL</h1>
-            <p className="text-xl text-gray-600">
-              Si ya sabes a dónde quieres ir, ¡mira el mapa interactivo y selecciona tu país!
+            <h1 className="text-4xl font-bold text-warm-orange mb-4 font-poppins">
+              {t('map.title')}
+            </h1>
+            <p className="text-xl text-amber-700 font-poppins">
+              {t('map.subtitle')}
             </p>
           </div>
 
-          {/* Search and Filters */}
+          {/* Search and Filters with warm styling */}
           <div className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Buscar país o ciudad..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent bg-white/90 backdrop-blur-sm font-poppins"
               />
             </div>
             
             <select
               value={filterContinent}
               onChange={(e) => setFilterContinent(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent"
             >
               <option value="all">Todos los continentes</option>
               {continents.slice(1).map(continent => (
@@ -146,7 +150,7 @@ const Mapa = () => {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent"
             >
               <option value="all">Todos los tipos</option>
               <option value="erasmus">Erasmus</option>

@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { ChevronRight, Globe } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface FormData {
   budget: string;
@@ -12,6 +12,8 @@ interface FormData {
 }
 
 const Test = () => {
+  const { t } = useLanguage();
+  const [showGoogleForm, setShowGoogleForm] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     budget: '',
@@ -110,6 +112,43 @@ const Test = () => {
     return recommendations;
   };
 
+  if (showGoogleForm) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <button
+              onClick={() => setShowGoogleForm(false)}
+              className="mb-6 bg-warm-orange text-white px-6 py-3 rounded-full hover:bg-orange-600 transition-colors font-poppins font-semibold"
+            >
+              ← Volver al test local
+            </button>
+            <h1 className="text-4xl font-bold text-warm-orange mb-4 font-poppins">
+              {t('test.title')}
+            </h1>
+            <p className="text-xl text-amber-700 mb-8 font-poppins">
+              Completa nuestro formulario completo para obtener recomendaciones más precisas
+            </p>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <iframe
+              src="https://docs.google.com/forms/d/e/1FAIpQLSdunjUREiygLYvjMAJsYbH5GnNkBhPDDrd1HZaeUdomzdASmA/viewform?embedded=true"
+              width="100%"
+              height="800"
+              frameBorder="0"
+              marginHeight={0}
+              marginWidth={0}
+              className="w-full"
+            >
+              Cargando…
+            </iframe>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (showResults) {
     const recommendations = getRecommendations();
     
@@ -177,101 +216,45 @@ const Test = () => {
   const progress = ((currentStep + 1) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-black mb-4">TEST DE ORIENTACIÓN</h1>
-          <p className="text-xl text-gray-600 mb-8">
-            ¿Te sientes perdido con tu movilidad? ¿Demasiados países? ¿Indecisión? ¿No sabes a dónde ir?
+          <h1 className="text-4xl font-bold text-warm-orange mb-4 font-poppins">
+            {t('test.title')}
+          </h1>
+          <p className="text-xl text-amber-700 mb-8 font-poppins">
+            {t('test.subtitle')}
           </p>
-          <p className="text-lg text-gray-700">
-            Tranquilo, hemos creado este test para orientarte y ¡encontrar la respuesta! 😉
+          <p className="text-lg text-orange-800 mb-8 font-poppins">
+            {t('test.description')}
           </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex justify-between text-sm text-gray-500 mb-2">
-            <span>Pregunta {currentStep + 1} de {questions.length}</span>
-            <span>{Math.round(progress)}% completado</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-black h-2 rounded-full transition-all duration-300 ease-out"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-        </div>
-
-        {/* Question Card */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-          <h2 className="text-2xl font-bold text-black mb-8">{currentQuestion.title}</h2>
           
-          <div className="space-y-4">
-            {currentQuestion.options.map((option) => (
-              <label
-                key={option.value}
-                className={`block p-6 rounded-xl border-2 cursor-pointer transition-all hover:shadow-md ${
-                  formData[currentQuestion.field as keyof FormData] === option.value
-                    ? 'border-black bg-gray-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name={currentQuestion.field}
-                  value={option.value}
-                  checked={formData[currentQuestion.field as keyof FormData] === option.value}
-                  onChange={(e) => handleOptionSelect(currentQuestion.field, e.target.value)}
-                  className="sr-only"
-                />
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold text-lg text-black">{option.label}</div>
-                    <div className="text-gray-600 mt-1">{option.description}</div>
-                  </div>
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                    formData[currentQuestion.field as keyof FormData] === option.value
-                      ? 'border-black bg-black'
-                      : 'border-gray-300'
-                  }`}>
-                    {formData[currentQuestion.field as keyof FormData] === option.value && (
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    )}
-                  </div>
-                </div>
-              </label>
-            ))}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => setShowGoogleForm(true)}
+              className="bg-warm-orange text-white px-8 py-4 rounded-full hover:bg-orange-600 transition-colors font-poppins font-semibold text-lg"
+            >
+              📋 Test Completo (Google Forms)
+            </button>
+            <button className="border-2 border-warm-orange text-warm-orange px-8 py-4 rounded-full hover:bg-warm-orange hover:text-white transition-colors font-poppins font-semibold text-lg">
+              🚀 Test Rápido (Aquí)
+            </button>
           </div>
         </div>
 
-        {/* Navigation */}
-        <div className="flex justify-between">
-          <button
-            onClick={prevStep}
-            disabled={currentStep === 0}
-            className={`px-6 py-3 rounded-full font-semibold transition-colors ${
-              currentStep === 0
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-600 text-white hover:bg-gray-700'
-            }`}
-          >
-            Anterior
-          </button>
-          
-          <button
-            onClick={nextStep}
-            disabled={!formData[currentQuestion.field as keyof FormData]}
-            className={`px-8 py-3 rounded-full font-semibold transition-colors flex items-center space-x-2 ${
-              !formData[currentQuestion.field as keyof FormData]
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-black text-white hover:bg-gray-800'
-            }`}
-          >
-            <span>{currentStep === questions.length - 1 ? 'Ver Resultados' : 'Siguiente'}</span>
-            <ChevronRight className="w-5 h-5" />
-          </button>
+        {/* Placeholder for the existing test content with warm styling */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-warm-orange to-warm-amber rounded-full mx-auto mb-6 flex items-center justify-center">
+              <Globe className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-warm-orange mb-4 font-poppins">
+              Test de Orientación Interactivo
+            </h2>
+            <p className="text-orange-700 mb-8 font-poppins">
+              Elige una de las dos opciones arriba para comenzar tu evaluación personalizada.
+            </p>
+          </div>
         </div>
       </div>
     </div>
