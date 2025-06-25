@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, Filter, X, MapPin, DollarSign, Home, Plane } from 'lucide-react';
+import { Search, Filter, X, MapPin, DollarSign, Home, Plane, Globe } from 'lucide-react';
 
 interface Country {
   id: string;
