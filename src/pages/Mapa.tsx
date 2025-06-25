@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Search, Filter, X, MapPin, DollarSign, Home, Plane, Globe } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import InteractiveGlobe from '../components/InteractiveGlobe';
 
 interface Country {
   id: string;
@@ -18,10 +20,10 @@ interface Country {
 
 const Mapa = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterContinent, setFilterContinent] = useState('all');
-  const [filterType, setFilterType] = useState('all');
 
   // Sample data - in a real app this would come from a CMS/API
   const countries: Country[] = [
@@ -82,7 +84,6 @@ const Mapa = () => {
   ];
 
   const continents = ['all', 'Europa', 'América del Norte', 'América del Sur', 'Asia', 'Oceanía', 'África'];
-  const types = ['all', 'erasmus', 'internship', 'gap-year'];
 
   const filteredCountries = countries.filter(country => {
     const matchesSearch = country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -90,6 +91,10 @@ const Mapa = () => {
     const matchesContinent = filterContinent === 'all' || country.continent === filterContinent;
     return matchesSearch && matchesContinent;
   });
+
+  const handleGlobeCountryClick = (countryId: string) => {
+    navigate(`/paises/${countryId}`);
+  };
 
   const getCostIcon = (cost: string) => {
     switch (cost) {
@@ -123,7 +128,7 @@ const Mapa = () => {
             </p>
           </div>
 
-          {/* Search and Filters with warm styling */}
+          {/* Search and Filters */}
           <div className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-400 w-5 h-5" />
@@ -139,74 +144,24 @@ const Mapa = () => {
             <select
               value={filterContinent}
               onChange={(e) => setFilterContinent(e.target.value)}
-              className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent"
+              className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent font-poppins"
             >
               <option value="all">Todos los continentes</option>
               {continents.slice(1).map(continent => (
                 <option key={continent} value={continent}>{continent}</option>
               ))}
             </select>
-
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent"
-            >
-              <option value="all">Todos los tipos</option>
-              <option value="erasmus">Erasmus</option>
-              <option value="internship">Prácticas</option>
-              <option value="gap-year">Gap Year</option>
-            </select>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Interactive World Map Placeholder */}
+        {/* Interactive Globe */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <div className="aspect-video bg-gray-100 rounded-xl flex items-center justify-center relative overflow-hidden">
-            {/* Simple SVG World Map */}
-            <svg viewBox="0 0 1000 500" className="w-full h-full">
-              {/* Simplified world map shapes */}
-              <path
-                d="M 200 150 L 300 140 L 350 160 L 320 200 L 250 190 Z"
-                fill="#e5e7eb"
-                stroke="#d1d5db"
-                strokeWidth="1"
-                className="hover:fill-gray-300 cursor-pointer transition-colors"
-                onClick={() => setSelectedCountry(countries.find(c => c.id === 'argentina') || null)}
-              />
-              <path
-                d="M 150 100 L 280 90 L 300 130 L 200 140 Z"
-                fill="#e5e7eb"
-                stroke="#d1d5db"
-                strokeWidth="1"
-                className="hover:fill-gray-300 cursor-pointer transition-colors"
-                onClick={() => setSelectedCountry(countries.find(c => c.id === 'canada') || null)}
-              />
-              <path
-                d="M 450 120 L 520 110 L 540 140 L 480 150 Z"
-                fill="#e5e7eb"
-                stroke="#d1d5db"
-                strokeWidth="1"
-                className="hover:fill-gray-300 cursor-pointer transition-colors"
-                onClick={() => setSelectedCountry(countries.find(c => c.id === 'germany') || null)}
-              />
-              
-              {/* Map pins for available countries */}
-              <circle cx="275" cy="170" r="8" fill="#000" className="cursor-pointer" onClick={() => setSelectedCountry(countries.find(c => c.id === 'argentina') || null)} />
-              <circle cx="225" cy="115" r="8" fill="#000" className="cursor-pointer" onClick={() => setSelectedCountry(countries.find(c => c.id === 'canada') || null)} />
-              <circle cx="485" cy="135" r="8" fill="#000" className="cursor-pointer" onClick={() => setSelectedCountry(countries.find(c => c.id === 'germany') || null)} />
-            </svg>
-            
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-gray-500">
-                <Globe className="w-16 h-16 mx-auto mb-4" />
-                <p className="text-lg font-semibold">Haz clic en un país para ver información</p>
-                <p className="text-sm">Los puntos negros indican destinos disponibles</p>
-              </div>
-            </div>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-poppins text-center">
+            Globo Interactivo
+          </h2>
+          <InteractiveGlobe onCountryClick={handleGlobeCountryClick} />
         </div>
 
         {/* Countries Grid */}
@@ -215,10 +170,10 @@ const Mapa = () => {
             <div
               key={country.id}
               className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all cursor-pointer transform hover:scale-105"
-              onClick={() => setSelectedCountry(country)}
+              onClick={() => navigate(`/paises/${country.id}`)}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-black">{country.name}</h3>
+                <h3 className="text-xl font-bold text-black font-poppins">{country.name}</h3>
                 <span className={`text-2xl font-bold ${getCostColor(country.costOfLiving)}`}>
                   {getCostIcon(country.costOfLiving)}
                 </span>

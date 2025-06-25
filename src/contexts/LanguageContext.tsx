@@ -18,15 +18,18 @@ const translations = {
     'nav.map': 'Mapa',
     'nav.testimonials': 'Testimonios',
     'nav.community': 'Comunidad',
+    'nav.countries': 'Países',
     'nav.login': 'Iniciar Sesión',
     'home.hero.title': 'Tu aventura estudiantil comienza aquí',
     'home.hero.subtitle': 'Descubre el mundo a través de la educación con nuestra plataforma de movilidad estudiantil',
     'home.hero.cta': 'Comenzar mi viaje',
     'test.title': 'TEST DE ORIENTACIÓN',
-    'test.subtitle': '¿Te sientes perdido con tu movilidad? ¿Demasiados países? ¿Indecisión? ¿No sabes a dónde ir?',
-    'test.description': 'Tranquilo, hemos creado este test para orientarte y ¡encontrar la respuesta! 😉',
+    'test.subtitle': 'Completa nuestro test personalizado para descubrir los mejores destinos para tu experiencia internacional',
+    'test.description': '¡Encuentra tu destino perfecto en solo unos minutos! 😉',
     'map.title': 'MAPA INTERACTIVO MUNDIAL',
-    'map.subtitle': 'Si ya sabes a dónde quieres ir, ¡mira el mapa interactivo y selecciona tu país!',
+    'map.subtitle': 'Explora nuestros destinos disponibles en el globo interactivo',
+    'countries.title': 'BASE DE DATOS DE PAÍSES',
+    'countries.subtitle': 'Información completa sobre todos nuestros destinos estudiantiles',
   },
   en: {
     'nav.home': 'Home',
@@ -34,15 +37,18 @@ const translations = {
     'nav.map': 'Map',
     'nav.testimonials': 'Testimonials',
     'nav.community': 'Community',
+    'nav.countries': 'Countries',
     'nav.login': 'Login',
     'home.hero.title': 'Your student adventure starts here',
     'home.hero.subtitle': 'Discover the world through education with our student mobility platform',
     'home.hero.cta': 'Start my journey',
     'test.title': 'ORIENTATION TEST',
-    'test.subtitle': 'Feeling lost with your mobility? Too many countries? Indecision? Don\'t know where to go?',
-    'test.description': 'Don\'t worry, we\'ve created this test to guide you and find the answer! 😉',
+    'test.subtitle': 'Complete our personalized test to discover the best destinations for your international experience',
+    'test.description': 'Find your perfect destination in just a few minutes! 😉',
     'map.title': 'INTERACTIVE WORLD MAP',
-    'map.subtitle': 'If you already know where you want to go, check out the interactive map and select your country!',
+    'map.subtitle': 'Explore our available destinations on the interactive globe',
+    'countries.title': 'COUNTRIES DATABASE',
+    'countries.subtitle': 'Complete information about all our student destinations',
   },
   fr: {
     'nav.home': 'Accueil',
@@ -50,15 +56,18 @@ const translations = {
     'nav.map': 'Carte',
     'nav.testimonials': 'Témoignages',
     'nav.community': 'Communauté',
+    'nav.countries': 'Pays',
     'nav.login': 'Connexion',
     'home.hero.title': 'Votre aventure étudiante commence ici',
     'home.hero.subtitle': 'Découvrez le monde à travers l\'éducation avec notre plateforme de mobilité étudiante',
     'home.hero.cta': 'Commencer mon voyage',
     'test.title': 'TEST D\'ORIENTATION',
-    'test.subtitle': 'Vous vous sentez perdu avec votre mobilité ? Trop de pays ? Indécision ? Vous ne savez pas où aller ?',
-    'test.description': 'Ne vous inquiétez pas, nous avons créé ce test pour vous orienter et trouver la réponse ! 😉',
+    'test.subtitle': 'Complétez notre test personnalisé pour découvrir les meilleures destinations pour votre expérience internationale',
+    'test.description': 'Trouvez votre destination parfaite en quelques minutes ! 😉',
     'map.title': 'CARTE INTERACTIVE MONDIALE',
-    'map.subtitle': 'Si vous savez déjà où vous voulez aller, consultez la carte interactive et sélectionnez votre pays !',
+    'map.subtitle': 'Explorez nos destinations disponibles sur le globe interactif',
+    'countries.title': 'BASE DE DONNÉES DES PAYS',
+    'countries.subtitle': 'Informations complètes sur toutes nos destinations étudiantes',
   }
 };
 
@@ -66,7 +75,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>('es');
 
   const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations[typeof language]] || key;
+    const translation = translations[language][key as keyof typeof translations[typeof language]];
+    return translation || key;
   };
 
   return (

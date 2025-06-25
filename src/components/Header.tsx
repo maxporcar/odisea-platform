@@ -1,17 +1,20 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 
 const Header = () => {
   const location = useLocation();
   const { t } = useLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [
     { name: t('nav.home'), href: '/', current: location.pathname === '/' },
     { name: t('nav.test'), href: '/test', current: location.pathname === '/test' },
     { name: t('nav.map'), href: '/mapa', current: location.pathname === '/mapa' },
+    { name: t('nav.countries'), href: '/paises', current: location.pathname === '/paises' },
     { name: t('nav.testimonials'), href: '/testimonios', current: location.pathname === '/testimonios' },
     { name: t('nav.community'), href: '/comunidad', current: location.pathname === '/comunidad' },
   ];
@@ -31,6 +34,7 @@ const Header = () => {
             </span>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
               <Link
@@ -47,7 +51,8 @@ const Header = () => {
             ))}
           </div>
 
-          <div className="flex items-center space-x-4">
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center space-x-4">
             <LanguageSelector />
             <Link
               to="/login"
@@ -56,7 +61,47 @@ const Header = () => {
               {t('nav.login')}
             </Link>
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center space-x-4">
+            <LanguageSelector />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-full bg-warm-orange text-white hover:bg-orange-600 transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-orange-200 shadow-lg">
+            <div className="px-4 py-4 space-y-4">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-4 py-2 rounded-full font-poppins font-medium transition-colors ${
+                    item.current
+                      ? 'bg-warm-orange text-white'
+                      : 'text-gray-700 hover:bg-orange-100 hover:text-warm-orange'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <Link
+                to="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-center bg-gradient-to-r from-warm-orange to-warm-amber text-white px-6 py-2 rounded-full hover:from-orange-600 hover:to-amber-600 transition-all font-poppins font-semibold"
+              >
+                {t('nav.login')}
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
     </header>
   );

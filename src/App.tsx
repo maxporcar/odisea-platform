@@ -9,6 +9,8 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Mapa from "./pages/Mapa";
+import Paises from "./pages/Paises";
+import PaisDetalle from "./pages/PaisDetalle";
 import Testimonios from "./pages/Testimonios";
 import Comunidad from "./pages/Comunidad";
 import Login from "./pages/Login";
@@ -27,10 +29,11 @@ const App = () => (
             <Route path="/" element={<Layout><Home /></Layout>} />
             <Route path="/test" element={<Layout><Test /></Layout>} />
             <Route path="/mapa" element={<Layout><Mapa /></Layout>} />
+            <Route path="/paises" element={<Layout><Paises /></Layout>} />
+            <Route path="/paises/:id" element={<Layout><PaisDetalle /></Layout>} />
             <Route path="/testimonios" element={<Layout><Testimonios /></Layout>} />
             <Route path="/comunidad" element={<Layout><Comunidad /></Layout>} />
             <Route path="/login" element={<Login />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
