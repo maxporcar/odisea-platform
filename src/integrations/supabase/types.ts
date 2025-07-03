@@ -9,7 +9,250 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      cities: {
+        Row: {
+          country_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          country_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          country_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cities_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      countries: {
+        Row: {
+          capital: string
+          capital_description: string
+          continent: string
+          cost_of_living: Database["public"]["Enums"]["cost_level"]
+          created_at: string | null
+          currency: string
+          description: string
+          flag: string | null
+          housing: string | null
+          id: string
+          language: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          population: string
+          student_population: string | null
+          transportation: string | null
+          updated_at: string | null
+          visa_info: string | null
+        }
+        Insert: {
+          capital: string
+          capital_description: string
+          continent: string
+          cost_of_living?: Database["public"]["Enums"]["cost_level"]
+          created_at?: string | null
+          currency: string
+          description: string
+          flag?: string | null
+          housing?: string | null
+          id: string
+          language: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          population: string
+          student_population?: string | null
+          transportation?: string | null
+          updated_at?: string | null
+          visa_info?: string | null
+        }
+        Update: {
+          capital?: string
+          capital_description?: string
+          continent?: string
+          cost_of_living?: Database["public"]["Enums"]["cost_level"]
+          created_at?: string | null
+          currency?: string
+          description?: string
+          flag?: string | null
+          housing?: string | null
+          id?: string
+          language?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          population?: string
+          student_population?: string | null
+          transportation?: string | null
+          updated_at?: string | null
+          visa_info?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          country: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          is_premium: boolean | null
+          language: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id: string
+          is_premium?: boolean | null
+          language?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          is_premium?: boolean | null
+          language?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          country_id: string | null
+          created_at: string | null
+          destination: string
+          duration: string | null
+          full_story: string | null
+          id: string
+          image_url: string | null
+          name: string
+          program: string | null
+          rating: number | null
+          short_story: string | null
+          tips: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          country_id?: string | null
+          created_at?: string | null
+          destination: string
+          duration?: string | null
+          full_story?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          program?: string | null
+          rating?: number | null
+          short_story?: string | null
+          tips?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          country_id?: string | null
+          created_at?: string | null
+          destination?: string
+          duration?: string | null
+          full_story?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          program?: string | null
+          rating?: number | null
+          short_story?: string | null
+          tips?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "testimonials_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      universities: {
+        Row: {
+          city_id: string | null
+          country_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          ranking: number | null
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          city_id?: string | null
+          country_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          ranking?: number | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          city_id?: string | null
+          country_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          ranking?: number | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "universities_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "universities_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +261,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      cost_level: "low" | "medium" | "high"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +376,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      cost_level: ["low", "medium", "high"],
+    },
   },
 } as const
