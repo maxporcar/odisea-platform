@@ -1,73 +1,68 @@
-# Welcome to your Lovable project
 
-## Project info
+# Odisea - Study Abroad Platform
 
-**URL**: https://lovable.dev/projects/30a75703-b173-4fb9-9151-8b777faa714f
+A platform to help students find study abroad opportunities around the world.
 
-## How can I edit this code?
+## Getting Started
 
-There are several ways of editing your application.
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-**Use Lovable**
+### Environment Setup
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/30a75703-b173-4fb9-9151-8b777faa714f) and start prompting.
+1. Copy the environment template:
+```bash
+cp .env.template .env
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+2. Fill in your Supabase credentials in `.env`:
+- `SUPABASE_URL`: Your Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key (for migrations only)
 
-**Use your preferred IDE**
+### Development
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Install dependencies:
+```bash
+npm install
+```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+2. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Database Migration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+To populate the countries table with initial data:
 
-**Use GitHub Codespaces**
+1. Make sure your `.env` file has the correct Supabase credentials
+2. Run the migration script:
+```bash
+node scripts/migrateCountries.js
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+- `/src` - React frontend application
+- `/data` - Static data files (countries.json)
+- `/scripts` - Database migration and utility scripts
+- `/supabase` - Supabase configuration and migrations
 
-This project is built with:
+## Features
 
+- 🌍 Browse study abroad destinations
+- 🔍 Search and filter countries
+- 👤 User authentication
+- 💎 Premium features
+- 📝 User testimonials
+- 🗺️ Interactive world map
+
+## Tech Stack
+
+- React + TypeScript
 - Vite
-- TypeScript
-- React
-- shadcn-ui
 - Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/30a75703-b173-4fb9-9151-8b777faa714f) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Supabase (Database + Auth)
+- React Query
+- React Router
