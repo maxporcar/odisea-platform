@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from './LanguageSelector';
+import UserMenu from './UserMenu';
 
 const Header = () => {
   const location = useLocation();
@@ -54,12 +55,7 @@ const Header = () => {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSelector />
-            <Link
-              to="/login"
-              className="bg-gradient-to-r from-warm-orange to-warm-amber text-white px-6 py-2 rounded-full hover:from-orange-600 hover:to-amber-600 transition-all font-poppins font-semibold"
-            >
-              {t('nav.login')}
-            </Link>
+            <UserMenu />
           </div>
 
           {/* Mobile Menu Button */}
@@ -92,13 +88,9 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <Link
-                to="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-center bg-gradient-to-r from-warm-orange to-warm-amber text-white px-6 py-2 rounded-full hover:from-orange-600 hover:to-amber-600 transition-all font-poppins font-semibold"
-              >
-                {t('nav.login')}
-              </Link>
+              <div className="pt-2">
+                <UserMenu />
+              </div>
             </div>
           </div>
         )}

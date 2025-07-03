@@ -1,17 +1,31 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Globe, Eye, EyeOff, Star, CheckCircle } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { user, signIn, signUp } = useAuth();
+  const { toast } = useToast();
+  
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     name: '',
     confirmPassword: ''
   });
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -20,10 +34,74 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        // Handle login
+        const { error } = await signIn(formData.email, formData.password);
+        
+        if (error) {
+          toast({
+            variant: "destructive",
+            title: "Error al iniciar sesión",
+            description: error.message
+          });
+        } else {
+          toast({
+            title: "¡Bienvenido!",
+            description: "Has iniciado sesión correctamente"
+          });
+          navigate('/');
+        }
+      } else {
+        // Handle signup
+        if (formData.password !== formData.confirmPassword) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Las contraseñas no coinciden"
+          });
+          return;
+        }
+
+        if (formData.password.length < 6) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "La contraseña debe tener al menos 6 caracteres"
+          });
+          return;
+        }
+
+        const { error } = await signUp(formData.email, formData.password, formData.name);
+        
+        if (error) {
+          toast({
+            variant: "destructive",
+            title: "Error al crear cuenta",
+            description: error.message
+          });
+        } else {
+          toast({
+            title: "¡Cuenta creada!",
+            description: "Revisa tu email para confirmar tu cuenta"
+          });
+          setIsLogin(true); // Switch to login mode
+          setFormData({ email: '', password: '', name: '', confirmPassword: '' });
+        }
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Algo salió mal. Inténtalo de nuevo."
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const premiumFeatures = [
@@ -135,9 +213,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors"
+              disabled={loading}
+              className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
+              {loading ? (isLogin ? 'Iniciando...' : 'Creando...') : (isLogin ? 'Iniciar Sesión' : 'Crear Cuenta')}
             </button>
 
             <div className="text-center">
