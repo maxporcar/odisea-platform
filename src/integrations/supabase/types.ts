@@ -15,9 +15,11 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          image_url: string | null
           latitude: number | null
           longitude: number | null
           name: string
+          slug: string | null
           updated_at: string | null
         }
         Insert: {
@@ -25,9 +27,11 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           latitude?: number | null
           longitude?: number | null
           name: string
+          slug?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -35,9 +39,11 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           latitude?: number | null
           longitude?: number | null
           name?: string
+          slug?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -62,6 +68,7 @@ export type Database = {
           flag: string | null
           housing: string | null
           id: string
+          image_url: string | null
           language: string
           latitude: number | null
           longitude: number | null
@@ -83,6 +90,7 @@ export type Database = {
           flag?: string | null
           housing?: string | null
           id: string
+          image_url?: string | null
           language: string
           latitude?: number | null
           longitude?: number | null
@@ -104,6 +112,7 @@ export type Database = {
           flag?: string | null
           housing?: string | null
           id?: string
+          image_url?: string | null
           language?: string
           latitude?: number | null
           longitude?: number | null
@@ -209,6 +218,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          image_url: string | null
           name: string
           ranking: number | null
           updated_at: string | null
@@ -220,6 +230,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           name: string
           ranking?: number | null
           updated_at?: string | null
@@ -231,6 +242,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_url?: string | null
           name?: string
           ranking?: number | null
           updated_at?: string | null

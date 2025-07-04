@@ -7,10 +7,10 @@ import { useUniversities } from '../../../../hooks/useUniversities';
 import { useTestimonials } from '../../../../hooks/useTestimonials';
 
 const CityDetail = () => {
-  const { countryId, cityId } = useParams<{ countryId: string; cityId: string }>();
+  const { countryId, slug } = useParams<{ countryId: string; slug: string }>();
   const { data: country } = useCountry(countryId!);
-  const { data: city, isLoading: cityLoading, error: cityError } = useCity(cityId!);
-  const { data: universities = [], isLoading: universitiesLoading } = useUniversities(countryId, cityId);
+  const { data: city, isLoading: cityLoading, error: cityError } = useCity(slug!);
+  const { data: universities = [], isLoading: universitiesLoading } = useUniversities(countryId, city?.id);
   const { data: testimonials = [], isLoading: testimonialsLoading } = useTestimonials(countryId);
 
   if (cityLoading) {
@@ -61,10 +61,10 @@ const CityDetail = () => {
             
             <div className="flex items-center space-x-4 mb-4">
               <span className="text-4xl">{country?.flag || '🌍'}</span>
-              <div>
-                <h1 className="text-5xl font-bold">{city.name}</h1>
-                <p className="text-xl opacity-90">{country?.name}</p>
-              </div>
+            <div>
+              <h1 className="text-5xl font-bold">{city.name}</h1>
+              <p className="text-xl opacity-90">{country?.name}</p>
+            </div>
             </div>
             
             {city.latitude && city.longitude && (

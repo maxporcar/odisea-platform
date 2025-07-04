@@ -1,48 +1,51 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Users, MapPin, MessageCircle } from 'lucide-react';
+import Globe3D from '../components/Globe3D';
 
 const Home = () => {
   return (
     <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white">
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f3f4f6' fill-opacity='0.4'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }}></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-black mb-6 leading-tight">
-            GET READY FOR YOUR
-            <br />
-            <span className="relative">
-              Odisea
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-black"></div>
-            </span>
-          </h1>
+        {/* Hero Section with Globe */}
+        <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white">
+          <div className="absolute inset-0 opacity-20" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f3f4f6' fill-opacity='0.4'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
           
-          <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Descubre el mundo con confianza. Plataforma creada por estudiantes, para estudiantes, 
-            que te ayuda a navegar tu aventura internacional.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Link
-              to="/test"
-              className="bg-black text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 transition-all transform hover:scale-105 shadow-lg"
-            >
-              Hacer el Test
-            </Link>
-            <Link
-              to="/mapa"
-              className="border-2 border-black text-black px-8 py-4 rounded-full text-lg font-semibold hover:bg-black hover:text-white transition-all transform hover:scale-105"
-            >
-              Ver Mapa Mundial
-            </Link>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-5xl md:text-7xl font-bold text-black mb-6 leading-tight">
+              EXPLORA EL MUNDO
+              <br />
+              <span className="relative">
+                EN 3D
+                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-black"></div>
+              </span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Descubre destinos estudiantiles alrededor del mundo con nuestro globo interactivo 3D
+            </p>
+            
+            <div className="w-full max-w-4xl mx-auto mb-12" style={{ height: '600px' }}>
+              <Globe3D width={800} height={600} />
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Link
+                to="/test"
+                className="bg-black text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 transition-all transform hover:scale-105 shadow-lg"
+              >
+                Hacer el Test
+              </Link>
+              <Link
+                to="/paises"
+                className="border-2 border-black text-black px-8 py-4 rounded-full text-lg font-semibold hover:bg-black hover:text-white transition-all transform hover:scale-105"
+              >
+                Ver Todos los Países
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* About Section */}
       <section className="py-20 bg-white">

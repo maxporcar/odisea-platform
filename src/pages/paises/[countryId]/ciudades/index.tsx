@@ -82,11 +82,19 @@ const CitiesIndex = () => {
             {cities.map((city) => (
               <Link
                 key={city.id}
-                to={`/paises/${countryId}/ciudades/${city.id}`}
+                to={`/paises/${countryId}/ciudades/${city.slug}`}
                 className="bg-card rounded-2xl shadow-sm border hover:shadow-lg transition-all transform hover:scale-105 overflow-hidden"
               >
-                <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <MapPin className="w-12 h-12 text-primary" />
+                <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden">
+                  {city.image_url ? (
+                    <img 
+                      src={city.image_url} 
+                      alt={city.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <MapPin className="w-12 h-12 text-primary" />
+                  )}
                 </div>
                 
                 <div className="p-6">

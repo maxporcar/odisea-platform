@@ -13,7 +13,7 @@ import Mapa from "./pages/Mapa";
 import PaisesIndex from "./pages/paises/index";
 import CountryDetail from "./pages/paises/[countryId]/index";
 import CitiesIndex from "./pages/paises/[countryId]/ciudades/index";
-import CityDetail from "./pages/paises/[countryId]/ciudades/[cityId]";
+import CityDetail from "./pages/paises/[countryId]/ciudades/[slug]";
 import UniversitiesIndex from "./pages/paises/[countryId]/universidades/index";
 import UniversityDetail from "./pages/paises/[countryId]/universidades/[uniId]";
 import Testimonios from "./pages/Testimonios";
@@ -38,7 +38,7 @@ const App = () => (
             <Route path="/paises" element={<Layout><PaisesIndex /></Layout>} />
             <Route path="/paises/:countryId" element={<Layout><CountryDetail /></Layout>} />
             <Route path="/paises/:countryId/ciudades" element={<Layout><CitiesIndex /></Layout>} />
-            <Route path="/paises/:countryId/ciudades/:cityId" element={<Layout><CityDetail /></Layout>} />
+            <Route path="/paises/:countryId/ciudades/:slug" element={<Layout><CityDetail /></Layout>} />
             <Route path="/paises/:countryId/universidades" element={<Layout><UniversitiesIndex /></Layout>} />
             <Route path="/paises/:countryId/universidades/:uniId" element={<Layout><UniversityDetail /></Layout>} />
             <Route path="/testimonios" element={<Layout><Testimonios /></Layout>} />
