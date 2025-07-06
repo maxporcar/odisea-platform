@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Users, Globe, MapPin, MessageCircle } from 'lucide-react';
 import Globe3D from '../components/Globe3D';
 
 const Home = () => {
