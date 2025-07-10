@@ -81,10 +81,10 @@ const CountryDetail = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Resumen Section */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-6 animate-on-scroll">🌍 Resumen del país</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">Resumen del país</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <div className="bg-card rounded-2xl p-6 shadow-sm border animate-slide-up">
+              <div className="bg-card rounded-2xl p-6 shadow-sm border">
                 <p className="text-foreground leading-relaxed text-lg">{country.description}</p>
                 {country.capital_description && (
                   <div className="mt-6 p-4 bg-muted/50 rounded-xl">
@@ -96,7 +96,7 @@ const CountryDetail = () => {
             </div>
             
             <div className="space-y-4">
-              <div className="bg-card rounded-2xl p-6 shadow-sm border animate-slide-up">
+              <div className="bg-card rounded-2xl p-6 shadow-sm border">
                 <h3 className="text-xl font-semibold text-foreground mb-4">Información clave</h3>
                 <div className="space-y-4">
                   <div className="flex items-center">
@@ -148,104 +148,13 @@ const CountryDetail = () => {
           </div>
         </section>
 
-        {/* Información práctica Section */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-8 animate-on-scroll">📋 Información práctica</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Visa Information */}
-            <div className="bg-card rounded-2xl p-6 shadow-sm border hover:shadow-lg transition-all animate-on-scroll">
-              <div className="bg-blue-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">🛂</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">Visa Information</h3>
-              <p className="text-muted-foreground mb-4">
-                {country.visa_info || 'Información sobre requisitos de visa y documentación necesaria para estudiantes internacionales.'}
-              </p>
-              <button className="text-primary hover:text-primary/80 font-medium text-sm">
-                Ver detalles completos →
-              </button>
-            </div>
-
-            {/* Culture */}
-            <div className="bg-card rounded-2xl p-6 shadow-sm border hover:shadow-lg transition-all animate-on-scroll">
-              <div className="bg-purple-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">🎭</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">Culture</h3>
-              <p className="text-muted-foreground mb-4">
-                Descubre la rica cultura local, tradiciones y lo que hace único a {country.name}.
-              </p>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <span className="mr-2">🗣️</span>
-                <span>Idioma principal: {country.language}</span>
-              </div>
-            </div>
-
-            {/* Activities & Travel */}
-            <div className="bg-card rounded-2xl p-6 shadow-sm border hover:shadow-lg transition-all animate-on-scroll">
-              <div className="bg-green-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">🎯</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">Life, Activities & Travel</h3>
-              <p className="text-muted-foreground mb-4">
-                {country.transportation || 'Explora actividades, lugares turísticos y opciones de transporte disponibles.'}
-              </p>
-              <button className="text-primary hover:text-primary/80 font-medium text-sm">
-                Explorar actividades →
-              </button>
-            </div>
-
-            {/* Student Benefits */}
-            <div className="bg-card rounded-2xl p-6 shadow-sm border hover:shadow-lg transition-all animate-on-scroll">
-              <div className="bg-yellow-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">🎓</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">Student Benefits & Scholarships</h3>
-              <p className="text-muted-foreground mb-4">
-                Becas disponibles, descuentos estudiantiles y beneficios especiales para estudiantes internacionales.
-              </p>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <span className="mr-2">👥</span>
-                <span>{country.student_population || 'Comunidad estudiantil activa'}</span>
-              </div>
-            </div>
-
-            {/* Housing */}
-            <div className="bg-card rounded-2xl p-6 shadow-sm border hover:shadow-lg transition-all animate-on-scroll">
-              <div className="bg-orange-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">🏠</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">Housing</h3>
-              <p className="text-muted-foreground mb-4">
-                {country.housing || 'Opciones de alojamiento para estudiantes: residencias, apartamentos compartidos y más.'}
-              </p>
-              <button className="text-primary hover:text-primary/80 font-medium text-sm">
-                Ver opciones de vivienda →
-              </button>
-            </div>
-
-            {/* Medical */}
-            <div className="bg-card rounded-2xl p-6 shadow-sm border hover:shadow-lg transition-all animate-on-scroll">
-              <div className="bg-red-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">🏥</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">Medical</h3>
-              <p className="text-muted-foreground mb-4">
-                Sistema de salud, seguros médicos requeridos y servicios de salud disponibles para estudiantes.
-              </p>
-              <button className="text-primary hover:text-primary/80 font-medium text-sm">
-                Información médica →
-              </button>
-            </div>
-          </div>
-        </section>
         {/* Ciudades Section */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-foreground animate-on-scroll">🏙️ Ciudades principales</h2>
+            <h2 className="text-3xl font-bold text-foreground">Ciudades principales</h2>
             <Link 
               to={`/paises/${countryId}/ciudades`}
-              className="text-primary hover:text-primary/80 font-medium flex items-center animate-float"
+              className="text-primary hover:text-primary/80 font-medium flex items-center"
             >
               Ver todas las ciudades →
             </Link>
@@ -260,7 +169,7 @@ const CountryDetail = () => {
               {cities.slice(0, 6).map((city) => (
                 <Link
                   key={city.id}
-                  to={`/paises/${countryId}/ciudades/${city.slug || city.id}`}
+                  to={`/paises/${countryId}/ciudades/${city.id}`}
                   className="bg-card rounded-2xl p-6 shadow-sm border hover:shadow-lg transition-all"
                 >
                   <h3 className="text-xl font-semibold text-foreground mb-2">{city.name}</h3>
@@ -274,10 +183,10 @@ const CountryDetail = () => {
         {/* Universidades Section */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-foreground animate-on-scroll">🎓 Universidades destacadas</h2>
+            <h2 className="text-3xl font-bold text-foreground">Universidades destacadas</h2>
             <Link 
               to={`/paises/${countryId}/universidades`}
-              className="text-primary hover:text-primary/80 font-medium flex items-center animate-float"
+              className="text-primary hover:text-primary/80 font-medium flex items-center"
             >
               Ver todas las universidades →
             </Link>
@@ -321,10 +230,10 @@ const CountryDetail = () => {
         {/* Testimonios Section */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-foreground animate-on-scroll">💬 Testimonios de estudiantes</h2>
+            <h2 className="text-3xl font-bold text-foreground">Testimonios de estudiantes</h2>
             <Link 
               to="/testimonios"
-              className="text-primary hover:text-primary/80 font-medium flex items-center animate-float"
+              className="text-primary hover:text-primary/80 font-medium flex items-center"
             >
               Ver todos los testimonios →
             </Link>

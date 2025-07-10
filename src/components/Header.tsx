@@ -26,7 +26,7 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/lovable-uploads/ef1f94b0-1e03-4751-b692-7a3cb77a3154.png" 
+              src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=50&h=50&fit=crop&crop=center" 
               alt="Odisea Logo" 
               className="w-10 h-10 rounded-full object-cover"
             />

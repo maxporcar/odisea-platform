@@ -46,8 +46,8 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
           ...country,
           hasData: !!supabaseCountry,
           countryData: supabaseCountry,
-          color: supabaseCountry ? '#f97316' : '#e5e7eb',
-          opacity: supabaseCountry ? 0.9 : 0.4
+          color: supabaseCountry ? '#007A5E' : '#d3d3d3',
+          opacity: supabaseCountry ? 0.8 : 0.3
         };
       });
       setCountries(countriesWithData);
@@ -66,7 +66,7 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
           slug: city.slug,
           country_id: city.country_id,
           size: 0.3,
-          color: '#f59e0b'
+          color: '#00FF00'
         }));
       setCities(citiesData);
     }
@@ -123,8 +123,8 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
         ref={globeRef}
         width={width}
         height={height}
-        backgroundColor="rgba(255,255,255,0.1)"
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+        backgroundColor="rgba(0,0,0,0)"
+        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
         
         // Countries
         polygonsData={countries}
@@ -175,12 +175,12 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
       <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 text-sm">
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-warm-orange rounded-full animate-pulse"></div>
-            <span className="text-gray-700">🏛️ Países disponibles</span>
+            <div className="w-3 h-3 bg-[#007A5E] rounded-full"></div>
+            <span className="text-gray-700">Países disponibles</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-warm-amber rounded-full animate-pulse"></div>
-            <span className="text-gray-700">🏙️ Ciudades</span>
+            <div className="w-3 h-3 bg-[#00FF00] rounded-full"></div>
+            <span className="text-gray-700">Ciudades</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
