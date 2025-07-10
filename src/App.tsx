@@ -3,13 +3,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Test from "./pages/Test";
-import Mapa from "./pages/Mapa";
 import PaisesIndex from "./pages/paises/index";
 import CountryDetail from "./pages/paises/[countryId]/index";
 import CitiesIndex from "./pages/paises/[countryId]/ciudades/index";
@@ -34,7 +33,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Layout><Home /></Layout>} />
             <Route path="/test" element={<Layout><Test /></Layout>} />
-            <Route path="/mapa" element={<Layout><Mapa /></Layout>} />
+            {/* Redirect old map route to countries */}
+            <Route path="/mapa" element={<Navigate to="/paises" replace />} />
             <Route path="/paises" element={<Layout><PaisesIndex /></Layout>} />
             <Route path="/paises/:countryId" element={<Layout><CountryDetail /></Layout>} />
             <Route path="/paises/:countryId/ciudades" element={<Layout><CitiesIndex /></Layout>} />

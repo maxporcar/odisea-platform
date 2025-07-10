@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Globe from 'react-globe.gl';
@@ -46,8 +47,9 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
           ...country,
           hasData: !!supabaseCountry,
           countryData: supabaseCountry,
-          color: supabaseCountry ? '#007A5E' : '#d3d3d3',
-          opacity: supabaseCountry ? 0.8 : 0.3
+          // Brighter, more vibrant colors for better visibility
+          color: supabaseCountry ? '#FF6B35' : '#E5E7EB',
+          opacity: supabaseCountry ? 0.9 : 0.3
         };
       });
       setCountries(countriesWithData);
@@ -65,8 +67,8 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
           name: city.name,
           slug: city.slug,
           country_id: city.country_id,
-          size: 0.3,
-          color: '#00FF00'
+          size: 0.4,
+          color: '#10B981' // Bright green for cities
         }));
       setCities(citiesData);
     }
@@ -76,7 +78,7 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
   useEffect(() => {
     if (globeRef.current) {
       globeRef.current.controls().autoRotate = true;
-      globeRef.current.controls().autoRotateSpeed = 0.3;
+      globeRef.current.controls().autoRotateSpeed = 0.5; // Slightly faster rotation
     }
   }, []);
 
@@ -124,37 +126,35 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
         width={width}
         height={height}
         backgroundColor="rgba(0,0,0,0)"
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+        globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
         
         // Countries
         polygonsData={countries}
-        polygonAltitude={0.01}
+        polygonAltitude={0.015}
         polygonCapColor={(d: any) => d.color}
         polygonSideColor={(d: any) => d.color}
-        polygonStrokeColor={() => '#111'}
+        polygonStrokeColor={() => '#FFFFFF'}
         polygonLabel={(d: any) => d.hasData ? `${d.countryData.flag} ${d.countryData.name}` : ''}
         onPolygonClick={handleCountryClick}
         onPolygonHover={handleCountryHover}
         
         // Cities
         pointsData={cities}
-        pointAltitude={0.02}
+        pointAltitude={0.03}
         pointColor={(d: any) => d.color}
         pointRadius={(d: any) => d.size}
-        pointLabel={(d: any) => d.name}
+        pointLabel={(d: any) => `🏙️ ${d.name}`}
         onPointClick={handleCityClick}
         onPointHover={handleCityHover}
-        
-        // No controls props needed for react-globe.gl
       />
       
-      {/* Tooltip */}
+      {/* Enhanced Tooltip */}
       {tooltipData && (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg border max-w-xs">
+        <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-xl border-2 border-orange-200 max-w-xs z-20">
           <div className="flex items-center space-x-3 mb-2">
             {tooltipData.flag && <span className="text-2xl">{tooltipData.flag}</span>}
             <div>
-              <h3 className="font-bold text-foreground">{tooltipData.name}</h3>
+              <h3 className="font-bold text-foreground text-lg">{tooltipData.name}</h3>
               {tooltipData.continent && (
                 <p className="text-sm text-muted-foreground">{tooltipData.continent}</p>
               )}
@@ -163,31 +163,40 @@ const Globe3D: React.FC<GlobeProps> = ({ width = 600, height = 600 }) => {
           {tooltipData.type === 'country' && (
             <button 
               onClick={() => navigate(`/paises/${hoveredCountry?.countryData?.id}`)}
-              className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors"
+              className="bg-orange-500 text-white px-3 py-1.5 rounded-full text-sm font-medium hover:bg-orange-600 transition-colors w-full"
             >
-              + info
+              🔍 Explorar país
             </button>
+          )}
+          {tooltipData.type === 'city' && (
+            <div className="text-xs text-blue-600 font-medium">
+              🏙️ Ciudad disponible
+            </div>
           )}
         </div>
       )}
       
-      {/* Legend */}
-      <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 text-sm">
+      {/* Enhanced Legend */}
+      <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 text-sm shadow-xl border-2 border-orange-200">
+        <h4 className="font-bold text-foreground mb-3">🗺️ Leyenda</h4>
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-[#007A5E] rounded-full"></div>
+            <div className="w-4 h-4 bg-[#FF6B35] rounded-sm"></div>
             <span className="text-gray-700">Países disponibles</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-[#00FF00] rounded-full"></div>
+            <div className="w-4 h-4 bg-[#10B981] rounded-full"></div>
             <span className="text-gray-700">Ciudades</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+            <div className="w-4 h-4 bg-gray-300 rounded-sm"></div>
             <span className="text-gray-700">Sin información</span>
           </div>
         </div>
-        <p className="text-xs text-gray-500 mt-2">Click para explorar • Arrastra para rotar</p>
+        <div className="mt-3 pt-2 border-t border-gray-200">
+          <p className="text-xs text-gray-500">💡 Haz clic para explorar</p>
+          <p className="text-xs text-gray-500">🖱️ Arrastra para rotar</p>
+        </div>
       </div>
     </div>
   );

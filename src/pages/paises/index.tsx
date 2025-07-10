@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Users, DollarSign, Globe, Loader2, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useCountries } from '../../hooks/useCountries';
+import Globe3D from '../../components/Globe3D';
 import type { Database } from '@/integrations/supabase/types';
 
 type Country = Database['public']['Tables']['countries']['Row'];
@@ -72,49 +74,66 @@ const PaisesIndex = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-card border-b py-8">
+      {/* Interactive 3D Globe Section */}
+      <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-primary mb-4">
-              Descubre tu destino académico
+              🌍 Explora países en 3D
             </h1>
             <p className="text-xl text-muted-foreground">
-              Explora países, ciudades y universidades para tu experiencia educativa internacional
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {countries.length} países disponibles
+              Haz clic en cualquier país para descubrir más información
             </p>
           </div>
 
-          {/* Search and Filters */}
-          <div className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Buscar país o capital..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
-              />
-            </div>
+          {/* Globe container with overlaid search */}
+          <div className="relative" style={{ height: '500px' }}>
+            <Globe3D width={800} height={500} />
             
-            <select
-              value={filterContinent}
-              onChange={(e) => setFilterContinent(e.target.value)}
-              className="px-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
-            >
-              <option value="all">Todos los continentes</option>
-              {continents.slice(1).map(continent => (
-                <option key={continent} value={continent}>{continent}</option>
-              ))}
-            </select>
+            {/* Search and Filters overlaid on globe */}
+            <div className="absolute top-4 left-0 right-0 z-10">
+              <div className="max-w-4xl mx-auto px-4">
+                <div className="flex flex-col md:flex-row gap-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                    <input
+                      type="text"
+                      placeholder="🔍 Buscar país o capital..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
+                    />
+                  </div>
+                  
+                  <select
+                    value={filterContinent}
+                    onChange={(e) => setFilterContinent(e.target.value)}
+                    className="px-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
+                  >
+                    <option value="all">🌎 Todos los continentes</option>
+                    {continents.slice(1).map(continent => (
+                      <option key={continent} value={continent}>{continent}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Results summary */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            📋 Países disponibles
+          </h2>
+          <p className="text-muted-foreground">
+            {filteredCountries.length} de {countries.length} países
+            {searchTerm && ` que coinciden con "${searchTerm}"`}
+          </p>
+        </div>
+
         {/* Countries Grid */}
         {filteredCountries.length === 0 ? (
           <div className="text-center py-12">
@@ -128,13 +147,15 @@ const PaisesIndex = () => {
               <Link
                 key={country.id}
                 to={`/paises/${country.id}`}
-                className="bg-card rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all transform hover:scale-105 border"
+                className="bg-card rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all transform hover:scale-105 border group"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <span className="text-3xl">{country.flag || '🌍'}</span>
                     <div>
-                      <h3 className="text-xl font-bold text-foreground">{country.name}</h3>
+                      <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                        {country.name}
+                      </h3>
                       <p className="text-sm text-muted-foreground">{country.capital}</p>
                     </div>
                   </div>
@@ -163,6 +184,11 @@ const PaisesIndex = () => {
                 <p className="text-foreground text-sm line-clamp-3">
                   {country.description}
                 </p>
+                
+                {/* Hover effect indicator */}
+                <div className="mt-4 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  Ver más detalles →
+                </div>
               </Link>
             ))}
           </div>
