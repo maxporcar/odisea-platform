@@ -10,23 +10,23 @@ const Home = () => {
       
       {/* Hero Section with world map background */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#FAF4EA' }}>
-        {/* World map background with strong bottom fade */}
+        {/* World map background with extensive bottom fade to eliminate edge */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
           style={{
             backgroundImage: `url('/lovable-uploads/e65141e6-37c3-4726-a4b1-77e0c7d4f99d.png')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,0.5) 88%, rgba(0,0,0,0.2) 94%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,0.5) 88%, rgba(0,0,0,0.2) 94%, rgba(0,0,0,0) 100%)'
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.9) 60%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.4) 80%, rgba(0,0,0,0.2) 90%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.9) 60%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.4) 80%, rgba(0,0,0,0.2) 90%, rgba(0,0,0,0) 100%)'
           }}
         />
         
-        {/* Additional overlay for smoother transition */}
+        {/* Additional overlay for even smoother transition to background color */}
         <div 
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, transparent 0%, transparent 75%, rgba(250, 244, 234, 0.4) 85%, rgba(250, 244, 234, 0.7) 92%, rgba(250, 244, 234, 0.9) 96%, rgba(250, 244, 234, 1) 100%)'
+            background: 'linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(250, 244, 234, 0.1) 60%, rgba(250, 244, 234, 0.3) 70%, rgba(250, 244, 234, 0.5) 80%, rgba(250, 244, 234, 0.8) 90%, rgba(250, 244, 234, 1) 100%)'
           }}
         />
         
