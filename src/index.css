@@ -51,6 +51,13 @@
     --sidebar-accent-foreground: 25 15% 15%;
     --sidebar-border: 37 18% 85%;
     --sidebar-ring: 25 85% 45%;
+
+    /* Odisea Brand Colors */
+    --odisea-beige: 40 29% 95%;
+    --odisea-light-beige: 40 44% 92%;
+    --odisea-orange: 24 100% 50%;
+    --odisea-orange-hover: 36 100% 73%;
+    --odisea-text: 0 0% 17%;
   }
 
   .dark {
@@ -227,4 +234,29 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-muted-foreground/50;
+}
+
+/* Odisea Brand Utility Classes */
+.bg-odisea-beige {
+  background-color: #FAF4EA;
+}
+
+.bg-odisea-light-beige {
+  background-color: #FFE5B6;
+}
+
+.bg-odisea-orange {
+  background-color: #FF6600;
+}
+
+.text-odisea-orange {
+  color: #FF6600;
+}
+
+.text-odisea-text {
+  color: #2B2B2B;
+}
+
+.hover\:bg-odisea-orange-hover:hover {
+  background-color: #FFD37E;
 }

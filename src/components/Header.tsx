@@ -23,13 +23,12 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-orange-200">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-lg">O</span>
-            </div>
-            <span className="text-2xl font-bold text-orange-600 font-poppins">
-              Odisea
-            </span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src="/lovable-uploads/f93d8837-53e9-4ba5-a848-b47af4a0fb25.png" 
+              alt="Odisea Logo" 
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -40,9 +39,13 @@ const Header = () => {
                 to={item.href}
                 className={`font-poppins font-medium transition-colors ${
                   item.current
-                    ? 'text-orange-600 border-b-2 border-orange-600 pb-1'
-                    : 'text-gray-700 hover:text-orange-600'
+                    ? 'border-b-2 pb-1'
+                    : 'hover:text-orange-600'
                 }`}
+                style={{
+                  color: item.current ? '#FF6600' : '#2B2B2B',
+                  borderColor: item.current ? '#FF6600' : 'transparent'
+                }}
               >
                 {item.name}
               </Link>
@@ -60,7 +63,10 @@ const Header = () => {
             <LanguageSelector />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-full bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+              className="p-2 rounded-full text-white transition-colors"
+              style={{ backgroundColor: '#FF6600' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FFD37E'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF6600'}
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -78,9 +84,13 @@ const Header = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-full font-poppins font-medium transition-colors ${
                     item.current
-                      ? 'bg-orange-500 text-white'
-                      : 'text-gray-700 hover:bg-orange-100 hover:text-orange-600'
+                      ? 'text-white'
+                      : 'hover:text-orange-600'
                   }`}
+                  style={{
+                    backgroundColor: item.current ? '#FF6600' : 'transparent',
+                    color: item.current ? 'white' : '#2B2B2B'
+                  }}
                 >
                   {item.name}
                 </Link>
