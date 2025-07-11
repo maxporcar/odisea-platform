@@ -17,8 +17,8 @@ const Home = () => {
             backgroundImage: `url('/lovable-uploads/e65141e6-37c3-4726-a4b1-77e0c7d4f99d.png')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,0.4) 85%, rgba(0,0,0,0.1) 92%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(0,0,0,0.8) 75%, rgba(0,0,0,0.4) 85%, rgba(0,0,0,0.1) 92%, rgba(0,0,0,0) 100%)'
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.6) 95%, rgba(0,0,0,0.2) 98%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.6) 95%, rgba(0,0,0,0.2) 98%, rgba(0,0,0,0) 100%)'
           }}
         />
         
@@ -26,7 +26,7 @@ const Home = () => {
         <div 
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, transparent 0%, transparent 70%, rgba(250, 244, 234, 0.2) 80%, rgba(250, 244, 234, 0.5) 88%, rgba(250, 244, 234, 0.8) 94%, rgba(250, 244, 234, 1) 100%)'
+            background: 'linear-gradient(to bottom, transparent 0%, transparent 90%, rgba(250, 244, 234, 0.3) 95%, rgba(250, 244, 234, 0.7) 98%, rgba(250, 244, 234, 1) 100%)'
           }}
         />
         
