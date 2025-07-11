@@ -22,12 +22,12 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-orange-200">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/f93d8837-53e9-4ba5-a848-b47af4a0fb25.png" 
               alt="Odisea Logo" 
-              className="h-20 w-auto"
+              className="h-28 w-auto"
             />
           </Link>
 
@@ -75,7 +75,7 @@ const Header = () => {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-orange-200 shadow-lg">
+          <div className="md:hidden absolute top-20 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-orange-200 shadow-lg">
             <div className="px-4 py-4 space-y-4">
               {navigation.map((item) => (
                 <Link

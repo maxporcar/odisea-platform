@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Globe, MapPin, MessageCircle } from 'lucide-react';
@@ -12,7 +13,7 @@ const Home = () => {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#FAF4EA' }}>
         {/* World map background with extensive bottom fade to eliminate edge */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
           style={{
             backgroundImage: `url('/lovable-uploads/e65141e6-37c3-4726-a4b1-77e0c7d4f99d.png')`,
             backgroundSize: 'cover',
@@ -157,7 +158,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section with animations */}
+      {/* Features Section with redesigned cards */}
       <section className="py-20" style={{ backgroundColor: '#FAF4EA' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 opacity-0 animate-fade-in-up" data-aos="fade-up">
@@ -170,36 +171,91 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl shadow-lg text-center group hover:shadow-xl transition-all opacity-0 animate-fade-in-up" data-aos="fade-up" style={{animationDelay: '0.1s'}}>
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform" style={{ backgroundColor: '#2B2B2B' }}>
-                <Globe className="w-8 h-8 text-white" />
+            {/* Intercambio Card - Featured */}
+            <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-all opacity-0 animate-fade-in-up transform hover:scale-105" data-aos="fade-up" style={{animationDelay: '0.1s'}}>
+              {/* Background image */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url('/lovable-uploads/27f89a48-87d3-4a37-944c-7699f8942049.png')`,
+                  opacity: 0.15
+                }}
+              />
+              
+              {/* Content overlay */}
+              <div className="relative p-8 text-center bg-white/90 backdrop-blur-sm">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform" style={{ backgroundColor: '#00765A' }}>
+                  <Globe className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 font-glacial" style={{ color: '#00765A' }}>🎓 INTERCAMBIO</h3>
+                <p className="mb-6 font-poppins" style={{ color: '#2B2B2B' }}>
+                  Descubre programas de intercambio en universidades de todo el mundo. 
+                  Vive una experiencia académica internacional única.
+                </p>
+                <Link to="/paises" className="font-semibold hover:underline font-poppins inline-flex items-center" style={{ color: '#00765A' }}>
+                  Explorar destinos 🌟 →
+                </Link>
               </div>
-              <h3 className="text-2xl font-bold mb-4 font-glacial" style={{ color: '#2B2B2B' }}>🎓 INTERCAMBIO</h3>
-              <p className="mb-6 font-poppins" style={{ color: '#2B2B2B' }}>
-                Descubre programas de intercambio en universidades de todo el mundo. 
-                Vive una experiencia académica internacional única.
-              </p>
-              <Link to="/paises" className="font-semibold hover:underline font-poppins" style={{ color: '#2B2B2B' }}>
-                Explorar destinos 🌟 →
-              </Link>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-lg text-center group hover:shadow-xl transition-all opacity-0 animate-fade-in-up" data-aos="fade-up" style={{animationDelay: '0.2s'}}>
-              <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <MapPin className="w-8 h-8 text-white" />
+            {/* Prácticas Card - Coming Soon */}
+            <div className="relative bg-white/60 rounded-2xl shadow-lg overflow-hidden opacity-0 animate-fade-in-up" data-aos="fade-up" style={{animationDelay: '0.2s'}}>
+              {/* Background image with overlay */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url('/lovable-uploads/8c01582f-cc52-48f0-9409-b52a18c06796.png')`,
+                  opacity: 0.1
+                }}
+              />
+              
+              {/* Coming soon overlay */}
+              <div className="absolute inset-0 bg-gray-100/80 backdrop-blur-sm" />
+              
+              {/* Content */}
+              <div className="relative p-8 text-center">
+                <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <MapPin className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">💼 PRÁCTICAS</h3>
+                <p className="text-gray-500 mb-4 font-poppins">
+                  Encuentra oportunidades de prácticas profesionales en empresas internacionales.
+                </p>
+                <div className="bg-gray-200 text-gray-600 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                  Próximamente disponible 🔜
+                </div>
+                <span className="text-gray-400 font-poppins">Coming Soon...</span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">💼 PRÁCTICAS</h3>
-              <p className="text-gray-400 mb-6 font-poppins">Próximamente disponible 🔜</p>
-              <span className="text-gray-400 font-poppins">Coming Soon...</span>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-lg text-center group hover:shadow-xl transition-all opacity-0 animate-fade-in-up" data-aos="fade-up" style={{animationDelay: '0.3s'}}>
-              <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <MessageCircle className="w-8 h-8 text-white" />
+            {/* Gap Year Card - Coming Soon */}
+            <div className="relative bg-white/60 rounded-2xl shadow-lg overflow-hidden opacity-0 animate-fade-in-up" data-aos="fade-up" style={{animationDelay: '0.3s'}}>
+              {/* Background image with overlay */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url('/lovable-uploads/305ed369-70a6-455b-982d-49125a3c37e0.png')`,
+                  opacity: 0.1
+                }}
+              />
+              
+              {/* Coming soon overlay */}
+              <div className="absolute inset-0 bg-gray-100/80 backdrop-blur-sm" />
+              
+              {/* Content */}
+              <div className="relative p-8 text-center">
+                <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <MessageCircle className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">🌍 GAP YEAR</h3>
+                <p className="text-gray-500 mb-4 font-poppins">
+                  Tómate un año para explorar el mundo, aprender idiomas y crecer personalmente.
+                </p>
+                <div className="bg-gray-200 text-gray-600 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                  Próximamente disponible 🔜
+                </div>
+                <span className="text-gray-400 font-poppins">Coming Soon...</span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">🌍 GAP YEAR</h3>
-              <p className="text-gray-400 mb-6 font-poppins">Próximamente disponible 🔜</p>
-              <span className="text-gray-400 font-poppins">Coming Soon...</span>
             </div>
           </div>
         </div>
