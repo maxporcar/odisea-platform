@@ -27,7 +27,7 @@ const Header = () => {
             <img 
               src="/lovable-uploads/f93d8837-53e9-4ba5-a848-b47af4a0fb25.png" 
               alt="Odisea Logo" 
-              className="h-14 w-auto"
+              className="h-16 w-auto"
             />
           </Link>
 
