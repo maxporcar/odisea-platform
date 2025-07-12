@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Filter, X, MapPin, DollarSign, Home, Plane, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import InteractiveGlobe from '../components/InteractiveGlobe';
 
 interface Country {
@@ -19,7 +19,7 @@ interface Country {
 }
 
 const Mapa = () => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [searchTerm, setSearchTerm] = useState('');

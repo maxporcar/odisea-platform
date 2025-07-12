@@ -1,13 +1,12 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Users, DollarSign, Globe, Calendar, Home, Car, FileText, Star, Loader2, AlertCircle } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { useCountry } from '../hooks/useCountries';
 
 const PaisDetalle = () => {
   const { id } = useParams<{ id: string }>();
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   
   const { data: country, isLoading, error } = useCountry(id || '');
 
