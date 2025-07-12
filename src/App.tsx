@@ -1,11 +1,11 @@
 
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { I18nProvider } from "./contexts/I18nContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -21,39 +21,46 @@ import Comunidad from "./pages/Comunidad";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <I18nProvider>
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <LanguageProvider>
           <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Layout><Home /></Layout>} />
-              <Route path="/test" element={<Layout><Test /></Layout>} />
-              {/* Redirect old map route to countries */}
-              <Route path="/mapa" element={<Navigate to="/paises" replace />} />
-              <Route path="/paises" element={<Layout><PaisesIndex /></Layout>} />
-              <Route path="/paises/:countryId" element={<Layout><CountryDetail /></Layout>} />
-              <Route path="/paises/:countryId/ciudades" element={<Layout><CitiesIndex /></Layout>} />
-              <Route path="/paises/:countryId/ciudades/:slug" element={<Layout><CityDetail /></Layout>} />
-              <Route path="/paises/:countryId/universidades" element={<Layout><UniversitiesIndex /></Layout>} />
-              <Route path="/paises/:countryId/universidades/:uniId" element={<Layout><UniversityDetail /></Layout>} />
-              <Route path="/testimonios" element={<Layout><Testimonios /></Layout>} />
-              <Route path="/comunidad" element={<Layout><Comunidad /></Layout>} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Layout><Home /></Layout>} />
+                <Route path="/test" element={<Layout><Test /></Layout>} />
+                {/* Redirect old map route to countries */}
+                <Route path="/mapa" element={<Navigate to="/paises" replace />} />
+                <Route path="/paises" element={<Layout><PaisesIndex /></Layout>} />
+                <Route path="/paises/:countryId" element={<Layout><CountryDetail /></Layout>} />
+                <Route path="/paises/:countryId/ciudades" element={<Layout><CitiesIndex /></Layout>} />
+                <Route path="/paises/:countryId/ciudades/:slug" element={<Layout><CityDetail /></Layout>} />
+                <Route path="/paises/:countryId/universidades" element={<Layout><UniversitiesIndex /></Layout>} />
+                <Route path="/paises/:countryId/universidades/:uniId" element={<Layout><UniversityDetail /></Layout>} />
+                <Route path="/testimonios" element={<Layout><Testimonios /></Layout>} />
+                <Route path="/comunidad" element={<Layout><Comunidad /></Layout>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
         </LanguageProvider>
-      </I18nProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
