@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { Globe } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useI18n } from '../contexts/I18nContext';
 
 const LanguageSelector = () => {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage } = useI18n();
 
   const languages = [
     { code: 'es', name: 'Español', flag: '🇪🇸' },

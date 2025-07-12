@@ -86,35 +86,41 @@ const PaisesIndex = () => {
             </p>
           </div>
 
-          {/* Globe container with overlaid search */}
-          <div className="relative" style={{ height: '500px' }}>
-            <Globe3D width={800} height={500} />
-            
-            {/* Search and Filters overlaid on globe */}
-            <div className="absolute top-4 left-0 right-0 z-10">
-              <div className="max-w-4xl mx-auto px-4">
-                <div className="flex flex-col md:flex-row gap-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                    <input
-                      type="text"
-                      placeholder="🔍 Buscar país o capital..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
-                    />
+          {/* Perfectly Centered Globe container with overlaid search */}
+          <div className="relative flex justify-center items-center w-full mb-8">
+            <div className="w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 max-w-6xl transition-all duration-200 ease-in-out">
+              <div className="relative" style={{ height: '500px' }}>
+                <div className="flex justify-center items-center h-full">
+                  <Globe3D width={800} height={500} />
+                </div>
+                
+                {/* Search and Filters overlaid on globe */}
+                <div className="absolute top-4 left-0 right-0 z-10">
+                  <div className="max-w-4xl mx-auto px-4">
+                    <div className="flex flex-col md:flex-row gap-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                      <div className="flex-1 relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                        <input
+                          type="text"
+                          placeholder="🔍 Buscar país o capital..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
+                        />
+                      </div>
+                      
+                      <select
+                        value={filterContinent}
+                        onChange={(e) => setFilterContinent(e.target.value)}
+                        className="px-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
+                      >
+                        <option value="all">🌎 Todos los continentes</option>
+                        {continents.slice(1).map(continent => (
+                          <option key={continent} value={continent}>{continent}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                  
-                  <select
-                    value={filterContinent}
-                    onChange={(e) => setFilterContinent(e.target.value)}
-                    className="px-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
-                  >
-                    <option value="all">🌎 Todos los continentes</option>
-                    {continents.slice(1).map(continent => (
-                      <option key={continent} value={continent}>{continent}</option>
-                    ))}
-                  </select>
                 </div>
               </div>
             </div>

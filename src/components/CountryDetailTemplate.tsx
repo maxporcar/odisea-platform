@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Lock, Star } from 'lucide-react';
@@ -143,7 +142,7 @@ const CountryDetailTemplate = () => {
             </nav>
           </div>
 
-          {/* Right Column - Map */}
+          {/* Right Column - Map with Perfect Centering */}
           <div className="lg:col-span-4">
             <div className="sticky top-8">
               <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
@@ -155,13 +154,19 @@ const CountryDetailTemplate = () => {
                     Click on cities to explore
                   </p>
                 </div>
-                <div className="h-[500px] relative">
-                  <Globe3D 
-                    width={400} 
-                    height={500} 
-                    countryCode={countryId}
-                    enhancedContrast={true}
-                  />
+                
+                {/* Perfectly Centered Map Container */}
+                <div className="flex justify-center items-center w-full py-4">
+                  <div className="w-full sm:w-11/12 md:w-10/12 lg:w-full xl:w-11/12 max-w-4xl transition-all duration-200 ease-in-out">
+                    <div className="h-[500px] relative flex justify-center">
+                      <Globe3D 
+                        width={400} 
+                        height={500} 
+                        countryCode={countryId}
+                        enhancedContrast={true}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

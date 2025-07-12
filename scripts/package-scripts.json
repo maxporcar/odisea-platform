@@ -1,0 +1,8 @@
+
+{
+  "scripts": {
+    "extract-i18n": "i18next-scanner",
+    "auto-translate": "node scripts/auto-translate.js",
+    "translate-all": "npm run extract-i18n && npm run auto-translate"
+  }
+}
