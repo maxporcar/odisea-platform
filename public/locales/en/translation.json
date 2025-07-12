@@ -1,39 +1,59 @@
 
 {
-  "nav.home": "Home",
-  "nav.test": "Test",
-  "nav.map": "Map", 
-  "nav.testimonials": "Testimonials",
-  "nav.community": "Community",
-  "nav.countries": "Countries",
-  "nav.login": "Login",
-  "home.hero.title": "Your student adventure starts here",
-  "home.hero.subtitle": "Discover the world through education with our student mobility platform",
-  "home.hero.cta": "Start my journey",
-  "test.title": "ORIENTATION TEST",
-  "test.subtitle": "Complete our personalized test to discover the best destinations for your international experience",
-  "test.description": "Find your perfect destination in just a few minutes! 😉",
-  "map.title": "INTERACTIVE WORLD MAP",
-  "map.subtitle": "Explore our available destinations on the interactive globe",
-  "countries.title": "COUNTRIES DATABASE",
-  "countries.subtitle": "Complete information about all our student destinations",
-  "common.loading": "Loading...",
-  "common.error": "Error",
-  "common.retry": "Retry",
-  "common.back": "Back",
-  "common.explore": "Explore",
-  "common.more_info": "More information",
-  "countries.search_placeholder": "🔍 Search country or capital...",
-  "countries.all_continents": "🌎 All continents",
-  "countries.available_countries": "📋 Available countries",
-  "countries.no_countries_found": "No countries found",
-  "countries.try_other_terms": "Try other search terms",
-  "countries.students": "students",
-  "countries.see_more_details": "See more details →",
-  "globe.legend": "🗺️ Map Legend",
-  "globe.available_countries_legend": "Available Countries",
-  "globe.cities_legend": "Cities",
-  "globe.other_countries_legend": "Other Countries",
-  "globe.click_explore": "💡 Click to explore",
-  "globe.drag_rotate": "🖱️ Drag to rotate"
+  "nav": {
+    "home": "Home",
+    "test": "Test",
+    "countries": "Countries",
+    "testimonials": "Testimonials",
+    "community": "Community"
+  },
+  "test": {
+    "title": "Orientation Test",
+    "subtitle": "Discover your ideal study abroad destination",
+    "description": "Take our comprehensive test to find the perfect match for your international adventure",
+    "iframe_title": "Odisea Orientation Test",
+    "loading": "Loading..."
+  },
+  "home": {
+    "hero": {
+      "title": "GET READY FOR YOUR",
+      "odyssey": "Odyssey ✈️",
+      "subtitle": "🌍 Discover the world with confidence. Platform created by students, for students, that helps you navigate your international adventure 🎒",
+      "cta_test": "Take the Test 📝",
+      "cta_map": "View World Map 🗺️",
+      "new_badge": "New! ✨",
+      "map_prompt": "Try the 3D map! 🎯"
+    },
+    "about": {
+      "title": "👥 WE ARE STUDENTS LIKE YOU",
+      "description1": "💭 We had to organize our own study abroad or internship, and we often felt lost, overwhelmed and without guidance. That's why we created Odyssey, an interactive platform made by students, for students, to help you navigate your international mobility journey with confidence and clarity.",
+      "description2": "🏠 From destination tips to housing advice, we support you every step of the way.",
+      "cta": "Learn more stories 📖"
+    },
+    "features": {
+      "title": "🚀 ORGANIZE YOUR NEXT TRIP",
+      "subtitle": "Discover all the options we have for you ✨",
+      "exchange": {
+        "title": "🎓 EXCHANGE",
+        "description": "Discover exchange programs in universities around the world. Live a unique international academic experience.",
+        "cta": "Explore destinations 🌟 →"
+      },
+      "internship": {
+        "title": "💼 INTERNSHIPS",
+        "description": "Find professional internship opportunities in international companies.",
+        "coming_soon": "Coming Soon 🔜"
+      },
+      "gap_year": {
+        "title": "🌍 GAP YEAR",
+        "description": "Take a year to explore the world, learn languages and grow personally.",
+        "coming_soon": "Coming Soon 🔜"
+      }
+    },
+    "cta": {
+      "title": "🤝 JOIN THE ODYSSEY COMMUNITY",
+      "description": "💪 You're not alone on this journey. Connect with students from around the world who have lived the same adventure. Share tips, ask questions and find your people.",
+      "subtitle": "✨ Together, we make studying abroad easier and much more fun.",
+      "button": "JOIN 🚀"
+    }
+  }
 }

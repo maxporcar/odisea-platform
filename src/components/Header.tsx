@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import UserMenu from './UserMenu';
 
 const Header = () => {
   const location = useLocation();
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [

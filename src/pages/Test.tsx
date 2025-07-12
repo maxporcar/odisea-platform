@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 
 const Test = () => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-12">
@@ -29,9 +29,9 @@ const Test = () => {
             marginHeight={0}
             marginWidth={0}
             className="w-full"
-            title="Test de Orientación Odisea"
+            title={t('test.iframe_title')}
           >
-            Cargando…
+            {t('test.loading')}
           </iframe>
         </div>
       </div>

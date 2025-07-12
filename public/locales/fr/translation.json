@@ -1,0 +1,59 @@
+
+{
+  "nav": {
+    "home": "Accueil",
+    "test": "Test",
+    "countries": "Pays",
+    "testimonials": "Témoignages",
+    "community": "Communauté"
+  },
+  "test": {
+    "title": "Test d'Orientation",
+    "subtitle": "Découvrez votre destination idéale pour étudier à l'étranger",
+    "description": "Passez notre test complet pour trouver la correspondance parfaite pour votre aventure internationale",
+    "iframe_title": "Test d'Orientation Odyssée",
+    "loading": "Chargement..."
+  },
+  "home": {
+    "hero": {
+      "title": "PRÉPAREZ-VOUS POUR VOTRE",
+      "odyssey": "Odyssée ✈️",
+      "subtitle": "🌍 Découvrez le monde en toute confiance. Plateforme créée par des étudiants, pour les étudiants, qui vous aide à naviguer votre aventure internationale 🎒",
+      "cta_test": "Passer le Test 📝",
+      "cta_map": "Voir la Carte Mondiale 🗺️",
+      "new_badge": "Nouveau ! ✨",
+      "map_prompt": "Essayez la carte 3D ! 🎯"
+    },
+    "about": {
+      "title": "👥 NOUS SOMMES DES ÉTUDIANTS COMME VOUS",
+      "description1": "💭 Nous avons dû organiser nos propres études ou stages à l'étranger, et nous nous sommes souvent sentis perdus, dépassés et sans orientation. C'est pourquoi nous avons créé Odyssée, une plateforme interactive faite par des étudiants, pour les étudiants, pour vous aider à naviguer votre parcours de mobilité internationale avec confiance et clarté.",
+      "description2": "🏠 Des conseils de destination aux conseils de logement, nous vous soutenons à chaque étape du chemin.",
+      "cta": "Découvrir plus d'histoires 📖"
+    },
+    "features": {
+      "title": "🚀 ORGANISEZ VOTRE PROCHAIN VOYAGE",
+      "subtitle": "Découvrez toutes les options que nous avons pour vous ✨",
+      "exchange": {
+        "title": "🎓 ÉCHANGE",
+        "description": "Découvrez les programmes d'échange dans les universités du monde entier. Vivez une expérience académique internationale unique.",
+        "cta": "Explorer les destinations 🌟 →"
+      },
+      "internship": {
+        "title": "💼 STAGES",
+        "description": "Trouvez des opportunités de stages professionnels dans des entreprises internationales.",
+        "coming_soon": "Bientôt disponible 🔜"
+      },
+      "gap_year": {
+        "title": "🌍 ANNÉE SABBATIQUE",
+        "description": "Prenez une année pour explorer le monde, apprendre des langues et grandir personnellement.",
+        "coming_soon": "Bientôt disponible 🔜"
+      }
+    },
+    "cta": {
+      "title": "🤝 REJOIGNEZ LA COMMUNAUTÉ ODYSSÉE",
+      "description": "💪 Vous n'êtes pas seul dans ce voyage. Connectez-vous avec des étudiants du monde entier qui ont vécu la même aventure. Partagez des conseils, posez des questions et trouvez votre communauté.",
+      "subtitle": "✨ Ensemble, nous rendons les études à l'étranger plus faciles et beaucoup plus amusantes.",
+      "button": "REJOINDRE 🚀"
+    }
+  }
+}

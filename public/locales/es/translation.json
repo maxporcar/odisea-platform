@@ -1,0 +1,59 @@
+
+{
+  "nav": {
+    "home": "Inicio",
+    "test": "Test",
+    "countries": "Países",
+    "testimonials": "Testimonios",
+    "community": "Comunidad"
+  },
+  "test": {
+    "title": "Test de Orientación",
+    "subtitle": "Descubre tu destino ideal para estudiar en el extranjero",
+    "description": "Realiza nuestro test integral para encontrar la combinación perfecta para tu aventura internacional",
+    "iframe_title": "Test de Orientación Odisea",
+    "loading": "Cargando..."
+  },
+  "home": {
+    "hero": {
+      "title": "PREPÁRATE PARA TU",
+      "odyssey": "Odisea ✈️",
+      "subtitle": "🌍 Descubre el mundo con confianza. Plataforma creada por estudiantes, para estudiantes, que te ayuda a navegar tu aventura internacional 🎒",
+      "cta_test": "Hacer el Test 📝",
+      "cta_map": "Ver Mapa Mundial 🗺️",
+      "new_badge": "¡Nuevo! ✨",
+      "map_prompt": "¡Prueba el mapa 3D! 🎯"
+    },
+    "about": {
+      "title": "👥 SOMOS ESTUDIANTES COMO TÚ",
+      "description1": "💭 Tuvimos que organizar nuestro propio estudio o internship en el extranjero, y a menudo nos sentimos perdidos, abrumados y sin orientación. Por eso creamos Odisea, una plataforma interactiva hecha por estudiantes, para estudiantes, para ayudarte a navegar tu viaje de movilidad internacional con confianza y claridad.",
+      "description2": "🏠 Desde consejos de destinos hasta consejos de vivienda, te apoyamos en cada paso del camino.",
+      "cta": "Conoce más historias 📖"
+    },
+    "features": {
+      "title": "🚀 ORGANIZA TU PRÓXIMO VIAJE",
+      "subtitle": "Descubre todas las opciones que tenemos para ti ✨",
+      "exchange": {
+        "title": "🎓 INTERCAMBIO",
+        "description": "Descubre programas de intercambio en universidades de todo el mundo. Vive una experiencia académica internacional única.",
+        "cta": "Explorar destinos 🌟 →"
+      },
+      "internship": {
+        "title": "💼 PRÁCTICAS",
+        "description": "Encuentra oportunidades de prácticas profesionales en empresas internacionales.",
+        "coming_soon": "Próximamente disponible 🔜"
+      },
+      "gap_year": {
+        "title": "🌍 GAP YEAR",
+        "description": "Tómate un año para explorar el mundo, aprender idiomas y crecer personalmente.",
+        "coming_soon": "Próximamente disponible 🔜"
+      }
+    },
+    "cta": {
+      "title": "🤝 ÚNETE A LOS ODISEANOS",
+      "description": "💪 No estás solo en este viaje. Conecta con estudiantes de todo el mundo que han vivido la misma aventura. Comparte consejos, haz preguntas y encuentra a tu gente.",
+      "subtitle": "✨ Juntos, hacemos que estudiar en el extranjero sea más fácil y mucho más divertido.",
+      "button": "ÚNETE 🚀"
+    }
+  }
+}

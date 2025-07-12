@@ -2,9 +2,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Globe, MapPin, MessageCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import ScrollAnimations from '../components/ScrollAnimations';
 
 const Home = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white">
       <ScrollAnimations />
@@ -40,17 +43,16 @@ const Home = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <div className="animate-fade-in">
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 font-montserrat" style={{ color: '#2B2B2B' }}>
-              GET READY FOR YOUR
+              {t('home.hero.title')}
               <br />
               <span className="relative" style={{ color: '#FF6600' }}>
-                Odisea ✈️
+                {t('home.hero.odyssey')}
                 <div className="absolute -bottom-2 left-0 right-0 h-1" style={{ backgroundColor: '#FF6600' }}></div>
               </span>
             </h1>
             
             <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed font-poppins" style={{ color: '#2B2B2B' }}>
-              🌍 Descubre el mundo con confianza. Plataforma creada por estudiantes, 
-              para estudiantes, que te ayuda a navegar tu aventura internacional 🎒
+              {t('home.hero.subtitle')}
             </p>
           </div>
           
@@ -60,7 +62,7 @@ const Home = () => {
               className="text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105 shadow-lg font-poppins"
               style={{ backgroundColor: '#2B2B2B' }}
             >
-              Hacer el Test 📝
+              {t('home.hero.cta_test')}
             </Link>
             <Link
               to="/paises"
@@ -79,10 +81,10 @@ const Home = () => {
                 e.currentTarget.style.color = '#2B2B2B';
               }}
             >
-              Ver Mapa Mundial 🗺️
+              {t('home.hero.cta_map')}
               {/* New! indicator */}
               <div className="absolute -top-2 -right-2 text-white text-xs px-2 py-1 rounded-full transform rotate-12 animate-pulse" style={{ backgroundColor: '#FF6600' }}>
-                ¡Nuevo! ✨
+                {t('home.hero.new_badge')}
               </div>
             </Link>
           </div>
@@ -91,7 +93,7 @@ const Home = () => {
           <div className="absolute bottom-16 right-10 hidden lg:block">
             <div className="relative">
               <div className="font-bold transform rotate-12 animate-bounce" style={{ color: '#FF6600', fontSize: '18px' }}>
-                ¡Prueba el mapa 3D! 🎯
+                {t('home.hero.map_prompt')}
               </div>
               <div className="absolute -bottom-2 -left-4 text-2xl transform rotate-45" style={{ color: '#FF6600' }}>
                 ↗️
@@ -107,15 +109,13 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="opacity-0 animate-fade-in-up" data-aos="fade-right">
               <h2 className="text-4xl font-bold mb-6 font-glacial" style={{ color: '#2B2B2B' }}>
-                👥 SOMOS ESTUDIANTES COMO TÚ
+                {t('home.about.title')}
               </h2>
               <p className="text-lg mb-8 leading-relaxed font-poppins" style={{ color: '#2B2B2B' }}>
-                💭 Tuvimos que organizar nuestro propio estudio o internship en el extranjero, y a menudo nos sentimos perdidos, 
-                abrumados y sin orientación. Por eso creamos Odisea, una plataforma interactiva hecha por estudiantes, 
-                para estudiantes, para ayudarte a navegar tu viaje de movilidad internacional con confianza y claridad.
+                {t('home.about.description1')}
               </p>
               <p className="text-lg mb-8 leading-relaxed font-poppins" style={{ color: '#2B2B2B' }}>
-                🏠 Desde consejos de destinos hasta consejos de vivienda, te apoyamos en cada paso del camino.
+                {t('home.about.description2')}
               </p>
               <Link
                 to="/testimonios"
@@ -124,7 +124,7 @@ const Home = () => {
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FF6600'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2B2B2B'}
               >
-                Conoce más historias 📖
+                {t('home.about.cta')}
               </Link>
             </div>
             
@@ -163,10 +163,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 opacity-0 animate-fade-in-up" data-aos="fade-up">
             <h2 className="text-4xl font-bold mb-4 font-glacial" style={{ color: '#2B2B2B' }}>
-              🚀 ORGANIZA TU PRÓXIMO VIAJE
+              {t('home.features.title')}
             </h2>
             <p className="text-xl font-poppins" style={{ color: '#2B2B2B' }}>
-              Descubre todas las opciones que tenemos para ti ✨
+              {t('home.features.subtitle')}
             </p>
           </div>
           
@@ -187,13 +187,12 @@ const Home = () => {
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform" style={{ backgroundColor: '#00765A' }}>
                   <Globe className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 font-glacial" style={{ color: '#00765A' }}>🎓 INTERCAMBIO</h3>
+                <h3 className="text-2xl font-bold mb-4 font-glacial" style={{ color: '#00765A' }}>{t('home.features.exchange.title')}</h3>
                 <p className="mb-6 font-poppins" style={{ color: '#2B2B2B' }}>
-                  Descubre programas de intercambio en universidades de todo el mundo. 
-                  Vive una experiencia académica internacional única.
+                  {t('home.features.exchange.description')}
                 </p>
                 <Link to="/paises" className="font-semibold hover:underline font-poppins inline-flex items-center" style={{ color: '#00765A' }}>
-                  Explorar destinos 🌟 →
+                  {t('home.features.exchange.cta')}
                 </Link>
               </div>
             </div>
@@ -217,12 +216,12 @@ const Home = () => {
                 <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mx-auto mb-6">
                   <MapPin className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">💼 PRÁCTICAS</h3>
+                <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">{t('home.features.internship.title')}</h3>
                 <p className="text-gray-500 mb-4 font-poppins">
-                  Encuentra oportunidades de prácticas profesionales en empresas internacionales.
+                  {t('home.features.internship.description')}
                 </p>
                 <div className="bg-gray-200 text-gray-600 px-4 py-2 rounded-full text-sm font-medium mb-4">
-                  Próximamente disponible 🔜
+                  {t('home.features.internship.coming_soon')}
                 </div>
                 <span className="text-gray-400 font-poppins">Coming Soon...</span>
               </div>
@@ -247,12 +246,12 @@ const Home = () => {
                 <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mx-auto mb-6">
                   <MessageCircle className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">🌍 GAP YEAR</h3>
+                <h3 className="text-2xl font-bold text-gray-600 mb-4 font-glacial">{t('home.features.gap_year.title')}</h3>
                 <p className="text-gray-500 mb-4 font-poppins">
-                  Tómate un año para explorar el mundo, aprender idiomas y crecer personalmente.
+                  {t('home.features.gap_year.description')}
                 </p>
                 <div className="bg-gray-200 text-gray-600 px-4 py-2 rounded-full text-sm font-medium mb-4">
-                  Próximamente disponible 🔜
+                  {t('home.features.gap_year.coming_soon')}
                 </div>
                 <span className="text-gray-400 font-poppins">Coming Soon...</span>
               </div>
@@ -266,14 +265,13 @@ const Home = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="opacity-0 animate-fade-in-up" data-aos="fade-up">
             <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white font-glacial">
-              🤝 ÚNETE A LOS ODISEANOS
+              {t('home.cta.title')}
             </h2>
             <p className="text-xl text-gray-300 mb-12 leading-relaxed font-poppins">
-              💪 No estás solo en este viaje. Conecta con estudiantes de todo el mundo que han vivido la misma aventura. 
-              Comparte consejos, haz preguntas y encuentra a tu gente.
+              {t('home.cta.description')}
             </p>
             <p className="text-lg text-gray-400 mb-8 font-poppins">
-              ✨ Juntos, hacemos que estudiar en el extranjero sea más fácil y mucho más divertido.
+              {t('home.cta.subtitle')}
             </p>
             <Link
               to="/comunidad"
@@ -288,7 +286,7 @@ const Home = () => {
                 e.currentTarget.style.color = '#2B2B2B';
               }}
             >
-              ÚNETE 🚀
+              {t('home.cta.button')}
             </Link>
           </div>
         </div>

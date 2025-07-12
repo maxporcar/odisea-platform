@@ -32,6 +32,27 @@ async function translateText(text, targetLang) {
   }
 }
 
+async function translateObject(obj, targetLang, keyPath = '') {
+  const result = {};
+  
+  for (const [key, value] of Object.entries(obj)) {
+    const currentPath = keyPath ? `${keyPath}.${key}` : key;
+    
+    if (typeof value === 'string') {
+      console.log(`  [${currentPath}] Translating: "${value.substring(0, 50)}${value.length > 50 ? '...' : ''}"`);
+      result[key] = await translateText(value, targetLang);
+      // Be nice to the free API - small delay between requests
+      await delay(100);
+    } else if (typeof value === 'object' && value !== null) {
+      result[key] = await translateObject(value, targetLang, currentPath);
+    } else {
+      result[key] = value;
+    }
+  }
+  
+  return result;
+}
+
 async function translateAll() {
   console.log('🌍 Starting auto-translation process...');
   
@@ -42,39 +63,19 @@ async function translateAll() {
   }
 
   const data = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
-  const keys = Object.keys(data);
   
-  console.log(`📝 Found ${keys.length} keys to translate`);
+  console.log(`📝 Found translation keys to translate`);
 
   for (const lang of TARGET_LANGS) {
     console.log(`\n🔄 Translating to ${lang.toUpperCase()}...`);
-    const output = {};
-    let translatedCount = 0;
     
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const text = data[key];
-      
-      if (!text || text.trim() === '') {
-        output[key] = '';
-        continue;
-      }
-
-      console.log(`  [${i + 1}/${keys.length}] Translating: "${text.substring(0, 50)}${text.length > 50 ? '...' : ''}"`);
-      
-      const translatedText = await translateText(text, lang);
-      output[key] = translatedText;
-      translatedCount++;
-      
-      // Be nice to the free API - small delay between requests
-      await delay(100);
-    }
+    const translatedData = await translateObject(data, lang);
     
     const outPath = path.resolve(__dirname, `../public/locales/${lang}/translation.json`);
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
-    fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
+    fs.writeFileSync(outPath, JSON.stringify(translatedData, null, 2));
     
-    console.log(`✅ ${lang.toUpperCase()}: ${translatedCount} translations written to ${outPath}`);
+    console.log(`✅ ${lang.toUpperCase()}: Translation completed and written to ${outPath}`);
   }
   
   console.log('\n🎉 Translation process completed!');
