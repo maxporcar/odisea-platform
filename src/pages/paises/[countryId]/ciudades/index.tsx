@@ -3,8 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import { MapPin, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useCountry } from '../../../../hooks/useCountries';
 import { useCities } from '../../../../hooks/useCities';
+import { useTranslation } from 'react-i18next';
 
 const CitiesIndex = () => {
+  const { t } = useTranslation();
   const { countryId } = useParams<{ countryId: string }>();
   const { data: country, isLoading: countryLoading } = useCountry(countryId!);
   const { data: cities = [], isLoading: citiesLoading, error: citiesError } = useCities(countryId);
@@ -14,7 +16,7 @@ const CitiesIndex = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center space-x-3">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <span className="text-xl text-primary font-semibold">Cargando ciudades...</span>
+          <span className="text-xl text-primary font-semibold">{t('cities.loading')}</span>
         </div>
       </div>
     );
@@ -25,13 +27,13 @@ const CitiesIndex = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-foreground mb-2">Error al cargar ciudades</h2>
-          <p className="text-muted-foreground mb-4">No pudimos cargar las ciudades de este país.</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">{t('cities.error.title')}</h2>
+          <p className="text-muted-foreground mb-4">{t('cities.error.description')}</p>
           <Link 
             to={`/paises/${countryId}`}
             className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-semibold hover:bg-primary/90 transition-colors"
           >
-            Volver al país
+            {t('cities.backToCountry')}
           </Link>
         </div>
       </div>
@@ -49,7 +51,7 @@ const CitiesIndex = () => {
               className="flex items-center text-primary hover:text-primary/80 transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
-              Volver al país
+              {t('cities.backToCountry')}
             </Link>
           </div>
           
@@ -57,14 +59,14 @@ const CitiesIndex = () => {
             <div className="flex items-center justify-center space-x-4 mb-4">
               <span className="text-4xl">{country?.flag || '🌍'}</span>
               <h1 className="text-4xl font-bold text-foreground">
-                Ciudades en {country?.name}
+                {t('cities.title')} {country?.name}
               </h1>
             </div>
             <p className="text-xl text-muted-foreground">
-              Explora las principales ciudades estudiantiles del país
+              {t('cities.subtitle')}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {cities.length} ciudades disponibles
+              {t('cities.count', { count: cities.length })}
             </p>
           </div>
         </div>
@@ -74,8 +76,8 @@ const CitiesIndex = () => {
         {cities.length === 0 ? (
           <div className="text-center py-12">
             <MapPin className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">No hay ciudades disponibles</h3>
-            <p className="text-muted-foreground">Aún no tenemos información sobre ciudades en este país.</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">{t('cities.noCities.title')}</h3>
+            <p className="text-muted-foreground">{t('cities.noCities.description')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -100,7 +102,7 @@ const CitiesIndex = () => {
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-foreground mb-2">{city.name}</h3>
                   <p className="text-muted-foreground line-clamp-3 mb-4">
-                    {city.description || 'Una ciudad increíble para estudiar y vivir experiencias únicas.'}
+                    {city.description || t('cities.defaultDescription')}
                   </p>
                   
                   {city.latitude && city.longitude && (

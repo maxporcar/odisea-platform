@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Heart, MessageCircle, Share2, Plus, Search, Filter, MapPin, Calendar } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Post {
   id: string;
@@ -16,6 +17,7 @@ interface Post {
 }
 
 const Comunidad = () => {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<Post[]>([
     {
       id: '1',
@@ -124,9 +126,9 @@ const Comunidad = () => {
       <div className="bg-white border-b border-gray-200 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-black mb-4">COMUNIDAD ODISEA</h1>
+            <h1 className="text-4xl font-bold text-black mb-4">{t('community.hero.title')}</h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Conecta con estudiantes de todo el mundo. Comparte consejos, haz preguntas y encuentra tu gente.
+              {t('community.hero.subtitle')}
             </p>
           </div>
 
@@ -136,7 +138,7 @@ const Comunidad = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Buscar en la comunidad..."
+                placeholder={t('community.search.placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
@@ -148,17 +150,17 @@ const Comunidad = () => {
               onChange={(e) => setSelectedFilter(e.target.value)}
               className="px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             >
-              <option value="all">Todos los posts</option>
-              <option value="erasmus">Erasmus</option>
-              <option value="consejos">Consejos</option>
-              <option value="alojamiento">Alojamiento</option>
-              <option value="eventos">Eventos</option>
+              <option value="all">{t('community.filters.allPosts')}</option>
+              <option value="erasmus">{t('community.filters.erasmus')}</option>
+              <option value="consejos">{t('community.filters.tips')}</option>
+              <option value="alojamiento">{t('community.filters.housing')}</option>
+              <option value="eventos">{t('community.filters.events')}</option>
             </select>
           </div>
 
           {/* Popular Tags */}
           <div className="flex flex-wrap gap-2 mb-6">
-            <span className="text-sm font-semibold text-gray-600 mr-2">Tags populares:</span>
+            <span className="text-sm font-semibold text-gray-600 mr-2">{t('community.popularTags')}:</span>
             {popularTags.map(tag => (
               <button
                 key={tag}
@@ -180,7 +182,7 @@ const Comunidad = () => {
             className="w-full bg-black text-white py-4 rounded-full font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center space-x-2"
           >
             <Plus className="w-5 h-5" />
-            <span>Compartir algo con la comunidad</span>
+            <span>{t('community.shareWithCommunity')}</span>
           </button>
         </div>
       </div>
@@ -190,11 +192,11 @@ const Comunidad = () => {
         {showNewPost && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-2xl max-w-2xl w-full p-6">
-              <h3 className="text-2xl font-bold text-black mb-4">Nuevo Post</h3>
+              <h3 className="text-2xl font-bold text-black mb-4">{t('community.newPost.title')}</h3>
               <textarea
                 value={newPost}
                 onChange={(e) => setNewPost(e.target.value)}
-                placeholder="¿Qué quieres compartir con la comunidad?"
+                placeholder={t('community.newPost.placeholder')}
                 className="w-full h-32 p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
               />
               <div className="flex gap-4 mt-4">
@@ -202,13 +204,13 @@ const Comunidad = () => {
                   onClick={() => setShowNewPost(false)}
                   className="flex-1 py-3 border border-gray-300 text-gray-700 rounded-full font-semibold hover:bg-gray-50 transition-colors"
                 >
-                  Cancelar
+                  {t('community.newPost.cancel')}
                 </button>
                 <button
                   onClick={handleSubmitPost}
                   className="flex-1 py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors"
                 >
-                  Publicar
+                  {t('community.newPost.publish')}
                 </button>
               </div>
             </div>
@@ -246,13 +248,13 @@ const Comunidad = () => {
               <p className="text-gray-800 mb-4 leading-relaxed">{post.content}</p>
 
               {/* Post Image */}
-              {post.image && (
-                <div className="mb-4">
-                  <div className="h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-                    <span className="text-gray-500">Imagen del post</span>
+                {post.image && (
+                  <div className="mb-4">
+                    <div className="h-64 bg-gray-200 rounded-xl flex items-center justify-center">
+                      <span className="text-gray-500">{t('community.postImage')}</span>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-4">
@@ -292,7 +294,7 @@ const Comunidad = () => {
         {/* Load More */}
         <div className="text-center mt-12">
           <button className="bg-gray-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-700 transition-colors">
-            Cargar más posts
+            {t('community.loadMore')}
           </button>
         </div>
       </div>

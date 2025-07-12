@@ -5,8 +5,10 @@ import { useCity } from '../../../../hooks/useCities';
 import { useCountry } from '../../../../hooks/useCountries';
 import { useUniversities } from '../../../../hooks/useUniversities';
 import { useTestimonials } from '../../../../hooks/useTestimonials';
+import { useTranslation } from 'react-i18next';
 
 const CityDetail = () => {
+  const { t } = useTranslation();
   const { countryId, slug } = useParams<{ countryId: string; slug: string }>();
   const { data: country } = useCountry(countryId!);
   const { data: city, isLoading: cityLoading, error: cityError } = useCity(slug!);
@@ -18,7 +20,7 @@ const CityDetail = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center space-x-3">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <span className="text-xl text-primary font-semibold">Cargando información de la ciudad...</span>
+          <span className="text-xl text-primary font-semibold">{t('cityDetail.loading')}</span>
         </div>
       </div>
     );
@@ -29,13 +31,13 @@ const CityDetail = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-foreground mb-2">Ciudad no encontrada</h2>
-          <p className="text-muted-foreground mb-4">No pudimos encontrar la información de esta ciudad.</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">{t('cityDetail.notFound.title')}</h2>
+          <p className="text-muted-foreground mb-4">{t('cityDetail.notFound.description')}</p>
           <Link 
             to={`/paises/${countryId}/ciudades`}
             className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-semibold hover:bg-primary/90 transition-colors"
           >
-            Volver a ciudades
+            {t('cityDetail.backToCities')}
           </Link>
         </div>
       </div>
@@ -55,7 +57,7 @@ const CityDetail = () => {
                 className="flex items-center text-white/80 hover:text-white transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
-                Volver a ciudades
+                {t('cityDetail.backToCities')}
               </Link>
             </div>
             
@@ -80,10 +82,10 @@ const CityDetail = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Descripción de la ciudad */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-6">Sobre {city.name}</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">{t('cityDetail.about')} {city.name}</h2>
           <div className="bg-card rounded-2xl p-6 shadow-sm border">
             <p className="text-foreground leading-relaxed text-lg">
-              {city.description || `${city.name} es una ciudad increíble para estudiantes internacionales, ofreciendo una mezcla única de cultura, educación de calidad y oportunidades de crecimiento personal.`}
+              {city.description || t('cityDetail.defaultDescription', { cityName: city.name })}
             </p>
           </div>
         </section>
@@ -91,14 +93,14 @@ const CityDetail = () => {
         {/* Mapa Section */}
         {city.latitude && city.longitude && (
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-6">Ubicación</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-6">{t('cityDetail.location')}</h2>
             <div className="bg-card rounded-2xl p-6 shadow-sm border">
               <div className="h-64 bg-muted rounded-xl flex items-center justify-center">
                 <div className="text-center">
                   <MapPin className="w-12 h-12 text-primary mx-auto mb-2" />
-                  <p className="text-foreground font-semibold">Mapa de {city.name}</p>
+                  <p className="text-foreground font-semibold">{t('cityDetail.mapOf')} {city.name}</p>
                   <p className="text-muted-foreground text-sm">
-                    Coordenadas: {city.latitude}, {city.longitude}
+                    {t('cityDetail.coordinates')}: {city.latitude}, {city.longitude}
                   </p>
                 </div>
               </div>
@@ -109,12 +111,12 @@ const CityDetail = () => {
         {/* Universidades en la ciudad */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-foreground">Universidades en {city.name}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{t('cityDetail.universitiesIn')} {city.name}</h2>
             <Link 
               to={`/paises/${countryId}/universidades`}
               className="text-primary hover:text-primary/80 font-medium flex items-center"
             >
-              Ver todas las universidades →
+              {t('cityDetail.viewAllUniversities')} →
             </Link>
           </div>
           
@@ -153,14 +155,14 @@ const CityDetail = () => {
           ) : (
             <div className="text-center py-8">
               <GraduationCap className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No hay universidades registradas en esta ciudad.</p>
+              <p className="text-muted-foreground">{t('cityDetail.noUniversities')}</p>
             </div>
           )}
         </section>
 
         {/* Testimonios relacionados */}
         <section>
-          <h2 className="text-3xl font-bold text-foreground mb-6">Experiencias en {city.name}</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">{t('cityDetail.experiencesIn')} {city.name}</h2>
           
           {testimonialsLoading ? (
             <div className="flex justify-center py-8">
@@ -211,7 +213,7 @@ const CityDetail = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">No hay testimonios disponibles para esta ciudad.</p>
+              <p className="text-muted-foreground">{t('cityDetail.noTestimonials')}</p>
             </div>
           )}
         </section>

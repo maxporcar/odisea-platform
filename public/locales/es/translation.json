@@ -7,6 +7,92 @@
     "testimonials": "Testimonios",
     "community": "Comunidad"
   },
+  "testimonials": {
+    "loading": "Cargando testimonios...",
+    "error": "Error al cargar testimonios",
+    "hero": {
+      "title": "DESCUBRE TESTIMONIOS EXCLUSIVOS DE ESTUDIANTES QUE HAN ESTADO EN TUS ZAPATOS",
+      "subtitle": "Historias reales de estudiantes que vivieron experiencias increíbles en el extranjero. Sus consejos y vivencias te ayudarán a prepararte para tu propia aventura."
+    },
+    "filters": {
+      "byCountry": "Filtrar por país",
+      "selectCountry": "Seleccionar país",
+      "allCountries": "Todos los países"
+    },
+    "readFullStory": "Leer historia completa",
+    "cta": {
+      "title": "¿Ya tienes tu historia que contar?",
+      "subtitle": "Si has vivido una experiencia internacional, compártela con la comunidad de Odisea",
+      "button": "Compartir mi historia"
+    },
+    "destination": "Destino",
+    "experience": "Experiencia",
+    "excellent": "Excelente",
+    "myStory": "Mi Historia",
+    "myTips": "Mis Consejos para Ti",
+    "contactWith": "Contactar con",
+    "seeMoreAbout": "Ver más sobre"
+  },
+  "community": {
+    "hero": {
+      "title": "COMUNIDAD ODISEA",
+      "subtitle": "Conecta con estudiantes de todo el mundo. Comparte consejos, haz preguntas y encuentra tu gente."
+    },
+    "search": {
+      "placeholder": "Buscar en la comunidad..."
+    },
+    "filters": {
+      "allPosts": "Todos los posts",
+      "erasmus": "Erasmus",
+      "tips": "Consejos",
+      "housing": "Alojamiento",
+      "events": "Eventos"
+    },
+    "popularTags": "Tags populares",
+    "shareWithCommunity": "Compartir algo con la comunidad",
+    "newPost": {
+      "title": "Nuevo Post",
+      "placeholder": "¿Qué quieres compartir con la comunidad?",
+      "cancel": "Cancelar",
+      "publish": "Publicar"
+    },
+    "postImage": "Imagen del post",
+    "loadMore": "Cargar más posts"
+  },
+  "cities": {
+    "loading": "Cargando ciudades...",
+    "error": {
+      "title": "Error al cargar ciudades",
+      "description": "No pudimos cargar las ciudades de este país."
+    },
+    "backToCountry": "Volver al país",
+    "title": "Ciudades en",
+    "subtitle": "Explora las principales ciudades estudiantiles del país",
+    "count": "{{count}} ciudades disponibles",
+    "noCities": {
+      "title": "No hay ciudades disponibles",
+      "description": "Aún no tenemos información sobre ciudades en este país."
+    },
+    "defaultDescription": "Una ciudad increíble para estudiar y vivir experiencias únicas."
+  },
+  "cityDetail": {
+    "loading": "Cargando información de la ciudad...",
+    "notFound": {
+      "title": "Ciudad no encontrada",
+      "description": "No pudimos encontrar la información de esta ciudad."
+    },
+    "backToCities": "Volver a ciudades",
+    "about": "Sobre",
+    "defaultDescription": "{{cityName}} es una ciudad increíble para estudiantes internacionales, ofreciendo una mezcla única de cultura, educación de calidad y oportunidades de crecimiento personal.",
+    "location": "Ubicación",
+    "mapOf": "Mapa de",
+    "coordinates": "Coordenadas",
+    "universitiesIn": "Universidades en",
+    "viewAllUniversities": "Ver todas las universidades",
+    "noUniversities": "No hay universidades registradas en esta ciudad.",
+    "experiencesIn": "Experiencias en",
+    "noTestimonials": "No hay testimonios disponibles para esta ciudad."
+  },
   "test": {
     "title": "Test de Orientación",
     "subtitle": "Descubre tu destino ideal para estudiar en el extranjero",

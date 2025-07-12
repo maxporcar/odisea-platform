@@ -3,6 +3,9 @@
   "scripts": {
     "extract-i18n": "i18next-scanner",
     "auto-translate": "node scripts/auto-translate.js",
-    "translate-all": "npm run extract-i18n && npm run auto-translate"
+    "auto-translate-advanced": "node scripts/auto-translate-advanced.js",
+    "i18n-watch": "node scripts/i18n-watcher.js",
+    "translate-all": "npm run extract-i18n && npm run auto-translate-advanced",
+    "i18n-setup": "npm run translate-all && echo '✅ i18n setup complete! Run npm run i18n-watch for automatic translations.'"
   }
 }
