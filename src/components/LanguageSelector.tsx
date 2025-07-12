@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { Globe } from 'lucide-react';
-import { useI18n } from '../contexts/I18nContext';
+import { useTranslation } from 'react-i18next';
 
 const LanguageSelector = () => {
-  const { language, setLanguage } = useI18n();
+  const { i18n } = useTranslation();
+  const language = i18n.language;
 
   const languages = [
     { code: 'es', name: 'Español', flag: '🇪🇸' },
@@ -25,7 +26,7 @@ const LanguageSelector = () => {
         {languages.map((lang) => (
           <button
             key={lang.code}
-            onClick={() => setLanguage(lang.code as 'es' | 'en' | 'fr')}
+            onClick={() => i18n.changeLanguage(lang.code)}
             className={`flex items-center space-x-3 px-4 py-2 w-full text-left hover:bg-gray-100 transition-colors ${
               language === lang.code ? 'bg-orange-50 text-warm-orange' : 'text-gray-700'
             }`}
