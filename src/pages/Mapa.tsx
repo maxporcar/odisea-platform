@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Filter, X, MapPin, DollarSign, Home, Plane, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -83,7 +84,7 @@ const Mapa = () => {
     }
   ];
 
-  const continents = ['all', 'Europa', 'América del Norte', 'América del Sur', 'Asia', 'Oceanía', 'África'];
+  const continents = ['all', ...(t('countries.filters.continents', { returnObjects: true }) as string[])];
 
   const filteredCountries = countries.filter(country => {
     const matchesSearch = country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -97,12 +98,7 @@ const Mapa = () => {
   };
 
   const getCostIcon = (cost: string) => {
-    switch (cost) {
-      case 'low': return '€';
-      case 'medium': return '€€';
-      case 'high': return '€€€';
-      default: return '€';
-    }
+    return t(`countries.cost.${cost}` as any) || t('countries.cost.low');
   };
 
   const getCostColor = (cost: string) => {
@@ -134,7 +130,7 @@ const Mapa = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Buscar país o ciudad..."
+                placeholder={t('map.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent bg-white/90 backdrop-blur-sm font-poppins"
@@ -146,7 +142,7 @@ const Mapa = () => {
               onChange={(e) => setFilterContinent(e.target.value)}
               className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent font-poppins"
             >
-              <option value="all">Todos los continentes</option>
+              <option value="all">{t('map.allContinents')}</option>
               {continents.slice(1).map(continent => (
                 <option key={continent} value={continent}>{continent}</option>
               ))}
@@ -159,7 +155,7 @@ const Mapa = () => {
         {/* Interactive Globe */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 font-poppins text-center">
-            Globo Interactivo
+            {t('map.interactiveGlobe')}
           </h2>
           <InteractiveGlobe onCountryClick={handleGlobeCountryClick} />
         </div>
@@ -195,7 +191,7 @@ const Mapa = () => {
               </p>
               
               <button className="w-full bg-black text-white py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors">
-                Ver más información
+                {t('map.seeMoreInfo')}
               </button>
             </div>
           ))}
@@ -221,7 +217,7 @@ const Mapa = () => {
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <div className="flex items-center mb-2">
                     <MapPin className="w-5 h-5 mr-2 text-gray-600" />
-                    <span className="font-semibold">Capital</span>
+                    <span className="font-semibold">{t('countryDetail.continent')}</span>
                   </div>
                   <p className="text-gray-700">{selectedCountry.capital}</p>
                 </div>
@@ -229,7 +225,7 @@ const Mapa = () => {
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <div className="flex items-center mb-2">
                     <DollarSign className="w-5 h-5 mr-2 text-gray-600" />
-                    <span className="font-semibold">Costo de vida</span>
+                    <span className="font-semibold">{t('countryDetail.costOfLiving')}</span>
                   </div>
                   <p className={`font-bold ${getCostColor(selectedCountry.costOfLiving)}`}>
                     {getCostIcon(selectedCountry.costOfLiving)}
@@ -241,12 +237,12 @@ const Mapa = () => {
                     <Plane className="w-5 h-5 mr-2 text-gray-600" />
                     <span className="font-semibold">Visa requerida</span>
                   </div>
-                  <p className="text-gray-700">{selectedCountry.visaRequired ? 'Sí' : 'No'}</p>
+                  <p className="text-gray-700">{selectedCountry.visaRequired ? t('common.yes') : t('common.no')}</p>
                 </div>
               </div>
               
               <div className="mb-8">
-                <h3 className="text-xl font-bold text-black mb-4">Descripción</h3>
+                <h3 className="text-xl font-bold text-black mb-4">{t('countryDetail.about', { country: '' })}</h3>
                 <p className="text-gray-700 leading-relaxed">{selectedCountry.description}</p>
               </div>
               

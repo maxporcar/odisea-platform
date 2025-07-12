@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { User, LogOut, Crown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -13,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 const UserMenu = () => {
+  const { t } = useTranslation();
   const { user, signOut } = useAuth();
   const { toast } = useToast();
 
@@ -20,14 +23,14 @@ const UserMenu = () => {
     try {
       await signOut();
       toast({
-        title: "Sesión cerrada",
-        description: "Has cerrado sesión correctamente"
+        title: t('user.sessionClosed'),
+        description: t('user.sessionClosedDescription')
       });
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "No se pudo cerrar la sesión"
+        title: t('common.error'),
+        description: t('user.errorClosingSession')
       });
     }
   };
@@ -36,7 +39,7 @@ const UserMenu = () => {
     return (
       <Link to="/login">
         <Button variant="outline" className="font-poppins">
-          Iniciar Sesión
+          {t('user.login')}
         </Button>
       </Link>
     );
@@ -47,7 +50,7 @@ const UserMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
           <User className="h-4 w-4" />
-          <span className="sr-only">Menú de usuario</span>
+          <span className="sr-only">{t('user.menu')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -63,17 +66,17 @@ const UserMenu = () => {
         <DropdownMenuItem asChild>
           <Link to="/perfil" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
-            Mi Perfil
+            {t('user.profile')}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Crown className="mr-2 h-4 w-4" />
-          Odisea+
+          {t('user.premium')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
-          Cerrar Sesión
+          {t('user.logout')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

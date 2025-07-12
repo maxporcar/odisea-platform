@@ -55,5 +55,123 @@
       "subtitle": "✨ Ensemble, nous rendons les études à l'étranger plus faciles et beaucoup plus amusantes.",
       "button": "REJOINDRE 🚀"
     }
+  },
+  "countries": {
+    "hero": {
+      "title": "🌍 Explorez les pays en 3D",
+      "subtitle": "Cliquez sur n'importe quel pays pour découvrir plus d'informations"
+    },
+    "search": {
+      "placeholder": "🔍 Rechercher pays ou capitale..."
+    },
+    "filters": {
+      "allContinents": "🌎 Tous les continents",
+      "continents": ["Afrique", "Asie", "Europe", "Amérique du Nord", "Amérique du Sud", "Océanie"]
+    },
+    "grid": {
+      "title": "📋 Pays disponibles",
+      "results": "{{count}} sur {{total}} pays",
+      "resultsWithSearch": "qui correspondent à \"{{search}}\"",
+      "noResults": "Aucun pays trouvé",
+      "tryDifferent": "Essayez avec d'autres termes de recherche",
+      "seeMore": "Voir plus de détails →"
+    },
+    "loading": "Chargement des pays...",
+    "error": {
+      "title": "Erreur lors du chargement des pays",
+      "description": "Nous n'avons pas pu charger les informations des pays.",
+      "retry": "Réessayer"
+    },
+    "legend": {
+      "title": "🗺️ Légende de la Carte",
+      "withTestimonials": "Avec témoignages",
+      "availableDestination": "Destination disponible",
+      "otherCountries": "Autres pays",
+      "clickExplore": "💡 Cliquez pour explorer",
+      "dragRotate": "🖱️ Glissez pour faire tourner"
+    },
+    "cost": {
+      "low": "€",
+      "medium": "€€",
+      "high": "€€€"
+    }
+  },
+  "countryDetail": {
+    "back": "← Retour aux pays",
+    "loading": "Chargement des informations du pays...",
+    "notFound": {
+      "title": "Pays non trouvé",
+      "description": "Nous n'avons pas pu trouver d'informations pour ce pays.",
+      "backButton": "Retour aux pays"
+    },
+    "about": "À propos de {{country}}",
+    "quickFacts": "Faits clés",
+    "continent": "Continent",
+    "population": "Population",
+    "currency": "Monnaie",
+    "language": "Langue",
+    "costOfLiving": "Coût de la vie",
+    "students": "Étudiants",
+    "actions": "Actions",
+    "viewTestimonials": "Voir les témoignages",
+    "joinCommunity": "Rejoindre la communauté",
+    "sections": {
+      "visa": "Informations sur les visas",
+      "housing": "Logement",
+      "transportation": "Transport"
+    }
+  },
+  "map": {
+    "title": "Carte Interactive",
+    "subtitle": "Explorez les destinations du monde entier",
+    "interactiveGlobe": "Globe Interactif",
+    "legend": {
+      "withTestimonials": "Avec témoignages",
+      "availableDestination": "Destination disponible"
+    },
+    "searchPlaceholder": "Rechercher pays ou ville...",
+    "allContinents": "Tous les continents",
+    "seeMoreInfo": "Voir plus d'informations"
+  },
+  "footer": {
+    "description": "Plateforme créée par des étudiants, pour les étudiants. Nous vous aidons à naviguer votre aventure internationale avec confiance et clarté.",
+    "links": "Liens",
+    "legal": "Légal",
+    "contact": "Contact",
+    "terms": "Termes et Conditions",
+    "privacy": "Politique de Confidentialité",
+    "copyright": "© 2024 Odisea. Tous droits réservés."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "close": "Fermer",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "clear": "Effacer",
+    "all": "Tous",
+    "none": "Aucun",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "user": {
+    "login": "Se Connecter",
+    "logout": "Se Déconnecter",
+    "profile": "Mon Profil",
+    "premium": "Odisea+",
+    "menu": "Menu utilisateur",
+    "sessionClosed": "Session fermée",
+    "sessionClosedDescription": "Vous vous êtes déconnecté avec succès",
+    "errorClosingSession": "Impossible de fermer la session"
   }
 }

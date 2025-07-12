@@ -19,7 +19,7 @@ i18n
     },
     
     detection: {
-      order: ['queryString', 'cookie', 'localStorage', 'navigator'],
+      order: ['querystring', 'cookie', 'localStorage', 'navigator'],
       lookupQuerystring: 'lng',
       lookupCookie: 'i18next',
       lookupLocalStorage: 'i18nextLng',

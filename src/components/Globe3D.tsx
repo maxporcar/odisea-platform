@@ -1,6 +1,6 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Globe from 'react-globe.gl';
 import { feature } from 'topojson-client';
 import { useCountries } from '../hooks/useCountries';
@@ -19,6 +19,7 @@ const Globe3D: React.FC<GlobeProps> = ({
   countryCode,
   enhancedContrast = false 
 }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const globeRef = useRef<any>();
   const [countries, setCountries] = useState<any[]>([]);
@@ -197,12 +198,12 @@ const Globe3D: React.FC<GlobeProps> = ({
               onClick={() => navigate(`/paises/${hoveredCountry?.countryData?.id}`)}
               className="bg-primary text-primary-foreground px-3 py-1.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors w-full"
             >
-              🔍 Explore Country
+              🔍 {t('common.view')} {t('nav.countries')}
             </button>
           )}
           {tooltipData.type === 'city' && (
             <div className="text-xs text-primary font-medium">
-              🏙️ Click to explore city
+              🏙️ {t('countries.legend.clickExplore')}
             </div>
           )}
         </div>
@@ -210,7 +211,7 @@ const Globe3D: React.FC<GlobeProps> = ({
       
       {/* Enhanced Legend */}
       <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 text-sm shadow-xl border-2 border-primary/20">
-        <h4 className="font-bold text-foreground mb-3">🗺️ Map Legend</h4>
+        <h4 className="font-bold text-foreground mb-3">{t('countries.legend.title')}</h4>
         <div className="space-y-2">
           {countryCode && (
             <div className="flex items-center space-x-2">
@@ -220,7 +221,7 @@ const Globe3D: React.FC<GlobeProps> = ({
           )}
           <div className="flex items-center space-x-2">
             <div className="w-4 h-4 bg-[#FF6B35] rounded-sm"></div>
-            <span className="text-muted-foreground">Available Countries</span>
+            <span className="text-muted-foreground">{t('countries.legend.availableDestination')}</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-4 h-4 bg-[#10B981] rounded-full"></div>
@@ -229,13 +230,13 @@ const Globe3D: React.FC<GlobeProps> = ({
           {enhancedContrast && (
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-[#9CA3AF] rounded-sm"></div>
-              <span className="text-muted-foreground">Other Countries</span>
+              <span className="text-muted-foreground">{t('countries.legend.otherCountries')}</span>
             </div>
           )}
         </div>
         <div className="mt-3 pt-2 border-t border-border">
-          <p className="text-xs text-muted-foreground">💡 Click to explore</p>
-          <p className="text-xs text-muted-foreground">🖱️ Drag to rotate</p>
+          <p className="text-xs text-muted-foreground">{t('countries.legend.clickExplore')}</p>
+          <p className="text-xs text-muted-foreground">{t('countries.legend.dragRotate')}</p>
         </div>
       </div>
     </div>

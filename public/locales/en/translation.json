@@ -55,5 +55,123 @@
       "subtitle": "✨ Together, we make studying abroad easier and much more fun.",
       "button": "JOIN 🚀"
     }
+  },
+  "countries": {
+    "hero": {
+      "title": "🌍 Explore countries in 3D",
+      "subtitle": "Click on any country to discover more information"
+    },
+    "search": {
+      "placeholder": "🔍 Search country or capital..."
+    },
+    "filters": {
+      "allContinents": "🌎 All continents",
+      "continents": ["Africa", "Asia", "Europe", "North America", "South America", "Oceania"]
+    },
+    "grid": {
+      "title": "📋 Available countries",
+      "results": "{{count}} of {{total}} countries",
+      "resultsWithSearch": "that match \"{{search}}\"",
+      "noResults": "No countries found",
+      "tryDifferent": "Try different search terms",
+      "seeMore": "See more details →"
+    },
+    "loading": "Loading countries...",
+    "error": {
+      "title": "Error loading countries",
+      "description": "We couldn't load the country information.",
+      "retry": "Retry"
+    },
+    "legend": {
+      "title": "🗺️ Map Legend",
+      "withTestimonials": "With testimonials",
+      "availableDestination": "Available destination",
+      "otherCountries": "Other countries",
+      "clickExplore": "💡 Click to explore",
+      "dragRotate": "🖱️ Drag to rotate"
+    },
+    "cost": {
+      "low": "€",
+      "medium": "€€",
+      "high": "€€€"
+    }
+  },
+  "countryDetail": {
+    "back": "← Back to countries",
+    "loading": "Loading country information...",
+    "notFound": {
+      "title": "Country not found",
+      "description": "We couldn't find information for this country.",
+      "backButton": "Back to countries"
+    },
+    "about": "About {{country}}",
+    "quickFacts": "Key facts",
+    "continent": "Continent",
+    "population": "Population",
+    "currency": "Currency",
+    "language": "Language",
+    "costOfLiving": "Cost of living",
+    "students": "Students",
+    "actions": "Actions",
+    "viewTestimonials": "View testimonials",
+    "joinCommunity": "Join community",
+    "sections": {
+      "visa": "Visa Information",
+      "housing": "Housing",
+      "transportation": "Transportation"
+    }
+  },
+  "map": {
+    "title": "Interactive Map",
+    "subtitle": "Explore destinations around the world",
+    "interactiveGlobe": "Interactive Globe",
+    "legend": {
+      "withTestimonials": "With testimonials",
+      "availableDestination": "Available destination"
+    },
+    "searchPlaceholder": "Search country or city...",
+    "allContinents": "All continents",
+    "seeMoreInfo": "See more information"
+  },
+  "footer": {
+    "description": "Platform created by students, for students. We help you navigate your international adventure with confidence and clarity.",
+    "links": "Links",
+    "legal": "Legal",
+    "contact": "Contact",
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy",
+    "copyright": "© 2024 Odisea. All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "all": "All",
+    "none": "None",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "user": {
+    "login": "Sign In",
+    "logout": "Sign Out",
+    "profile": "My Profile",
+    "premium": "Odisea+",
+    "menu": "User menu",
+    "sessionClosed": "Session closed",
+    "sessionClosedDescription": "You have successfully signed out",
+    "errorClosingSession": "Error closing session"
   }
 }

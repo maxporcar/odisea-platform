@@ -43,10 +43,10 @@ async function translateObject(obj, targetLang, keyPath = '') {
       result[key] = await translateText(value, targetLang);
       // Be nice to the free API - small delay between requests
       await delay(100);
-    } else if (typeof value === 'object' && value !== null) {
+    } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       result[key] = await translateObject(value, targetLang, currentPath);
     } else {
-      result[key] = value;
+      result[key] = value; // Keep arrays and other types as-is
     }
   }
   

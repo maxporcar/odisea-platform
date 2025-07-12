@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Users, DollarSign, Globe, Calendar, Home, Car, FileText, Star, Loader2, AlertCircle } from 'lucide-react';
@@ -15,7 +16,7 @@ const PaisDetalle = () => {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center">
         <div className="flex items-center space-x-3">
           <Loader2 className="w-8 h-8 animate-spin text-warm-orange" />
-          <span className="text-xl text-warm-orange font-poppins">Cargando información del país...</span>
+          <span className="text-xl text-warm-orange font-poppins">{t('countryDetail.loading')}</span>
         </div>
       </div>
     );
@@ -26,13 +27,13 @@ const PaisDetalle = () => {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">País no encontrado</h2>
-          <p className="text-gray-600 mb-4">No pudimos encontrar la información de este país.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('countryDetail.notFound.title')}</h2>
+          <p className="text-gray-600 mb-4">{t('countryDetail.notFound.description')}</p>
           <Link 
             to="/paises"
             className="bg-warm-orange text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-600 transition-colors"
           >
-            Volver a países
+            {t('countryDetail.notFound.backButton')}
           </Link>
         </div>
       </div>
@@ -40,12 +41,7 @@ const PaisDetalle = () => {
   }
 
   const getCostIcon = (cost: string) => {
-    switch (cost) {
-      case 'low': return '€';
-      case 'medium': return '€€';
-      case 'high': return '€€€';
-      default: return '€';
-    }
+    return t(`countries.cost.${cost}` as any) || t('countries.cost.low');
   };
 
   const getCostColor = (cost: string) => {
@@ -68,7 +64,7 @@ const PaisDetalle = () => {
               className="flex items-center text-warm-orange hover:text-orange-600 transition-colors mr-4"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
-              Volver a países
+              {t('countryDetail.back')}
             </Link>
           </div>
           
@@ -94,7 +90,7 @@ const PaisDetalle = () => {
             {/* Description */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 font-poppins">
-                Sobre {country.name}
+                {t('countryDetail.about', { country: country.name })}
               </h2>
               <p className="text-gray-700 leading-relaxed">
                 {country.description}
@@ -117,7 +113,7 @@ const PaisDetalle = () => {
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <div className="flex items-center mb-3">
                     <FileText className="w-6 h-6 text-warm-orange mr-2" />
-                    <h3 className="text-xl font-bold text-gray-900 font-poppins">Información de Visa</h3>
+                    <h3 className="text-xl font-bold text-gray-900 font-poppins">{t('countryDetail.sections.visa')}</h3>
                   </div>
                   <p className="text-gray-700">{country.visa_info}</p>
                 </div>
@@ -127,7 +123,7 @@ const PaisDetalle = () => {
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <div className="flex items-center mb-3">
                     <Home className="w-6 h-6 text-warm-orange mr-2" />
-                    <h3 className="text-xl font-bold text-gray-900 font-poppins">Alojamiento</h3>
+                    <h3 className="text-xl font-bold text-gray-900 font-poppins">{t('countryDetail.sections.housing')}</h3>
                   </div>
                   <p className="text-gray-700">{country.housing}</p>
                 </div>
@@ -137,7 +133,7 @@ const PaisDetalle = () => {
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <div className="flex items-center mb-3">
                     <Car className="w-6 h-6 text-warm-orange mr-2" />
-                    <h3 className="text-xl font-bold text-gray-900 font-poppins">Transporte</h3>
+                    <h3 className="text-xl font-bold text-gray-900 font-poppins">{t('countryDetail.sections.transportation')}</h3>
                   </div>
                   <p className="text-gray-700">{country.transportation}</p>
                 </div>
@@ -150,13 +146,13 @@ const PaisDetalle = () => {
             {/* Quick Facts */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4 font-poppins">
-                Datos clave
+                {t('countryDetail.quickFacts')}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Globe className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">Continente</span>
+                    <span className="text-gray-600">{t('countryDetail.continent')}</span>
                   </div>
                   <span className="font-semibold">{country.continent}</span>
                 </div>
@@ -164,7 +160,7 @@ const PaisDetalle = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Users className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">Población</span>
+                    <span className="text-gray-600">{t('countryDetail.population')}</span>
                   </div>
                   <span className="font-semibold">{country.population}</span>
                 </div>
@@ -172,7 +168,7 @@ const PaisDetalle = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <DollarSign className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">Moneda</span>
+                    <span className="text-gray-600">{t('countryDetail.currency')}</span>
                   </div>
                   <span className="font-semibold">{country.currency}</span>
                 </div>
@@ -180,7 +176,7 @@ const PaisDetalle = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Globe className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">Idioma</span>
+                    <span className="text-gray-600">{t('countryDetail.language')}</span>
                   </div>
                   <span className="font-semibold">{country.language}</span>
                 </div>
@@ -188,7 +184,7 @@ const PaisDetalle = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Star className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">Costo de vida</span>
+                    <span className="text-gray-600">{t('countryDetail.costOfLiving')}</span>
                   </div>
                   <span className={`font-bold text-2xl ${getCostColor(country.cost_of_living)}`}>
                     {getCostIcon(country.cost_of_living)}
@@ -199,7 +195,7 @@ const PaisDetalle = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Users className="w-5 h-5 text-gray-400 mr-2" />
-                      <span className="text-gray-600">Estudiantes</span>
+                      <span className="text-gray-600">{t('countryDetail.students')}</span>
                     </div>
                     <span className="font-semibold">{country.student_population}</span>
                   </div>
@@ -210,20 +206,20 @@ const PaisDetalle = () => {
             {/* Actions */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4 font-poppins">
-                Acciones
+                {t('countryDetail.actions')}
               </h3>
               <div className="space-y-3">
                 <Link
                   to="/testimonios"
                   className="w-full bg-warm-orange text-white py-3 px-4 rounded-full font-semibold hover:bg-orange-600 transition-colors text-center block font-poppins"
                 >
-                  Ver testimonios
+                  {t('countryDetail.viewTestimonials')}
                 </Link>
                 <Link
                   to="/comunidad"
                   className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-full font-semibold hover:bg-gray-200 transition-colors text-center block font-poppins"
                 >
-                  Unirse a la comunidad
+                  {t('countryDetail.joinCommunity')}
                 </Link>
               </div>
             </div>
