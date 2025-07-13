@@ -1,12 +1,22 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Users, DollarSign, Globe, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useCountries } from '../../hooks/useCountries';
+import { useCities } from '../../hooks/useCities';
 import Globe3D from '../../components/Globe3D';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import type { Database } from '@/integrations/supabase/types';
 
 type Country = Database['public']['Tables']['countries']['Row'];
+type City = Database['public']['Tables']['cities']['Row'] & {
+  countries?: {
+    id: string;
+    name: string;
+    flag: string;
+  };
+};
 
 const PaisesIndex = () => {
   const { t } = useTranslation();
@@ -14,6 +24,7 @@ const PaisesIndex = () => {
   const [filterContinent, setFilterContinent] = useState('all');
   
   const { data: countries = [], isLoading, error } = useCountries();
+  const { data: cities = [], isLoading: citiesLoading } = useCities();
 
   // Get continents from translation
   const continents = ['all', ...(t('countries.filters.continents', { returnObjects: true }) as string[])];
@@ -23,6 +34,11 @@ const PaisesIndex = () => {
                          country.capital.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesContinent = filterContinent === 'all' || country.continent === filterContinent;
     return matchesSearch && matchesContinent;
+  });
+
+  const filteredCities = cities.filter(city => {
+    return city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           (city.countries?.name || '').toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const getCostIcon = (cost: string) => {
@@ -127,78 +143,169 @@ const PaisesIndex = () => {
         </div>
       </div>
 
-      {/* Results and Countries Grid */}
+      {/* Switch Bar and Lists Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* Results summary */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-foreground mb-2">
-            {t('countries.grid.title')}
-          </h2>
-          <p className="text-muted-foreground">
-            {t('countries.grid.results', { count: filteredCountries.length, total: countries.length })}
-            {searchTerm && ` ${t('countries.grid.resultsWithSearch', { search: searchTerm })}`}
-          </p>
-        </div>
+        <Tabs defaultValue="countries" className="w-full">
+          {/* Custom Switch Bar */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white rounded-full p-1 shadow-lg border border-border inline-flex">
+              <TabsList className="bg-transparent h-auto p-0 gap-0">
+                <TabsTrigger 
+                  value="countries" 
+                  className="rounded-full px-8 py-3 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-muted-foreground hover:text-foreground transition-all duration-200"
+                >
+                  COUNTRIES
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="cities" 
+                  className="rounded-full px-8 py-3 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-muted-foreground hover:text-foreground transition-all duration-200"
+                >
+                  CITIES
+                </TabsTrigger>
+              </TabsList>
+            </div>
+          </div>
 
-        {/* Countries Grid */}
-        {filteredCountries.length === 0 ? (
-          <div className="text-center py-12">
-            <Globe className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">{t('countries.grid.noResults')}</h3>
-            <p className="text-muted-foreground">{t('countries.grid.tryDifferent')}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCountries.map((country) => (
-              <Link
-                key={country.id}
-                to={`/paises/${country.id}`}
-                className="bg-card rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all transform hover:scale-105 border group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-3xl">{country.flag || '🌍'}</span>
-                    <div>
-                      <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                        {country.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{country.capital}</p>
+          {/* Countries List */}
+          <TabsContent value="countries" className="mt-8">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Available countries
+              </h2>
+              <p className="text-muted-foreground">
+                {filteredCountries.length} of {countries.length} countries
+                {searchTerm && ` matching "${searchTerm}"`}
+              </p>
+            </div>
+
+            {filteredCountries.length === 0 ? (
+              <div className="text-center py-12">
+                <Globe className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">No countries found</h3>
+                <p className="text-muted-foreground">Try adjusting your search or filters</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredCountries.map((country) => (
+                  <Link
+                    key={country.id}
+                    to={`/paises/${country.id}`}
+                    className="bg-card rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all transform hover:scale-105 border group"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <span className="text-3xl">{country.flag || '🌍'}</span>
+                        <div>
+                          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                            {country.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">{country.capital}</p>
+                        </div>
+                      </div>
+                      <span className={`text-2xl font-bold ${getCostColor(country.cost_of_living)}`}>
+                        {getCostIcon(country.cost_of_living)}
+                      </span>
                     </div>
-                  </div>
-                  <span className={`text-2xl font-bold ${getCostColor(country.cost_of_living)}`}>
-                    {getCostIcon(country.cost_of_living)}
-                  </span>
-                </div>
-                
-                <div className="space-y-2 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center">
-                    <Globe className="w-4 h-4 mr-2" />
-                    <span>{country.continent}</span>
-                  </div>
-                  {country.student_population && (
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-2" />
-                      <span>{country.student_population} {t('countryDetail.students').toLowerCase()}</span>
+                    
+                    <div className="space-y-2 text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center">
+                        <Globe className="w-4 h-4 mr-2" />
+                        <span>{country.continent}</span>
+                      </div>
+                      {country.student_population && (
+                        <div className="flex items-center">
+                          <Users className="w-4 h-4 mr-2" />
+                          <span>{country.student_population} students</span>
+                        </div>
+                      )}
+                      <div className="flex items-center">
+                        <DollarSign className="w-4 h-4 mr-2" />
+                        <span>{country.currency}</span>
+                      </div>
                     </div>
-                  )}
-                  <div className="flex items-center">
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    <span>{country.currency}</span>
-                  </div>
-                </div>
-                
-                <p className="text-foreground text-sm line-clamp-3">
-                  {country.description}
-                </p>
-                
-                {/* Hover effect indicator */}
-                <div className="mt-4 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  {t('countries.grid.seeMore')}
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+                    
+                    <p className="text-foreground text-sm line-clamp-3">
+                      {country.description}
+                    </p>
+                    
+                    {/* Hover effect indicator */}
+                    <div className="mt-4 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                      See more →
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* Cities List */}
+          <TabsContent value="cities" className="mt-8">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Available cities
+              </h2>
+              <p className="text-muted-foreground">
+                {filteredCities.length} cities available
+                {searchTerm && ` matching "${searchTerm}"`}
+              </p>
+            </div>
+
+            {citiesLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-primary mr-3" />
+                <span className="text-muted-foreground">Loading cities...</span>
+              </div>
+            ) : filteredCities.length === 0 ? (
+              <div className="text-center py-12">
+                <MapPin className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">No cities found</h3>
+                <p className="text-muted-foreground">Coming soon - we're adding more cities!</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredCities.map((city) => (
+                  <Link
+                    key={city.id}
+                    to={`/paises/${city.country_id}/ciudades/${city.slug}`}
+                    className="bg-card rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all transform hover:scale-105 border group"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <span className="text-3xl">{city.countries?.flag || '🏙️'}</span>
+                        <div>
+                          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                            {city.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {city.countries?.name || 'Unknown Country'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        <span>City destination</span>
+                      </div>
+                    </div>
+                    
+                    {city.description && (
+                      <p className="text-foreground text-sm line-clamp-3 mb-4">
+                        {city.description}
+                      </p>
+                    )}
+                    
+                    {/* Hover effect indicator */}
+                    <div className="mt-4 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                      Explore city →
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
