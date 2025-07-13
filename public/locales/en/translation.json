@@ -126,13 +126,21 @@
       "allContinents": "🌎 All continents",
       "continents": ["Africa", "Asia", "Europe", "North America", "South America", "Oceania"]
     },
+    "tabs": {
+      "countries": "COUNTRIES",
+      "cities": "CITIES",
+      "availableCities": "Available cities",
+      "citiesCount": "{{count}} cities available",
+      "noCities": "No cities found",
+      "comingSoon": "Coming soon - we're adding more cities!"
+    },
     "grid": {
-      "title": "📋 Available countries",
+      "availableCountries": "Available countries",
       "results": "{{count}} of {{total}} countries",
-      "resultsWithSearch": "that match \"{{search}}\"",
+      "resultsWithSearch": "matching \"{{search}}\"",
       "noResults": "No countries found",
-      "tryDifferent": "Try different search terms",
-      "seeMore": "See more details →"
+      "tryDifferent": "Try adjusting your search or filters",
+      "seeMore": "See more →"
     },
     "loading": "Loading countries...",
     "error": {
@@ -169,7 +177,7 @@
     "currency": "Currency",
     "language": "Language",
     "costOfLiving": "Cost of living",
-    "students": "Students",
+    "students": "students",
     "actions": "Actions",
     "viewTestimonials": "View testimonials",
     "joinCommunity": "Join community",
@@ -177,6 +185,11 @@
       "visa": "Visa Information",
       "housing": "Housing",
       "transportation": "Transportation"
+    },
+    "cities": {
+      "title": "Cities",
+      "subtitle": "Explore the main student cities in {{country}}",
+      "viewAll": "View all cities in {{country}}"
     }
   },
   "map": {
@@ -298,7 +311,10 @@
       "title": "No cities available",
       "description": "We don't have information about cities in this country yet."
     },
-    "defaultDescription": "An incredible city to study and live unique experiences."
+    "defaultDescription": "An incredible city to study and live unique experiences.",
+    "unknownCountry": "Unknown Country",
+    "cityDestination": "City destination",
+    "exploreCity": "Explore city →"
   },
   "cityDetail": {
     "loading": "Loading city information...",

@@ -10,13 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/ta
 import type { Database } from '@/integrations/supabase/types';
 
 type Country = Database['public']['Tables']['countries']['Row'];
-type City = Database['public']['Tables']['cities']['Row'] & {
-  countries?: {
-    id: string;
-    name: string;
-    flag: string;
-  };
-};
+type City = Database['public']['Tables']['cities']['Row'];
 
 const PaisesIndex = () => {
   const { t } = useTranslation();
@@ -37,8 +31,9 @@ const PaisesIndex = () => {
   });
 
   const filteredCities = cities.filter(city => {
+    const countryName = countries.find(c => c.id === city.country_id)?.name || '';
     return city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           (city.countries?.name || '').toLowerCase().includes(searchTerm.toLowerCase());
+           countryName.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const getCostIcon = (cost: string) => {
@@ -154,13 +149,13 @@ const PaisesIndex = () => {
                   value="countries" 
                   className="rounded-full px-8 py-3 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-muted-foreground hover:text-foreground transition-all duration-200"
                 >
-                  COUNTRIES
+                  {t('countries.tabs.countries')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="cities" 
                   className="rounded-full px-8 py-3 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=inactive]:text-muted-foreground hover:text-foreground transition-all duration-200"
                 >
-                  CITIES
+                  {t('countries.tabs.cities')}
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -170,19 +165,19 @@ const PaisesIndex = () => {
           <TabsContent value="countries" className="mt-8">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-foreground mb-2">
-                Available countries
+                {t('countries.grid.availableCountries')}
               </h2>
               <p className="text-muted-foreground">
-                {filteredCountries.length} of {countries.length} countries
-                {searchTerm && ` matching "${searchTerm}"`}
+                {t('countries.grid.results', { count: filteredCountries.length, total: countries.length })}
+                {searchTerm && ` ${t('countries.grid.resultsWithSearch', { search: searchTerm })}`}
               </p>
             </div>
 
             {filteredCountries.length === 0 ? (
               <div className="text-center py-12">
                 <Globe className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-foreground mb-2">No countries found</h3>
-                <p className="text-muted-foreground">Try adjusting your search or filters</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">{t('countries.grid.noResults')}</h3>
+                <p className="text-muted-foreground">{t('countries.grid.tryDifferent')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -215,7 +210,7 @@ const PaisesIndex = () => {
                       {country.student_population && (
                         <div className="flex items-center">
                           <Users className="w-4 h-4 mr-2" />
-                          <span>{country.student_population} students</span>
+                          <span>{country.student_population} {t('countryDetail.students')}</span>
                         </div>
                       )}
                       <div className="flex items-center">
@@ -230,7 +225,7 @@ const PaisesIndex = () => {
                     
                     {/* Hover effect indicator */}
                     <div className="mt-4 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                      See more →
+                      {t('countries.grid.seeMore')}
                     </div>
                   </Link>
                 ))}
@@ -242,66 +237,69 @@ const PaisesIndex = () => {
           <TabsContent value="cities" className="mt-8">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-foreground mb-2">
-                Available cities
+                {t('countries.tabs.availableCities')}
               </h2>
               <p className="text-muted-foreground">
-                {filteredCities.length} cities available
-                {searchTerm && ` matching "${searchTerm}"`}
+                {t('countries.tabs.citiesCount', { count: filteredCities.length })}
+                {searchTerm && ` ${t('countries.grid.resultsWithSearch', { search: searchTerm })}`}
               </p>
             </div>
 
             {citiesLoading ? (
               <div className="flex items-center justify-center py-12">
                 <Loader2 className="w-8 h-8 animate-spin text-primary mr-3" />
-                <span className="text-muted-foreground">Loading cities...</span>
+                <span className="text-muted-foreground">{t('cities.loading')}</span>
               </div>
             ) : filteredCities.length === 0 ? (
               <div className="text-center py-12">
                 <MapPin className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-foreground mb-2">No cities found</h3>
-                <p className="text-muted-foreground">Coming soon - we're adding more cities!</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">{t('countries.tabs.noCities')}</h3>
+                <p className="text-muted-foreground">{t('countries.tabs.comingSoon')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredCities.map((city) => (
-                  <Link
-                    key={city.id}
-                    to={`/paises/${city.country_id}/ciudades/${city.slug}`}
-                    className="bg-card rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all transform hover:scale-105 border group"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <span className="text-3xl">{city.countries?.flag || '🏙️'}</span>
-                        <div>
-                          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                            {city.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            {city.countries?.name || 'Unknown Country'}
-                          </p>
+                {filteredCities.map((city) => {
+                  const cityCountry = countries.find(c => c.id === city.country_id);
+                  return (
+                    <Link
+                      key={city.id}
+                      to={`/paises/${city.country_id}/ciudades/${city.slug}`}
+                      className="bg-card rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all transform hover:scale-105 border group"
+                    >
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-3xl">{cityCountry?.flag || '🏙️'}</span>
+                          <div>
+                            <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                              {city.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {cityCountry?.name || t('cities.unknownCountry')}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2 text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-2" />
-                        <span>City destination</span>
+                      
+                      <div className="space-y-2 text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center">
+                          <MapPin className="w-4 h-4 mr-2" />
+                          <span>{t('cities.cityDestination')}</span>
+                        </div>
                       </div>
-                    </div>
-                    
-                    {city.description && (
-                      <p className="text-foreground text-sm line-clamp-3 mb-4">
-                        {city.description}
-                      </p>
-                    )}
-                    
-                    {/* Hover effect indicator */}
-                    <div className="mt-4 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                      Explore city →
-                    </div>
-                  </Link>
-                ))}
+                      
+                      {city.description && (
+                        <p className="text-foreground text-sm line-clamp-3 mb-4">
+                          {city.description}
+                        </p>
+                      )}
+                      
+                      {/* Hover effect indicator */}
+                      <div className="mt-4 text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                        {t('cities.exploreCity')}
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </TabsContent>

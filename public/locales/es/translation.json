@@ -131,7 +131,10 @@
       "title": "No hay ciudades disponibles",
       "description": "Aún no tenemos información sobre ciudades en este país."
     },
-    "defaultDescription": "Una ciudad increíble para estudiar y vivir experiencias únicas."
+    "defaultDescription": "Una ciudad increíble para estudiar y vivir experiencias únicas.",
+    "unknownCountry": "País Desconocido",
+    "cityDestination": "Destino urbano",
+    "exploreCity": "Explorar ciudad →"
   },
   "cityDetail": {
     "loading": "Cargando información de la ciudad...",
@@ -212,13 +215,21 @@
       "allContinents": "🌎 Todos los continentes",
       "continents": ["África", "Asia", "Europa", "América del Norte", "América del Sur", "Oceanía"]
     },
+    "tabs": {
+      "countries": "PAÍSES",
+      "cities": "CIUDADES",
+      "availableCities": "Ciudades disponibles",
+      "citiesCount": "{{count}} ciudades disponibles",
+      "noCities": "No se encontraron ciudades",
+      "comingSoon": "Próximamente - ¡estamos añadiendo más ciudades!"
+    },
     "grid": {
-      "title": "📋 Países disponibles",
+      "availableCountries": "Países disponibles",
       "results": "{{count}} de {{total}} países",
       "resultsWithSearch": "que coinciden con \"{{search}}\"",
       "noResults": "No se encontraron países",
-      "tryDifferent": "Intenta con otros términos de búsqueda",
-      "seeMore": "Ver más detalles →"
+      "tryDifferent": "Intenta ajustar tu búsqueda o filtros",
+      "seeMore": "Ver más →"
     },
     "loading": "Cargando países...",
     "error": {
@@ -255,7 +266,7 @@
     "currency": "Moneda",
     "language": "Idioma",
     "costOfLiving": "Costo de vida",
-    "students": "Estudiantes",
+    "students": "estudiantes",
     "actions": "Acciones",
     "viewTestimonials": "Ver testimonios",
     "joinCommunity": "Unirse a la comunidad",
@@ -263,6 +274,11 @@
       "visa": "Información de Visa",
       "housing": "Alojamiento",
       "transportation": "Transporte"
+    },
+    "cities": {
+      "title": "Ciudades",
+      "subtitle": "Explora las principales ciudades estudiantiles de {{country}}",
+      "viewAll": "Ver todas las ciudades en {{country}}"
     }
   },
   "map": {
