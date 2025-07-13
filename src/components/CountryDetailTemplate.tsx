@@ -12,21 +12,23 @@ interface Section {
   title: string;
 }
 
-const sections: Section[] = [
-  { id: 'cities', title: 'Big Cities vs Small Towns' },
-  { id: 'culture', title: 'Culture' },
-  { id: 'life-activities', title: 'Life, Activities & Travel' },
-  { id: 'scholarships', title: 'Student Benefits & Scholarships' },
-  { id: 'visa', title: 'Visa Information' },
-  { id: 'medical', title: 'Medical' },
-];
-
 const CountryDetailTemplate = () => {
   const { countryId } = useParams<{ countryId: string }>();
   const { t } = useTranslation();
   const { data: country, isLoading, error } = useCountry(countryId!);
   const { data: cities = [] } = useCities(countryId);
   const [activeSection, setActiveSection] = useState('cities');
+
+  // Define sections with proper translation keys
+  const sections: Section[] = [
+    { id: 'cities', title: t('countryDetail.sections.bigCities') },
+    { id: 'culture', title: t('countryDetail.sections.culture') },
+    { id: 'life-activities', title: t('countryDetail.sections.lifeActivities') },
+    { id: 'scholarships', title: t('countryDetail.sections.scholarships') },
+    { id: 'visa', title: t('countryDetail.sections.visa') },
+    { id: 'medical', title: t('countryDetail.sections.medical') },
+    { id: 'country-cities', title: t('countryDetail.sections.cities') },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +49,7 @@ const CountryDetailTemplate = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [sections]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -169,7 +171,7 @@ const CountryDetailTemplate = () => {
             {/* Big Cities vs Small Towns */}
             <section id="cities" className="animate-fade-in-up">
               <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                🏙️ Big Cities vs Small Towns
+                🏙️ {t('countryDetail.sections.bigCities')}
               </h2>
               <div className="prose prose-lg max-w-none">
                 <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
@@ -189,7 +191,7 @@ const CountryDetailTemplate = () => {
             {/* Culture */}
             <section id="culture" className="animate-fade-in-up">
               <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                🎭 Culture
+                🎭 {t('countryDetail.sections.culture')}
               </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
                 <p className="font-poppins text-muted-foreground leading-relaxed mb-6">
@@ -214,13 +216,13 @@ const CountryDetailTemplate = () => {
             </section>
 
             {/* All remaining sections */}
-            {sections.slice(2).map((section) => (
+            {sections.slice(2, -1).map((section) => (
               <section key={section.id} id={section.id} className="animate-fade-in-up">
                 <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                  {section.id === 'life-activities' && '🎨 Life, Activities & Travel'}
-                  {section.id === 'scholarships' && '💰 Student Benefits & Scholarships'}
-                  {section.id === 'visa' && '📋 Visa Information'}
-                  {section.id === 'medical' && '🏥 Medical'}
+                  {section.id === 'life-activities' && '🎨 ' + t('countryDetail.sections.lifeActivities')}
+                  {section.id === 'scholarships' && '💰 ' + t('countryDetail.sections.scholarships')}
+                  {section.id === 'visa' && '📋 ' + t('countryDetail.sections.visa')}
+                  {section.id === 'medical' && '🏥 ' + t('countryDetail.sections.medical')}
                 </h2>
                 
                 <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">

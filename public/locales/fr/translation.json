@@ -65,6 +65,55 @@
       "checkEmail": "Vérifiez votre email pour confirmer votre compte"
     }
   },
+  "home": {
+    "hero": {
+      "title": "PRÉPAREZ-VOUS POUR VOTRE",
+      "odyssey": "Odisea ✈️",
+      "subtitle": "🌍 Découvrez le monde en toute confiance. Plateforme créée par des étudiants, pour les étudiants, qui vous aide à naviguer votre aventure internationale 🎒",
+      "cta_test": "Faire le Test 📝",
+      "cta_map": "Voir la Carte Mondiale 🗺️",
+      "new_badge": "Nouveau ! ✨",
+      "map_prompt": "Essayez la carte 3D ! 🎯"
+    },
+    "about": {
+      "title": "👥 NOUS SOMMES DES ÉTUDIANTS COMME VOUS",
+      "description1": "💭 Nous avons dû organiser notre propre échange ou stage à l'étranger, et nous nous sommes souvent sentis perdus, dépassés et sans guidance. C'est pourquoi nous avons créé Odisea, une plateforme interactive faite par des étudiants, pour les étudiants, pour vous aider à naviguer votre parcours de mobilité internationale avec confiance et clarté.",
+      "description2": "🏠 Des conseils de destination aux conseils de logement, nous vous accompagnons à chaque étape.",
+      "cta": "Découvrir plus d'histoires 📖"
+    },
+    "features": {
+      "title": "🚀 ORGANISEZ VOTRE PROCHAIN VOYAGE",
+      "subtitle": "Découvrez toutes les options que nous avons pour vous ✨",
+      "exchange": {
+        "title": "🎓 ÉCHANGE",
+        "description": "Découvrez les programmes d'échange dans les universités du monde entier. Vivez une expérience académique internationale unique.",
+        "cta": "Explorer les destinations 🌟 →"
+      },
+      "internship": {
+        "title": "💼 STAGES",
+        "description": "Trouvez des opportunités de stage professionnel dans des entreprises internationales.",
+        "coming_soon": "Bientôt Disponible 🔜"
+      },
+      "gap_year": {
+        "title": "🌍 ANNÉE SABBATIQUE",
+        "description": "Prenez une année pour explorer le monde, apprendre des langues et grandir personnellement.",
+        "coming_soon": "Bientôt Disponible 🔜"
+      }
+    },
+    "cta": {
+      "title": "🤝 REJOIGNEZ LA COMMUNAUTÉ ODISEA",
+      "description": "💪 Vous n'êtes pas seul dans ce voyage. Connectez-vous avec des étudiants du monde entier qui ont vécu la même aventure. Partagez des conseils, posez des questions et trouvez votre communauté.",
+      "subtitle": "✨ Ensemble, nous rendons les études à l'étranger plus faciles et beaucoup plus amusantes.",
+      "button": "REJOINDRE 🚀"
+    }
+  },
+  "test": {
+    "title": "Test d'Orientation",
+    "subtitle": "Découvrez votre destination d'études idéale à l'étranger",
+    "description": "Passez notre test complet pour trouver la correspondance parfaite pour votre aventure internationale",
+    "iframe_title": "Test d'Orientation Odisea",
+    "loading": "Chargement..."
+  },
   "countries": {
     "hero": {
       "title": "🌍 Explorez les pays en 3D",
@@ -99,6 +148,14 @@
       "description": "Nous n'avons pas pu charger les informations des pays.",
       "retry": "Réessayer"
     },
+    "legend": {
+      "title": "🗺️ Légende de la Carte",
+      "withTestimonials": "Avec témoignages",
+      "availableDestination": "Destination disponible",
+      "otherCountries": "Autres pays",
+      "clickExplore": "💡 Cliquez pour explorer",
+      "dragRotate": "🖱️ Glissez pour faire tourner"
+    },
     "cost": {
       "low": "€",
       "medium": "€€",
@@ -125,9 +182,13 @@
     "viewTestimonials": "Voir les témoignages",
     "joinCommunity": "Rejoindre la communauté",
     "sections": {
+      "bigCities": "Grandes Villes vs Petites Villes",
+      "culture": "Culture",
+      "lifeActivities": "Vie, Activités et Voyages",
+      "scholarships": "Avantages Étudiants et Bourses",
       "visa": "Informations Visa",
-      "housing": "Logement",
-      "transportation": "Transport"
+      "medical": "Médical",
+      "cities": "Villes"
     },
     "cities": {
       "title": "Villes",
@@ -166,6 +227,15 @@
     "allContinents": "Tous les continents",
     "seeMoreInfo": "Voir plus d'informations"
   },
+  "footer": {
+    "description": "Plateforme créée par des étudiants, pour les étudiants. Nous vous aidons à naviguer votre aventure internationale avec confiance et clarté.",
+    "links": "Liens",
+    "legal": "Légal",
+    "contact": "Contact",
+    "terms": "Conditions Générales",
+    "privacy": "Politique de Confidentialité",
+    "copyright": "© 2024 Odisea. Tous droits réservés."
+  },
   "common": {
     "loading": "Chargement...",
     "error": "Erreur",
@@ -187,5 +257,85 @@
     "none": "Aucun",
     "yes": "Oui",
     "no": "Non"
+  },
+  "user": {
+    "login": "Se Connecter",
+    "logout": "Se Déconnecter",
+    "profile": "Mon Profil",
+    "premium": "Odisea+",
+    "menu": "Menu utilisateur",
+    "sessionClosed": "Session fermée",
+    "sessionClosedDescription": "Vous vous êtes déconnecté avec succès",
+    "errorClosingSession": "Erreur lors de la fermeture de session"
+  },
+  "testimonials": {
+    "loading": "Chargement des témoignages...",
+    "error": "Erreur lors du chargement des témoignages",
+    "hero": {
+      "title": "DÉCOUVREZ DES TÉMOIGNAGES EXCLUSIFS D'ÉTUDIANTS QUI ONT ÉTÉ DANS VOTRE SITUATION",
+      "subtitle": "Histoires réelles d'étudiants qui ont vécu des expériences incroyables à l'étranger. Leurs conseils et expériences vous aideront à préparer votre propre aventure."
+    },
+    "filters": {
+      "byCountry": "Filtrer par pays",
+      "selectCountry": "Sélectionner un pays",
+      "allCountries": "Tous les pays"
+    },
+    "readFullStory": "Lire l'histoire complète",
+    "cta": {
+      "title": "Avez-vous déjà votre histoire à raconter ?",
+      "subtitle": "Si vous avez vécu une expérience internationale, partagez-la avec la communauté Odisea",
+      "button": "Partager mon histoire"
+    },
+    "destination": "Destination",
+    "experience": "Expérience", 
+    "excellent": "Excellent",
+    "myStory": "Mon Histoire",
+    "myTips": "Mes Conseils pour Vous",
+    "contactWith": "Contact",
+    "seeMoreAbout": "En savoir plus sur"
+  },
+  "community": {
+    "hero": {
+      "title": "COMMUNAUTÉ ODISEA",
+      "subtitle": "Connectez-vous avec des étudiants du monde entier. Partagez des conseils, posez des questions et trouvez votre communauté."
+    },
+    "search": {
+      "placeholder": "Rechercher dans la communauté..."
+    },
+    "filters": {
+      "allPosts": "Tous les posts",
+      "erasmus": "Erasmus",
+      "tips": "Conseils",
+      "housing": "Logement", 
+      "events": "Événements"
+    },
+    "popularTags": "Tags populaires",
+    "shareWithCommunity": "Partager quelque chose avec la communauté",
+    "newPost": {
+      "title": "Nouveau Post",
+      "placeholder": "Que voulez-vous partager avec la communauté ?",
+      "cancel": "Annuler",
+      "publish": "Publier"
+    },
+    "postImage": "Image du post",
+    "loadMore": "Charger plus de posts"
+  },
+  "cityDetail": {
+    "loading": "Chargement des informations de la ville...",
+    "notFound": {
+      "title": "Ville non trouvée",
+      "description": "Nous n'avons pas pu trouver d'informations pour cette ville."
+    },
+    "backToCities": "Retour aux villes",
+    "about": "À propos de",
+    "defaultDescription": "{{cityName}} est une ville incroyable pour les étudiants internationaux, offrant un mélange unique de culture, d'éducation de qualité et d'opportunités de croissance personnelle.",
+    "location": "Localisation",
+    "mapOf": "Carte de",
+    "coordinates": "Coordonnées",
+    "universitiesIn": "Universités à",
+    "viewAllUniversities": "Voir toutes les universités",
+    "noUniversities": "Aucune université enregistrée dans cette ville.",
+    "experiencesIn": "Expériences à",
+    "noTestimonials": "Aucun témoignage disponible pour cette ville."
   }
 }
