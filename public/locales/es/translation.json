@@ -10,11 +10,11 @@
   "auth": {
     "login": {
       "title": "Bienvenido",
-      "subtitle": "Accede a tu cuenta para continuar tu aventura",
-      "email": "Email",
+      "subtitle": "Inicia sesión para continuar tu aventura",
+      "email": "Correo electrónico",
       "password": "Contraseña",
       "forgotPassword": "¿Olvidaste tu contraseña?",
-      "signInButton": "Iniciar Sesión",
+      "signInButton": "Iniciar sesión",
       "noAccount": "¿No tienes cuenta? Regístrate",
       "signingIn": "Iniciando sesión..."
     },
@@ -22,7 +22,7 @@
       "title": "Únete a Odisea",
       "subtitle": "Crea tu cuenta y comienza tu odisea internacional",
       "fullName": "Nombre completo",
-      "email": "Email",
+      "email": "Correo electrónico",
       "password": "Contraseña",
       "confirmPassword": "Confirmar contraseña",
       "createAccount": "Crear Cuenta",

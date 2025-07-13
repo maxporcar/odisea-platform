@@ -10,7 +10,7 @@
   "auth": {
     "login": {
       "title": "Welcome",
-      "subtitle": "Access your account to continue your adventure",
+      "subtitle": "Log in to your account to continue your journey",
       "email": "Email",
       "password": "Password",
       "forgotPassword": "Forgot password?",
