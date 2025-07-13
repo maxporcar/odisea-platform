@@ -7,6 +7,64 @@
     "testimonials": "Testimonials",
     "community": "Community"
   },
+  "auth": {
+    "login": {
+      "title": "Welcome",
+      "subtitle": "Access your account to continue your adventure",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "signInButton": "Sign In",
+      "noAccount": "No account? Sign up",
+      "signingIn": "Signing in..."
+    },
+    "signup": {
+      "title": "Join Odisea",
+      "subtitle": "Create your account and start your international odyssey",
+      "fullName": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "createAccount": "Create Account",
+      "hasAccount": "Already have an account? Sign in",
+      "creatingAccount": "Creating account..."
+    },
+    "premium": {
+      "title": "Odisea+",
+      "subtitle": "Unlock premium features to maximize your international experience",
+      "features": {
+        "checklist": "Personalized interactive checklist",
+        "mentoring": "Access to mentoring with veteran students",
+        "housing": "Verified and secure housing",
+        "community": "Exclusive premium community",
+        "support": "24/7 priority support",
+        "guides": "Detailed guides by destination"
+      },
+      "price": "€9.99",
+      "period": "per month",
+      "startTrial": "Start free trial",
+      "cancelAnytime": "Cancel anytime. No commitment.",
+      "comingSoon": "Coming Soon",
+      "comingSoonFeatures": {
+        "housing": "🏠 Verified housing",
+        "mentoring": "👥 Personalized mentoring",
+        "checklist": "📋 Interactive checklist"
+      }
+    },
+    "errors": {
+      "signInError": "Error signing in",
+      "signUpError": "Error creating account",
+      "passwordMismatch": "Passwords don't match",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "genericError": "Something went wrong. Please try again."
+    },
+    "success": {
+      "welcome": "Welcome!",
+      "signedIn": "You have been signed in successfully",
+      "accountCreated": "Account created!",
+      "checkEmail": "Check your email to confirm your account"
+    }
+  },
   "test": {
     "title": "Orientation Test",
     "subtitle": "Discover your ideal study abroad destination",
@@ -17,7 +75,7 @@
   "home": {
     "hero": {
       "title": "GET READY FOR YOUR",
-      "odyssey": "Odyssey ✈️",
+      "odyssey": "Odisea ✈️",
       "subtitle": "🌍 Discover the world with confidence. Platform created by students, for students, that helps you navigate your international adventure 🎒",
       "cta_test": "Take the Test 📝",
       "cta_map": "View World Map 🗺️",

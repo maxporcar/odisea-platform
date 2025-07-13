@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Users, DollarSign, Globe, Loader2, AlertCircle } from 'lucide-react';
@@ -70,61 +69,66 @@ const PaisesIndex = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Interactive 3D Globe Section */}
-      <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+      {/* Interactive 3D Globe Section - Improved responsive design */}
+      <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 py-4 sm:py-6 lg:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary mb-4">
+          <div className="text-center mb-4 sm:mb-6 lg:mb-8">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-2 sm:mb-4">
               {t('countries.hero.title')}
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground">
               {t('countries.hero.subtitle')}
             </p>
           </div>
 
-          {/* Perfectly Centered Globe container with overlaid search */}
-          <div className="relative flex justify-center items-center w-full mb-8">
-            <div className="w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 max-w-6xl transition-all duration-200 ease-in-out">
-              <div className="relative" style={{ height: '500px' }}>
-                <div className="flex justify-center items-center h-full">
-                  <Globe3D width={800} height={500} />
-                </div>
-                
-                {/* Search and Filters overlaid on globe */}
-                <div className="absolute top-4 left-0 right-0 z-10">
-                  <div className="max-w-4xl mx-auto px-4">
-                    <div className="flex flex-col md:flex-row gap-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-                      <div className="flex-1 relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                        <input
-                          type="text"
-                          placeholder={t('countries.search.placeholder')}
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
-                        />
-                      </div>
-                      
-                      <select
-                        value={filterContinent}
-                        onChange={(e) => setFilterContinent(e.target.value)}
-                        className="px-4 py-3 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80"
-                      >
-                        <option value="all">{t('countries.filters.allContinents')}</option>
-                        {continents.slice(1).map(continent => (
-                          <option key={continent} value={continent}>{continent}</option>
-                        ))}
-                      </select>
-                    </div>
+          {/* Responsive Globe container */}
+          <div className="relative w-full mb-4 sm:mb-6 lg:mb-8">
+            {/* Search and Filters overlaid on globe - Responsive positioning */}
+            <div className="relative z-10 mb-4 sm:mb-6">
+              <div className="max-w-4xl mx-auto px-2 sm:px-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
+                    <input
+                      type="text"
+                      placeholder={t('countries.search.placeholder')}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 border border-border rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80 text-sm sm:text-base"
+                    />
                   </div>
+                  
+                  <select
+                    value={filterContinent}
+                    onChange={(e) => setFilterContinent(e.target.value)}
+                    className="px-3 sm:px-4 py-2 sm:py-3 border border-border rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80 text-sm sm:text-base min-w-0 sm:min-w-[200px]"
+                  >
+                    <option value="all">{t('countries.filters.allContinents')}</option>
+                    {continents.slice(1).map(continent => (
+                      <option key={continent} value={continent}>{continent}</option>
+                    ))}
+                  </select>
                 </div>
+              </div>
+            </div>
+            
+            {/* Globe container with responsive height */}
+            <div className="w-full flex justify-center">
+              <div className="w-full max-w-6xl" style={{ 
+                height: 'clamp(350px, 50vh, 600px)' // Responsive height
+              }}>
+                <Globe3D 
+                  width={800} 
+                  height={500}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Results and Countries Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Results summary */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-foreground mb-2">

@@ -7,6 +7,64 @@
     "testimonials": "Testimonios",
     "community": "Comunidad"
   },
+  "auth": {
+    "login": {
+      "title": "Bienvenido",
+      "subtitle": "Accede a tu cuenta para continuar tu aventura",
+      "email": "Email",
+      "password": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "signInButton": "Iniciar Sesión",
+      "noAccount": "¿No tienes cuenta? Regístrate",
+      "signingIn": "Iniciando sesión..."
+    },
+    "signup": {
+      "title": "Únete a Odisea",
+      "subtitle": "Crea tu cuenta y comienza tu odisea internacional",
+      "fullName": "Nombre completo",
+      "email": "Email",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "createAccount": "Crear Cuenta",
+      "hasAccount": "¿Ya tienes cuenta? Inicia sesión",
+      "creatingAccount": "Creando cuenta..."
+    },
+    "premium": {
+      "title": "Odisea+",
+      "subtitle": "Desbloquea funcionalidades premium para maximizar tu experiencia internacional",
+      "features": {
+        "checklist": "Checklist interactivo personalizado",
+        "mentoring": "Acceso a mentorías con estudiantes veteranos",
+        "housing": "Alojamiento verificado y seguro",
+        "community": "Comunidad premium exclusiva",
+        "support": "Soporte prioritario 24/7",
+        "guides": "Guías detalladas por destino"
+      },
+      "price": "€9.99",
+      "period": "por mes",
+      "startTrial": "Comenzar prueba gratuita",
+      "cancelAnytime": "Cancela cuando quieras. Sin compromiso.",
+      "comingSoon": "Próximamente",
+      "comingSoonFeatures": {
+        "housing": "🏠 Alojamiento verificado",
+        "mentoring": "👥 Mentorías personalizadas",
+        "checklist": "📋 Checklist interactivo"
+      }
+    },
+    "errors": {
+      "signInError": "Error al iniciar sesión",
+      "signUpError": "Error al crear la cuenta",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+      "genericError": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "success": {
+      "welcome": "¡Bienvenido!",
+      "signedIn": "Has iniciado sesión exitosamente",
+      "accountCreated": "¡Cuenta creada!",
+      "checkEmail": "Revisa tu email para confirmar tu cuenta"
+    }
+  },
   "testimonials": {
     "loading": "Cargando testimonios...",
     "error": "Error al cargar testimonios",

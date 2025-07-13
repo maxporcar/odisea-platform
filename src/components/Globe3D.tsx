@@ -22,14 +22,46 @@ const Globe3D: React.FC<GlobeProps> = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const globeRef = useRef<any>();
+  const containerRef = useRef<HTMLDivElement>(null);
   const [countries, setCountries] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
   const [hoveredCountry, setHoveredCountry] = useState<any>(null);
   const [tooltipData, setTooltipData] = useState<any>(null);
   const [worldData, setWorldData] = useState<any>(null);
+  const [dimensions, setDimensions] = useState({ width: 600, height: 600 });
   
   const { data: supabaseCountries = [] } = useCountries();
   const { data: supabaseCities = [] } = useAllCities();
+
+  // Responsive dimensions based on container size
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const container = containerRef.current;
+        const containerWidth = container.offsetWidth;
+        const containerHeight = container.offsetHeight;
+        
+        // Calculate responsive dimensions
+        let newWidth = Math.min(containerWidth - 32, 800); // 16px padding on each side
+        let newHeight = Math.min(containerHeight - 32, 600);
+        
+        // Ensure minimum dimensions for mobile
+        if (window.innerWidth <= 767) {
+          newWidth = Math.max(320, containerWidth - 16);
+          newHeight = Math.max(320, Math.min(400, containerHeight - 16));
+        } else if (window.innerWidth <= 1023) {
+          newWidth = Math.max(400, containerWidth - 32);
+          newHeight = Math.max(400, Math.min(500, containerHeight - 32));
+        }
+        
+        setDimensions({ width: newWidth, height: newHeight });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
 
   // Load world topojson data
   useEffect(() => {
@@ -153,50 +185,55 @@ const Globe3D: React.FC<GlobeProps> = ({
   };
 
   return (
-    <div className="relative w-full h-full">
-      <Globe
-        ref={globeRef}
-        width={width}
-        height={height}
-        backgroundColor="rgba(0,0,0,0)"
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-        
-        // Countries with enhanced styling
-        polygonsData={countries}
-        polygonAltitude={0.015}
-        polygonCapColor={(d: any) => d.color}
-        polygonSideColor={(d: any) => d.color}
-        polygonStrokeColor={(d: any) => d.strokeColor}
-        polygonLabel={(d: any) => d.hasData ? `${d.countryData.flag} ${d.countryData.name}` : ''}
-        onPolygonClick={handleCountryClick}
-        onPolygonHover={handleCountryHover}
-        
-        // Cities with enhanced visibility
-        pointsData={cities}
-        pointAltitude={0.03}
-        pointColor={(d: any) => d.color}
-        pointRadius={(d: any) => d.size}
-        pointLabel={(d: any) => `🏙️ ${d.name}`}
-        onPointClick={handleCityClick}
-        onPointHover={handleCityHover}
-      />
+    <div 
+      ref={containerRef}
+      className="relative w-full h-full flex items-center justify-center overflow-hidden"
+    >
+      <div className="relative flex items-center justify-center">
+        <Globe
+          ref={globeRef}
+          width={dimensions.width}
+          height={dimensions.height}
+          backgroundColor="rgba(0,0,0,0)"
+          globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+          
+          // Countries with enhanced styling
+          polygonsData={countries}
+          polygonAltitude={0.015}
+          polygonCapColor={(d: any) => d.color}
+          polygonSideColor={(d: any) => d.color}
+          polygonStrokeColor={(d: any) => d.strokeColor}
+          polygonLabel={(d: any) => d.hasData ? `${d.countryData.flag} ${d.countryData.name}` : ''}
+          onPolygonClick={handleCountryClick}
+          onPolygonHover={handleCountryHover}
+          
+          // Cities with enhanced visibility
+          pointsData={cities}
+          pointAltitude={0.03}
+          pointColor={(d: any) => d.color}
+          pointRadius={(d: any) => d.size}
+          pointLabel={(d: any) => `🏙️ ${d.name}`}
+          onPointClick={handleCityClick}
+          onPointHover={handleCityHover}
+        />
+      </div>
       
-      {/* Enhanced Tooltip */}
+      {/* Enhanced Tooltip - Responsive positioning */}
       {tooltipData && (
-        <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-xl border-2 border-primary/20 max-w-xs z-20">
-          <div className="flex items-center space-x-3 mb-2">
-            {tooltipData.flag && <span className="text-2xl">{tooltipData.flag}</span>}
+        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 sm:p-4 shadow-xl border-2 border-primary/20 max-w-[280px] sm:max-w-xs z-20">
+          <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
+            {tooltipData.flag && <span className="text-xl sm:text-2xl">{tooltipData.flag}</span>}
             <div>
-              <h3 className="font-bold text-foreground text-lg">{tooltipData.name}</h3>
+              <h3 className="font-bold text-foreground text-sm sm:text-lg">{tooltipData.name}</h3>
               {tooltipData.continent && (
-                <p className="text-sm text-muted-foreground">{tooltipData.continent}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">{tooltipData.continent}</p>
               )}
             </div>
           </div>
           {tooltipData.type === 'country' && !countryCode && (
             <button 
               onClick={() => navigate(`/paises/${hoveredCountry?.countryData?.id}`)}
-              className="bg-primary text-primary-foreground px-3 py-1.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors w-full"
+              className="bg-primary text-primary-foreground px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-primary/90 transition-colors w-full"
             >
               🔍 {t('common.view')} {t('nav.countries')}
             </button>
@@ -209,34 +246,34 @@ const Globe3D: React.FC<GlobeProps> = ({
         </div>
       )}
       
-      {/* Enhanced Legend */}
-      <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 text-sm shadow-xl border-2 border-primary/20">
-        <h4 className="font-bold text-foreground mb-3">{t('countries.legend.title')}</h4>
-        <div className="space-y-2">
+      {/* Enhanced Legend - Responsive positioning and sizing */}
+      <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-xs sm:text-sm shadow-xl border-2 border-primary/20 max-w-[90%] sm:max-w-none">
+        <h4 className="font-bold text-foreground mb-2 sm:mb-3 text-xs sm:text-sm">{t('countries.legend.title')}</h4>
+        <div className="space-y-1 sm:space-y-2">
           {countryCode && (
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-[#3B82F6] rounded-sm"></div>
-              <span className="text-muted-foreground">Current Country</span>
+              <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#3B82F6] rounded-sm flex-shrink-0"></div>
+              <span className="text-muted-foreground text-xs sm:text-sm">Current Country</span>
             </div>
           )}
           <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-[#FF6B35] rounded-sm"></div>
-            <span className="text-muted-foreground">{t('countries.legend.availableDestination')}</span>
+            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#FF6B35] rounded-sm flex-shrink-0"></div>
+            <span className="text-muted-foreground text-xs sm:text-sm">{t('countries.legend.availableDestination')}</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-[#10B981] rounded-full"></div>
-            <span className="text-muted-foreground">Cities</span>
+            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#10B981] rounded-full flex-shrink-0"></div>
+            <span className="text-muted-foreground text-xs sm:text-sm">Cities</span>
           </div>
           {enhancedContrast && (
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-[#9CA3AF] rounded-sm"></div>
-              <span className="text-muted-foreground">{t('countries.legend.otherCountries')}</span>
+              <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#9CA3AF] rounded-sm flex-shrink-0"></div>
+              <span className="text-muted-foreground text-xs sm:text-sm">{t('countries.legend.otherCountries')}</span>
             </div>
           )}
         </div>
-        <div className="mt-3 pt-2 border-t border-border">
-          <p className="text-xs text-muted-foreground">{t('countries.legend.clickExplore')}</p>
-          <p className="text-xs text-muted-foreground">{t('countries.legend.dragRotate')}</p>
+        <div className="mt-2 sm:mt-3 pt-2 border-t border-border">
+          <p className="text-[10px] sm:text-xs text-muted-foreground">{t('countries.legend.clickExplore')}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">{t('countries.legend.dragRotate')}</p>
         </div>
       </div>
     </div>
