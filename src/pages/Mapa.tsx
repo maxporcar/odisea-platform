@@ -113,19 +113,19 @@ const Mapa = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-orange-200 py-8">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-orange-200 py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-warm-orange mb-4 font-poppins">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-warm-orange mb-4 font-poppins">
               {t('map.title')}
             </h1>
-            <p className="text-xl text-amber-700 font-poppins">
+            <p className="text-lg sm:text-xl text-amber-700 font-poppins">
               {t('map.subtitle')}
             </p>
           </div>
 
-          {/* Search and Filters */}
-          <div className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
+          {/* Search and Filters - Responsive */}
+          <div className="flex flex-col sm:flex-row gap-4 max-w-4xl mx-auto">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-400 w-5 h-5" />
               <input
@@ -133,14 +133,14 @@ const Mapa = () => {
                 placeholder={t('map.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent bg-white/90 backdrop-blur-sm font-poppins"
+                className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent bg-white/90 backdrop-blur-sm font-poppins text-sm sm:text-base"
               />
             </div>
             
             <select
               value={filterContinent}
               onChange={(e) => setFilterContinent(e.target.value)}
-              className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent font-poppins"
+              className="px-4 py-3 border border-orange-200 rounded-full focus:outline-none focus:ring-2 focus:ring-warm-orange focus:border-transparent font-poppins text-sm sm:text-base"
             >
               <option value="all">{t('map.allContinents')}</option>
               {continents.slice(1).map(continent => (
@@ -151,37 +151,39 @@ const Mapa = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Interactive Globe */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-poppins text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Interactive Globe - Responsive Container */}
+        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 mx-auto">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 font-poppins text-center">
             {t('map.interactiveGlobe')}
           </h2>
-          <InteractiveGlobe onCountryClick={handleGlobeCountryClick} />
+          <div className="w-full max-w-6xl mx-auto">
+            <InteractiveGlobe onCountryClick={handleGlobeCountryClick} />
+          </div>
         </div>
 
-        {/* Countries Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Countries Grid - Responsive */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredCountries.map((country) => (
             <div
               key={country.id}
-              className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all cursor-pointer transform hover:scale-105"
+              className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-all cursor-pointer transform hover:scale-105"
               onClick={() => navigate(`/paises/${country.id}`)}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-black font-poppins">{country.name}</h3>
-                <span className={`text-2xl font-bold ${getCostColor(country.costOfLiving)}`}>
+                <h3 className="text-lg sm:text-xl font-bold text-black font-poppins">{country.name}</h3>
+                <span className={`text-xl sm:text-2xl font-bold ${getCostColor(country.costOfLiving)}`}>
                   {getCostIcon(country.costOfLiving)}
                 </span>
               </div>
               
               <div className="space-y-2 text-sm text-gray-600 mb-4">
                 <div className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-2" />
+                  <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
                   <span>{country.capital}</span>
                 </div>
                 <div className="flex items-center">
-                  <Globe className="w-4 h-4 mr-2" />
+                  <Globe className="w-4 h-4 mr-2 flex-shrink-0" />
                   <span>{country.continent}</span>
                 </div>
               </div>
@@ -190,7 +192,7 @@ const Mapa = () => {
                 {country.description}
               </p>
               
-              <button className="w-full bg-black text-white py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors">
+              <button className="w-full bg-black text-white py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base">
                 {t('map.seeMoreInfo')}
               </button>
             </div>

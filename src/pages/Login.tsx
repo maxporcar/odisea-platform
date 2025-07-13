@@ -4,11 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Globe, Eye, EyeOff, Star, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const navigate = useNavigate();
   const { user, signIn, signUp } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -46,13 +48,13 @@ const Login = () => {
         if (error) {
           toast({
             variant: "destructive",
-            title: "Error al iniciar sesión",
+            title: t('auth.errors.signInError'),
             description: error.message
           });
         } else {
           toast({
-            title: "¡Bienvenido!",
-            description: "Has iniciado sesión correctamente"
+            title: t('auth.success.welcome'),
+            description: t('auth.success.signedIn')
           });
           navigate('/');
         }
@@ -61,8 +63,8 @@ const Login = () => {
         if (formData.password !== formData.confirmPassword) {
           toast({
             variant: "destructive",
-            title: "Error",
-            description: "Las contraseñas no coinciden"
+            title: t('common.error'),
+            description: t('auth.errors.passwordMismatch')
           });
           return;
         }
@@ -70,8 +72,8 @@ const Login = () => {
         if (formData.password.length < 6) {
           toast({
             variant: "destructive",
-            title: "Error",
-            description: "La contraseña debe tener al menos 6 caracteres"
+            title: t('common.error'),
+            description: t('auth.errors.passwordTooShort')
           });
           return;
         }
@@ -81,13 +83,13 @@ const Login = () => {
         if (error) {
           toast({
             variant: "destructive",
-            title: "Error al crear cuenta",
+            title: t('auth.errors.signUpError'),
             description: error.message
           });
         } else {
           toast({
-            title: "¡Cuenta creada!",
-            description: "Revisa tu email para confirmar tu cuenta"
+            title: t('auth.success.accountCreated'),
+            description: t('auth.success.checkEmail')
           });
           setIsLogin(true); // Switch to login mode
           setFormData({ email: '', password: '', name: '', confirmPassword: '' });
@@ -96,8 +98,8 @@ const Login = () => {
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Algo salió mal. Inténtalo de nuevo."
+        title: t('common.error'),
+        description: t('auth.errors.genericError')
       });
     } finally {
       setLoading(false);
@@ -105,43 +107,40 @@ const Login = () => {
   };
 
   const premiumFeatures = [
-    'Checklist interactivo personalizado',
-    'Acceso a mentorías con estudiantes veteranos',
-    'Housing verificado y seguro',
-    'Comunidad premium exclusiva',
-    'Soporte prioritario 24/7',
-    'Guías detalladas por destino'
+    t('auth.premium.features.checklist'),
+    t('auth.premium.features.mentoring'),
+    t('auth.premium.features.housing'),
+    t('auth.premium.features.community'),
+    t('auth.premium.features.support'),
+    t('auth.premium.features.guides')
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left Side - Login/Register Form */}
         <div className="max-w-md w-full mx-auto">
-          <div className="text-center mb-8">
-            <Link to="/" className="flex items-center justify-center space-x-2 mb-6">
-              <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
-                <Globe className="w-7 h-7 text-white" />
+          <div className="text-center mb-6 sm:mb-8">
+            <Link to="/" className="flex items-center justify-center space-x-2 mb-4 sm:mb-6">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black flex items-center justify-center">
+                <Globe className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
               </div>
-              <span className="text-3xl font-bold text-black">Odisea</span>
+              <span className="text-2xl sm:text-3xl font-bold text-black">Odisea</span>
             </Link>
             
-            <h2 className="text-3xl font-bold text-black mb-2">
-              {isLogin ? 'Bienvenido de vuelta' : 'Únete a Odisea'}
+            <h2 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+              {isLogin ? t('auth.login.title') : t('auth.signup.title')}
             </h2>
-            <p className="text-gray-600">
-              {isLogin 
-                ? 'Accede a tu cuenta para continuar tu aventura' 
-                : 'Crea tu cuenta y comienza tu odisea internacional'
-              }
+            <p className="text-gray-600 text-sm sm:text-base">
+              {isLogin ? t('auth.login.subtitle') : t('auth.signup.subtitle')}
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {!isLogin && (
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre completo
+                  {t('auth.signup.fullName')}
                 </label>
                 <input
                   id="name"
@@ -149,15 +148,15 @@ const Login = () => {
                   type="text"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                  placeholder="Tu nombre completo"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm sm:text-base"
+                  placeholder={t('auth.signup.fullName')}
                 />
               </div>
             )}
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
+                {t('auth.login.email')}
               </label>
               <input
                 id="email"
@@ -165,14 +164,14 @@ const Login = () => {
                 type="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                placeholder="tu@email.com"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm sm:text-base"
+                placeholder={t('auth.login.email')}
               />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Contraseña
+                {t('auth.login.password')}
               </label>
               <div className="relative">
                 <input
@@ -181,8 +180,8 @@ const Login = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                  placeholder="Tu contraseña"
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm sm:text-base"
+                  placeholder={t('auth.login.password')}
                 />
                 <button
                   type="button"
@@ -197,7 +196,7 @@ const Login = () => {
             {!isLogin && (
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirmar contraseña
+                  {t('auth.signup.confirmPassword')}
                 </label>
                 <input
                   id="confirmPassword"
@@ -205,8 +204,8 @@ const Login = () => {
                   type="password"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                  placeholder="Confirma tu contraseña"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm sm:text-base"
+                  placeholder={t('auth.signup.confirmPassword')}
                 />
               </div>
             )}
@@ -214,28 +213,25 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
             >
-              {loading ? (isLogin ? 'Iniciando...' : 'Creando...') : (isLogin ? 'Iniciar Sesión' : 'Crear Cuenta')}
+              {loading ? (isLogin ? t('auth.login.signingIn') : t('auth.signup.creatingAccount')) : (isLogin ? t('auth.login.signInButton') : t('auth.signup.createAccount'))}
             </button>
 
             <div className="text-center">
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-black hover:underline font-medium"
+                className="text-black hover:underline font-medium text-sm sm:text-base"
               >
-                {isLogin 
-                  ? '¿No tienes cuenta? Regístrate' 
-                  : '¿Ya tienes cuenta? Inicia sesión'
-                }
+                {isLogin ? t('auth.login.noAccount') : t('auth.signup.hasAccount')}
               </button>
             </div>
 
             {isLogin && (
               <div className="text-center">
-                <Link to="/forgot-password" className="text-gray-600 hover:text-black transition-colors">
-                  ¿Olvidaste tu contraseña?
+                <Link to="/forgot-password" className="text-gray-600 hover:text-black transition-colors text-sm">
+                  {t('auth.login.forgotPassword')}
                 </Link>
               </div>
             )}
@@ -243,49 +239,49 @@ const Login = () => {
         </div>
 
         {/* Right Side - Odisea+ Benefits */}
-        <div className="bg-black text-white rounded-2xl p-8 lg:p-12">
-          <div className="text-center mb-8">
+        <div className="bg-black text-white rounded-2xl p-6 sm:p-8 lg:p-12">
+          <div className="text-center mb-6 sm:mb-8">
             <div className="inline-flex items-center space-x-2 mb-4">
-              <Star className="w-8 h-8 text-yellow-400" />
-              <h3 className="text-3xl font-bold">Odisea+</h3>
+              <Star className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400" />
+              <h3 className="text-2xl sm:text-3xl font-bold">{t('auth.premium.title')}</h3>
             </div>
-            <p className="text-xl text-gray-300">
-              Desbloquea funciones premium para maximizar tu experiencia internacional
+            <p className="text-lg sm:text-xl text-gray-300">
+              {t('auth.premium.subtitle')}
             </p>
           </div>
 
-          <div className="space-y-4 mb-8">
+          <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
             {premiumFeatures.map((feature, index) => (
               <div key={index} className="flex items-start space-x-3">
-                <CheckCircle className="w-6 h-6 text-green-400 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-200">{feature}</span>
+                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-400 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-200 text-sm sm:text-base">{feature}</span>
               </div>
             ))}
           </div>
 
-          <div className="border-t border-gray-700 pt-8 mb-8">
+          <div className="border-t border-gray-700 pt-6 sm:pt-8 mb-6 sm:mb-8">
             <div className="text-center">
-              <div className="text-4xl font-bold mb-2">€9.99</div>
-              <div className="text-gray-400">por mes</div>
+              <div className="text-3xl sm:text-4xl font-bold mb-2">{t('auth.premium.price')}</div>
+              <div className="text-gray-400">{t('auth.premium.period')}</div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <button className="w-full bg-white text-black py-3 px-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
-              Comenzar prueba gratuita
+            <button className="w-full bg-white text-black py-3 px-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base">
+              {t('auth.premium.startTrial')}
             </button>
             <p className="text-xs text-gray-400 text-center">
-              Cancela cuando quieras. Sin compromisos.
+              {t('auth.premium.cancelAnytime')}
             </p>
           </div>
 
           {/* Coming Soon Features */}
-          <div className="mt-8 pt-8 border-t border-gray-700">
-            <h4 className="text-lg font-semibold mb-4 text-center">Próximamente</h4>
+          <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-700">
+            <h4 className="text-lg font-semibold mb-4 text-center">{t('auth.premium.comingSoon')}</h4>
             <div className="space-y-2 text-sm text-gray-400">
-              <div>🏠 Housing verificado</div>
-              <div>👥 Mentorías personalizadas</div>
-              <div>📋 Checklist interactivo</div>
+              <div>{t('auth.premium.comingSoonFeatures.housing')}</div>
+              <div>{t('auth.premium.comingSoonFeatures.mentoring')}</div>
+              <div>{t('auth.premium.comingSoonFeatures.checklist')}</div>
             </div>
           </div>
         </div>

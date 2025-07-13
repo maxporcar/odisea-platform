@@ -103,7 +103,7 @@
   "home": {
     "hero": {
       "title": "PRÉPAREZ-VOUS POUR VOTRE",
-      "odyssey": "Odyssée ✈️",
+      "odyssey": "Odisea ✈️",
       "subtitle": "🌍 Découvrez le monde en toute confiance. Plateforme créée par des étudiants, pour les étudiants, qui vous aide à naviguer votre aventure internationale 🎒",
       "cta_test": "Passer le Test 📝",
       "cta_map": "Voir la Carte Mondiale 🗺️",
@@ -259,5 +259,63 @@
     "sessionClosed": "Session fermée",
     "sessionClosedDescription": "Vous vous êtes déconnecté avec succès",
     "errorClosingSession": "Impossible de fermer la session"
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenue",
+      "subtitle": "Accédez à votre compte pour continuer votre aventure",
+      "email": "Email",
+      "password": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié?",
+      "signInButton": "Se Connecter",
+      "noAccount": "Pas de compte? Inscrivez-vous",
+      "signingIn": "Connexion..."
+    },
+    "signup": {
+      "title": "Rejoignez Odisea",
+      "subtitle": "Créez votre compte et commencez votre odyssée internationale",
+      "fullName": "Nom complet",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "createAccount": "Créer un Compte",
+      "hasAccount": "Déjà un compte? Connectez-vous",
+      "creatingAccount": "Création du compte..."
+    },
+    "premium": {
+      "title": "Odisea+",
+      "subtitle": "Débloquez des fonctionnalités premium pour maximiser votre expérience internationale",
+      "features": {
+        "checklist": "Checklist interactif personnalisé",
+        "mentoring": "Accès aux mentorats avec des étudiants vétérans",
+        "housing": "Logement vérifié et sécurisé",
+        "community": "Communauté premium exclusive",
+        "support": "Support prioritaire 24/7",
+        "guides": "Guides détaillés par destination"
+      },
+      "price": "€9.99",
+      "period": "par mois",
+      "startTrial": "Commencer l'essai gratuit",
+      "cancelAnytime": "Annulez quand vous voulez. Sans engagement.",
+      "comingSoon": "Prochainement",
+      "comingSoonFeatures": {
+        "housing": "🏠 Logement vérifié",
+        "mentoring": "👥 Mentorats personnalisés",
+        "checklist": "📋 Checklist interactif"
+      }
+    },
+    "errors": {
+      "signInError": "Erreur lors de la connexion",
+      "signUpError": "Erreur lors de la création du compte",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "passwordTooShort": "Le mot de passe doit avoir au moins 6 caractères",
+      "genericError": "Quelque chose s'est mal passé. Réessayez."
+    },
+    "success": {
+      "welcome": "Bienvenue!",
+      "signedIn": "Vous êtes connecté avec succès",
+      "accountCreated": "Compte créé!",
+      "checkEmail": "Vérifiez votre email pour confirmer votre compte"
+    }
   }
 }

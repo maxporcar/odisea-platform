@@ -193,29 +193,32 @@ const InteractiveGlobe: React.FC<InteractiveGlobeProps> = ({ onCountryClick }) =
   };
 
   return (
-    <div className="relative w-full h-96 bg-gradient-to-b from-sky-100 to-sky-200 rounded-2xl overflow-hidden">
-      <canvas
-        ref={canvasRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onClick={handleClick}
-      />
+    <div className="relative w-full bg-gradient-to-b from-sky-100 to-sky-200 rounded-2xl overflow-hidden mx-auto max-w-full">
+      {/* Responsive height classes */}
+      <div className="h-64 sm:h-80 md:h-96 lg:h-[500px] xl:h-[600px]">
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onClick={handleClick}
+        />
+      </div>
       
-      <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 text-sm">
-        <div className="flex items-center space-x-4">
+      <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 sm:p-3 text-xs sm:text-sm max-w-[90%] sm:max-w-none">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+            <div className="w-3 h-3 bg-red-500 rounded-full flex-shrink-0"></div>
             <span className="text-gray-700 font-poppins">Con testimonios</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+            <div className="w-3 h-3 bg-orange-500 rounded-full flex-shrink-0"></div>
             <span className="text-gray-700 font-poppins">Destino disponible</span>
           </div>
         </div>
-        <p className="text-xs text-gray-500 mt-2 font-poppins">Arrastra para rotar • Haz clic en los puntos</p>
+        <p className="text-[10px] sm:text-xs text-gray-500 mt-2 font-poppins">Arrastra para rotar • Haz clic en los puntos</p>
       </div>
     </div>
   );
