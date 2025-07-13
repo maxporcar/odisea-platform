@@ -213,7 +213,7 @@ const CountryDetailTemplate = () => {
               </div>
             </section>
 
-            {/* All remaining sections - now fully visible */}
+            {/* All remaining sections */}
             {sections.slice(2).map((section) => (
               <section key={section.id} id={section.id} className="animate-fade-in-up">
                 <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
