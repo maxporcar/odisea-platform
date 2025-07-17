@@ -1,72 +1,61 @@
 
-import { Suspense, useEffect } from "react";
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n';
-import Index from "./pages/Index";
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import Mapa from "./pages/Mapa";
-import Paises from "./pages/Paises";
-import PaisDetalle from "./pages/PaisDetalle";
-import Testimonios from "./pages/Testimonios";
 import Test from "./pages/Test";
-import Comunidad from "./pages/Comunidad";
-import Login from "./pages/Login";
-import Subscription from "./pages/Subscription";
-import Success from "./pages/Success";
-import Admin from "./pages/Admin";
-import NotFound from "./pages/NotFound";
 import PaisesIndex from "./pages/paises/index";
 import CountryDetail from "./pages/paises/[countryId]/index";
 import CitiesIndex from "./pages/paises/[countryId]/ciudades/index";
 import CityDetail from "./pages/paises/[countryId]/ciudades/[slug]";
 import UniversitiesIndex from "./pages/paises/[countryId]/universidades/index";
 import UniversityDetail from "./pages/paises/[countryId]/universidades/[uniId]";
+import Testimonios from "./pages/Testimonios";
+import Comunidad from "./pages/Comunidad";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <I18nextProvider i18n={i18n}>
-          <AuthProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/mapa" element={<Mapa />} />
-                <Route path="/paises-old" element={<Paises />} />
-                <Route path="/pais/:id" element={<PaisDetalle />} />
-                <Route path="/testimonios" element={<Testimonios />} />
-                <Route path="/test" element={<Test />} />
-                <Route path="/comunidad" element={<Comunidad />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/subscription" element={<Subscription />} />
-                <Route path="/success" element={<Success />} />
-                <Route path="/admin" element={<Admin />} />
-                
-                {/* New routing structure */}
-                <Route path="/paises" element={<PaisesIndex />} />
-                <Route path="/paises/:countryId" element={<CountryDetail />} />
-                <Route path="/paises/:countryId/ciudades" element={<CitiesIndex />} />
-                <Route path="/paises/:countryId/ciudades/:slug" element={<CityDetail />} />
-                <Route path="/paises/:countryId/universidades" element={<UniversitiesIndex />} />
-                <Route path="/paises/:countryId/universidades/:uniId" element={<UniversityDetail />} />
-                
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </AuthProvider>
-        </I18nextProvider>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout><Home /></Layout>} />
+              <Route path="/test" element={<Layout><Test /></Layout>} />
+              {/* Redirect old map route to countries */}
+              <Route path="/mapa" element={<Navigate to="/paises" replace />} />
+              <Route path="/paises" element={<Layout><PaisesIndex /></Layout>} />
+              <Route path="/paises/:countryId" element={<Layout><CountryDetail /></Layout>} />
+              <Route path="/paises/:countryId/ciudades" element={<Layout><CitiesIndex /></Layout>} />
+              <Route path="/paises/:countryId/ciudades/:slug" element={<Layout><CityDetail /></Layout>} />
+              <Route path="/paises/:countryId/universidades" element={<Layout><UniversitiesIndex /></Layout>} />
+              <Route path="/paises/:countryId/universidades/:uniId" element={<Layout><UniversityDetail /></Layout>} />
+              <Route path="/testimonios" element={<Layout><Testimonios /></Layout>} />
+              <Route path="/comunidad" element={<Layout><Comunidad /></Layout>} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 };

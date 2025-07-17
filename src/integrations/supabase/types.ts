@@ -130,47 +130,12 @@ export type Database = {
         }
         Relationships: []
       }
-      institutions: {
-        Row: {
-          active_subscription: boolean | null
-          created_at: string | null
-          domain: string
-          id: string
-          name: string
-          stripe_customer_id: string | null
-          stripe_subscription_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          active_subscription?: boolean | null
-          created_at?: string | null
-          domain: string
-          id?: string
-          name: string
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          active_subscription?: boolean | null
-          created_at?: string | null
-          domain?: string
-          id?: string
-          name?: string
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           country: string | null
           created_at: string | null
           full_name: string | null
           id: string
-          institution_id: string | null
-          is_admin: boolean | null
           is_premium: boolean | null
           language: string | null
           updated_at: string | null
@@ -180,8 +145,6 @@ export type Database = {
           created_at?: string | null
           full_name?: string | null
           id: string
-          institution_id?: string | null
-          is_admin?: boolean | null
           is_premium?: boolean | null
           language?: string | null
           updated_at?: string | null
@@ -191,74 +154,11 @@ export type Database = {
           created_at?: string | null
           full_name?: string | null
           id?: string
-          institution_id?: string | null
-          is_admin?: boolean | null
           is_premium?: boolean | null
           language?: string | null
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "profiles_institution_id_fkey"
-            columns: ["institution_id"]
-            isOneToOne: false
-            referencedRelation: "institutions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      subscribers: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          institution_id: string | null
-          stripe_customer_id: string | null
-          stripe_subscription_id: string | null
-          subscribed: boolean
-          subscription_end: string | null
-          subscription_tier: string | null
-          subscription_type: string | null
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          institution_id?: string | null
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
-          subscribed?: boolean
-          subscription_end?: string | null
-          subscription_tier?: string | null
-          subscription_type?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          institution_id?: string | null
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
-          subscribed?: boolean
-          subscription_end?: string | null
-          subscription_tier?: string | null
-          subscription_type?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "subscribers_institution_id_fkey"
-            columns: ["institution_id"]
-            isOneToOne: false
-            referencedRelation: "institutions"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       testimonials: {
         Row: {
