@@ -181,6 +181,60 @@ export type Database = {
         }
         Relationships: []
       }
+      countries_sheets: {
+        Row: {
+          bigCitiesVsSmallTowns_md: string | null
+          capital: string | null
+          continent: string | null
+          culture_md: string | null
+          currency: string | null
+          dosAndDonts_md: string | null
+          id: string
+          language: string | null
+          lifeActivitiesTravel_md: string | null
+          medical_md: string | null
+          name: string | null
+          overview_md: string | null
+          slug: string | null
+          studentBenefitsScholarships_md: string | null
+          visaInformation_md: string | null
+        }
+        Insert: {
+          bigCitiesVsSmallTowns_md?: string | null
+          capital?: string | null
+          continent?: string | null
+          culture_md?: string | null
+          currency?: string | null
+          dosAndDonts_md?: string | null
+          id: string
+          language?: string | null
+          lifeActivitiesTravel_md?: string | null
+          medical_md?: string | null
+          name?: string | null
+          overview_md?: string | null
+          slug?: string | null
+          studentBenefitsScholarships_md?: string | null
+          visaInformation_md?: string | null
+        }
+        Update: {
+          bigCitiesVsSmallTowns_md?: string | null
+          capital?: string | null
+          continent?: string | null
+          culture_md?: string | null
+          currency?: string | null
+          dosAndDonts_md?: string | null
+          id?: string
+          language?: string | null
+          lifeActivitiesTravel_md?: string | null
+          medical_md?: string | null
+          name?: string | null
+          overview_md?: string | null
+          slug?: string | null
+          studentBenefitsScholarships_md?: string | null
+          visaInformation_md?: string | null
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           active_subscription: boolean | null

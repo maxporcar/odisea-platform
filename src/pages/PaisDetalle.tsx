@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Users, DollarSign, Globe, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useCountryBySlug } from '../hooks/useCountries';
+import { useCountrySheetBySlug } from '../hooks/useCountriesSheets';
 import MarkdownContent from '../components/MarkdownContent';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
@@ -11,7 +12,11 @@ const PaisDetalle = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   
-  const { data: country, isLoading, error } = useCountryBySlug(id || '');
+  const { data: country, isLoading: countryLoading, error: countryError } = useCountryBySlug(id || '');
+  const { data: countrySheet, isLoading: sheetLoading, error: sheetError } = useCountrySheetBySlug(id || '');
+
+  const isLoading = countryLoading || sheetLoading;
+  const error = countryError || sheetError;
 
   if (isLoading) {
     return (
@@ -111,7 +116,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.about', { country: country.name })}
                   </h2>
-                   <MarkdownContent content={country.overview_md || country.description} />
+                  <MarkdownContent content={countrySheet?.overview_md || country.description} />
                 </div>
               </TabsContent>
 
@@ -120,7 +125,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.culture')}
                   </h2>
-                  <MarkdownContent content={country.culture_md || t('countryDetail.noContent')} />
+                  <MarkdownContent content={countrySheet?.culture_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -129,7 +134,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.cities')}
                   </h2>
-                  <MarkdownContent content={country.big_cities_vs_small_towns_md || t('countryDetail.noContent')} />
+                  <MarkdownContent content={countrySheet?.bigCitiesVsSmallTowns_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -138,7 +143,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.dosAndDonts')}
                   </h2>
-                  <MarkdownContent content={country.dos_and_donts_md || t('countryDetail.noContent')} />
+                  <MarkdownContent content={countrySheet?.dosAndDonts_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -147,7 +152,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.visa')}
                   </h2>
-                  <MarkdownContent content={country.visa_information_md || country.visa_info || t('countryDetail.noContent')} />
+                  <MarkdownContent content={countrySheet?.visaInformation_md || country.visa_info || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -156,7 +161,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.activities')}
                   </h2>
-                  <MarkdownContent content={country.life_activities_travel_md || t('countryDetail.noContent')} />
+                  <MarkdownContent content={countrySheet?.lifeActivitiesTravel_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -165,7 +170,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.medical')}
                   </h2>
-                  <MarkdownContent content={country.medical_md || t('countryDetail.noContent')} />
+                  <MarkdownContent content={countrySheet?.medical_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -174,7 +179,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.scholarships')}
                   </h2>
-                  <MarkdownContent content={country.student_benefits_scholarships_md || t('countryDetail.noContent')} />
+                  <MarkdownContent content={countrySheet?.studentBenefitsScholarships_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
             </Tabs>
