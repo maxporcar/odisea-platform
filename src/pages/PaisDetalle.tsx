@@ -1,22 +1,24 @@
 
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Users, DollarSign, Globe, Calendar, Home, Car, FileText, Star, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Users, DollarSign, Globe, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useCountry } from '../hooks/useCountries';
+import { useCountryBySlug } from '../hooks/useCountries';
+import MarkdownContent from '../components/MarkdownContent';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 const PaisDetalle = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   
-  const { data: country, isLoading, error } = useCountry(id || '');
+  const { data: country, isLoading, error } = useCountryBySlug(id || '');
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center space-x-3">
-          <Loader2 className="w-8 h-8 animate-spin text-warm-orange" />
-          <span className="text-xl text-warm-orange font-poppins">{t('countryDetail.loading')}</span>
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="text-xl text-foreground">{t('countryDetail.loading')}</span>
         </div>
       </div>
     );
@@ -24,14 +26,14 @@ const PaisDetalle = () => {
 
   if (error || !country) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('countryDetail.notFound.title')}</h2>
-          <p className="text-gray-600 mb-4">{t('countryDetail.notFound.description')}</p>
+          <AlertCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-foreground mb-2">{t('countryDetail.notFound.title')}</h2>
+          <p className="text-muted-foreground mb-4">{t('countryDetail.notFound.description')}</p>
           <Link 
             to="/paises"
-            className="bg-warm-orange text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-600 transition-colors"
+            className="bg-primary text-primary-foreground px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
           >
             {t('countryDetail.notFound.backButton')}
           </Link>
@@ -41,7 +43,12 @@ const PaisDetalle = () => {
   }
 
   const getCostIcon = (cost: string) => {
-    return t(`countries.cost.${cost}` as any) || t('countries.cost.low');
+    switch (cost) {
+      case 'low': return '$';
+      case 'medium': return '$$';
+      case 'high': return '$$$';
+      default: return '$';
+    }
   };
 
   const getCostColor = (cost: string) => {
@@ -54,14 +61,14 @@ const PaisDetalle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-orange-200 py-8">
+      <div className="bg-muted/50 border-b py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center mb-6">
             <Link
               to="/paises"
-              className="flex items-center text-warm-orange hover:text-orange-600 transition-colors mr-4"
+              className="flex items-center text-primary hover:text-primary/80 transition-colors mr-4"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               {t('countryDetail.back')}
@@ -71,10 +78,10 @@ const PaisDetalle = () => {
           <div className="flex items-center space-x-6">
             <span className="text-6xl">{country.flag || '🌍'}</span>
             <div>
-              <h1 className="text-4xl font-bold text-warm-orange mb-2 font-poppins">
+              <h1 className="text-4xl font-bold text-foreground mb-2">
                 {country.name}
               </h1>
-              <p className="text-xl text-amber-700 flex items-center">
+              <p className="text-xl text-muted-foreground flex items-center">
                 <MapPin className="w-5 h-5 mr-2" />
                 {country.capital}
               </p>
@@ -86,105 +93,137 @@ const PaisDetalle = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Description */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 font-poppins">
-                {t('countryDetail.about', { country: country.name })}
-              </h2>
-              <p className="text-gray-700 leading-relaxed">
-                {country.description}
-              </p>
-            </div>
+          <div className="lg:col-span-2">
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+                <TabsTrigger value="overview">{t('countryDetail.sections.overview')}</TabsTrigger>
+                <TabsTrigger value="culture">{t('countryDetail.sections.culture')}</TabsTrigger>
+                <TabsTrigger value="cities">{t('countryDetail.sections.cities')}</TabsTrigger>
+                <TabsTrigger value="dos-donts">{t('countryDetail.sections.dosAndDonts')}</TabsTrigger>
+                <TabsTrigger value="visa">{t('countryDetail.sections.visa')}</TabsTrigger>
+                <TabsTrigger value="activities">{t('countryDetail.sections.activities')}</TabsTrigger>
+                <TabsTrigger value="medical">{t('countryDetail.sections.medical')}</TabsTrigger>
+                <TabsTrigger value="scholarships">{t('countryDetail.sections.scholarships')}</TabsTrigger>
+              </TabsList>
 
-            {/* Capital Description */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 font-poppins">
-                {country.capital}
-              </h2>
-              <p className="text-gray-700 leading-relaxed">
-                {country.capital_description}
-              </p>
-            </div>
-
-            {/* Additional Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {country.visa_info && (
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <div className="flex items-center mb-3">
-                    <FileText className="w-6 h-6 text-warm-orange mr-2" />
-                    <h3 className="text-xl font-bold text-gray-900 font-poppins">{t('countryDetail.sections.visa')}</h3>
-                  </div>
-                  <p className="text-gray-700">{country.visa_info}</p>
+              <TabsContent value="overview" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.about', { country: country.name })}
+                  </h2>
+                  <MarkdownContent content={country.overview_md || country.description} />
                 </div>
-              )}
+              </TabsContent>
 
-              {country.housing && (
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <div className="flex items-center mb-3">
-                    <Home className="w-6 h-6 text-warm-orange mr-2" />
-                    <h3 className="text-xl font-bold text-gray-900 font-poppins">{t('countryDetail.sections.housing')}</h3>
-                  </div>
-                  <p className="text-gray-700">{country.housing}</p>
+              <TabsContent value="culture" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.sections.culture')}
+                  </h2>
+                  <MarkdownContent content={country.culture_md || ''} />
                 </div>
-              )}
+              </TabsContent>
 
-              {country.transportation && (
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <div className="flex items-center mb-3">
-                    <Car className="w-6 h-6 text-warm-orange mr-2" />
-                    <h3 className="text-xl font-bold text-gray-900 font-poppins">{t('countryDetail.sections.transportation')}</h3>
-                  </div>
-                  <p className="text-gray-700">{country.transportation}</p>
+              <TabsContent value="cities" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.sections.cities')}
+                  </h2>
+                  <MarkdownContent content={country.big_cities_vs_small_towns_md || ''} />
                 </div>
-              )}
-            </div>
+              </TabsContent>
+
+              <TabsContent value="dos-donts" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.sections.dosAndDonts')}
+                  </h2>
+                  <MarkdownContent content={country.dos_and_donts_md || ''} />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="visa" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.sections.visa')}
+                  </h2>
+                  <MarkdownContent content={country.visa_information_md || country.visa_info || ''} />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="activities" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.sections.activities')}
+                  </h2>
+                  <MarkdownContent content={country.life_activities_travel_md || ''} />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="medical" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.sections.medical')}
+                  </h2>
+                  <MarkdownContent content={country.medical_md || ''} />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="scholarships" className="mt-6">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    {t('countryDetail.sections.scholarships')}
+                  </h2>
+                  <MarkdownContent content={country.student_benefits_scholarships_md || ''} />
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Quick Facts */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 font-poppins">
+            <div className="bg-card rounded-lg border border-border p-6">
+              <h3 className="text-xl font-bold text-foreground mb-4">
                 {t('countryDetail.quickFacts')}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Globe className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">{t('countryDetail.continent')}</span>
+                    <Globe className="w-5 h-5 text-muted-foreground mr-2" />
+                    <span className="text-muted-foreground">{t('countryDetail.continent')}</span>
                   </div>
-                  <span className="font-semibold">{country.continent}</span>
+                  <span className="font-semibold text-foreground">{country.continent}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Users className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">{t('countryDetail.population')}</span>
+                    <Users className="w-5 h-5 text-muted-foreground mr-2" />
+                    <span className="text-muted-foreground">{t('countryDetail.population')}</span>
                   </div>
-                  <span className="font-semibold">{country.population}</span>
+                  <span className="font-semibold text-foreground">{country.population}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <DollarSign className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">{t('countryDetail.currency')}</span>
+                    <DollarSign className="w-5 h-5 text-muted-foreground mr-2" />
+                    <span className="text-muted-foreground">{t('countryDetail.currency')}</span>
                   </div>
-                  <span className="font-semibold">{country.currency}</span>
+                  <span className="font-semibold text-foreground">{country.currency}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Globe className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">{t('countryDetail.language')}</span>
+                    <Globe className="w-5 h-5 text-muted-foreground mr-2" />
+                    <span className="text-muted-foreground">{t('countryDetail.language')}</span>
                   </div>
-                  <span className="font-semibold">{country.language}</span>
+                  <span className="font-semibold text-foreground">{country.language}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Star className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-600">{t('countryDetail.costOfLiving')}</span>
+                    <DollarSign className="w-5 h-5 text-muted-foreground mr-2" />
+                    <span className="text-muted-foreground">{t('countryDetail.costOfLiving')}</span>
                   </div>
                   <span className={`font-bold text-2xl ${getCostColor(country.cost_of_living)}`}>
                     {getCostIcon(country.cost_of_living)}
@@ -194,32 +233,32 @@ const PaisDetalle = () => {
                 {country.student_population && (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <Users className="w-5 h-5 text-gray-400 mr-2" />
-                      <span className="text-gray-600">{t('countryDetail.students')}</span>
+                      <Users className="w-5 h-5 text-muted-foreground mr-2" />
+                      <span className="text-muted-foreground">{t('countryDetail.students')}</span>
                     </div>
-                    <span className="font-semibold">{country.student_population}</span>
+                    <span className="font-semibold text-foreground">{country.student_population}</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Actions */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 font-poppins">
+            <div className="bg-card rounded-lg border border-border p-6">
+              <h3 className="text-xl font-bold text-foreground mb-4">
                 {t('countryDetail.actions')}
               </h3>
               <div className="space-y-3">
                 <Link
-                  to="/testimonios"
-                  className="w-full bg-warm-orange text-white py-3 px-4 rounded-full font-semibold hover:bg-orange-600 transition-colors text-center block font-poppins"
+                  to={`/paises/${country.slug}/ciudades`}
+                  className="w-full bg-primary text-primary-foreground py-3 px-4 rounded-lg font-semibold hover:bg-primary/90 transition-colors text-center block"
                 >
-                  {t('countryDetail.viewTestimonials')}
+                  {t('countryDetail.viewCities')}
                 </Link>
                 <Link
-                  to="/comunidad"
-                  className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-full font-semibold hover:bg-gray-200 transition-colors text-center block font-poppins"
+                  to="/testimonios"
+                  className="w-full bg-secondary text-secondary-foreground py-3 px-4 rounded-lg font-semibold hover:bg-secondary/90 transition-colors text-center block"
                 >
-                  {t('countryDetail.joinCommunity')}
+                  {t('countryDetail.viewTestimonials')}
                 </Link>
               </div>
             </div>

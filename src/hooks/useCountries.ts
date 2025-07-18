@@ -25,7 +25,7 @@ export const useCountries = () => {
       return data || [];
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes (renamed from cacheTime)
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 };
 
@@ -51,6 +51,32 @@ export const useCountry = (id: string) => {
     },
     enabled: !!id,
     staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000, // 10 minutes (renamed from cacheTime)
+    gcTime: 10 * 60 * 1000,
+  });
+};
+
+export const useCountryBySlug = (slug: string) => {
+  return useQuery({
+    queryKey: ['country-by-slug', slug],
+    queryFn: async (): Promise<Country | null> => {
+      console.log(`🔍 Fetching country by slug ${slug} from Supabase...`);
+      
+      const { data, error } = await supabase
+        .from('countries')
+        .select('*')
+        .eq('slug', slug)
+        .maybeSingle();
+
+      if (error) {
+        console.error(`❌ Error fetching country by slug ${slug}:`, error);
+        throw new Error(`Error fetching country: ${error.message}`);
+      }
+
+      console.log(`✅ Fetched country by slug ${slug}:`, data?.name || 'Not found');
+      return data;
+    },
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
