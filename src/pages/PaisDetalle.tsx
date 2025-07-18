@@ -111,7 +111,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.about', { country: country.name })}
                   </h2>
-                  <MarkdownContent content={(country as any)?.overview_md || country.description} />
+                  <MarkdownContent content={country.overview_md || country.description} />
                 </div>
               </TabsContent>
 
@@ -120,7 +120,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.culture')}
                   </h2>
-                  <MarkdownContent content={(country as any)?.culture_md || 'Información sobre cultura próximamente...'} />
+                  <MarkdownContent content={country.culture_md || ''} />
                 </div>
               </TabsContent>
 
@@ -129,7 +129,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.cities')}
                   </h2>
-                  <MarkdownContent content={(country as any)?.big_cities_vs_small_towns_md || 'Información sobre ciudades próximamente...'} />
+                  <MarkdownContent content={country.big_cities_vs_small_towns_md || ''} />
                 </div>
               </TabsContent>
 
@@ -138,7 +138,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.dosAndDonts')}
                   </h2>
-                  <MarkdownContent content={(country as any)?.dos_and_donts_md || 'Recomendaciones próximamente...'} />
+                  <MarkdownContent content={country.dos_and_donts_md || ''} />
                 </div>
               </TabsContent>
 
@@ -147,7 +147,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.visa')}
                   </h2>
-                  <MarkdownContent content={(country as any)?.visa_information_md || country.visa_info || 'Información de visa próximamente...'} />
+                  <MarkdownContent content={country.visa_information_md || country.visa_info || ''} />
                 </div>
               </TabsContent>
 
@@ -156,7 +156,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.activities')}
                   </h2>
-                  <MarkdownContent content={(country as any)?.life_activities_travel_md || 'Información sobre actividades próximamente...'} />
+                  <MarkdownContent content={country.life_activities_travel_md || ''} />
                 </div>
               </TabsContent>
 
@@ -165,7 +165,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.medical')}
                   </h2>
-                  <MarkdownContent content={(country as any)?.medical_md || 'Información médica próximamente...'} />
+                  <MarkdownContent content={country.medical_md || ''} />
                 </div>
               </TabsContent>
 
@@ -174,7 +174,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.scholarships')}
                   </h2>
-                  <MarkdownContent content={(country as any)?.student_benefits_scholarships_md || 'Información sobre becas próximamente...'} />
+                  <MarkdownContent content={country.student_benefits_scholarships_md || ''} />
                 </div>
               </TabsContent>
             </Tabs>
@@ -249,7 +249,7 @@ const PaisDetalle = () => {
               </h3>
               <div className="space-y-3">
                 <Link
-                  to={`/paises/${(country as any)?.slug || country.id}/ciudades`}
+                  to={`/paises/${country.slug}/ciudades`}
                   className="w-full bg-primary text-primary-foreground py-3 px-4 rounded-lg font-semibold hover:bg-primary/90 transition-colors text-center block"
                 >
                   {t('countryDetail.viewCities')}

@@ -112,9 +112,6 @@ export const useCityBySlug = (slug: string) => {
   });
 };
 
-// Export useCity as alias for useCityBySlug for backward compatibility
-export const useCity = useCityBySlug;
-
 export const useAllCities = () => {
   return useQuery({
     queryKey: ['cities-all'],

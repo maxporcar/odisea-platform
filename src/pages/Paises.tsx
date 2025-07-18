@@ -109,7 +109,7 @@ const Paises = () => {
             <div
               key={country.id}
               className="bg-card rounded-lg shadow-md border border-border p-6 hover:shadow-lg transition-all cursor-pointer transform hover:scale-105"
-              onClick={() => navigate(`/paises/${(country as any)?.slug || country.id}`)}
+              onClick={() => navigate(`/paises/${country.slug || country.id}`)}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
