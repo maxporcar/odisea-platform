@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -18,6 +17,9 @@ import UniversityDetail from "./pages/paises/[countryId]/universidades/[uniId]";
 import Testimonios from "./pages/Testimonios";
 import Comunidad from "./pages/Comunidad";
 import Login from "./pages/Login";
+import AdminUsers from "./pages/AdminUsers";
+import PremiumSuccess from "./pages/PremiumSuccess";
+import PremiumCancel from "./pages/PremiumCancel";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -51,6 +53,9 @@ const App = () => {
               <Route path="/testimonios" element={<Layout><Testimonios /></Layout>} />
               <Route path="/comunidad" element={<Layout><Comunidad /></Layout>} />
               <Route path="/login" element={<Login />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/premium-success" element={<PremiumSuccess />} />
+              <Route path="/premium-cancel" element={<PremiumCancel />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

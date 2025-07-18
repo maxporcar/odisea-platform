@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Globe, Eye, EyeOff, Star, CheckCircle } from 'lucide-react';
@@ -6,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import Layout from '../components/Layout';
+import SubscribeButton from '../components/SubscribeButton';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -269,9 +269,7 @@ const Login = () => {
             </div>
 
             <div className="space-y-4">
-              <button className="w-full bg-white text-black py-3 px-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base">
-                {t('auth.premium.startTrial')}
-              </button>
+              <SubscribeButton className="w-full bg-white text-black hover:bg-gray-100" />
               <p className="text-xs text-gray-400 text-center">
                 {t('auth.premium.cancelAnytime')}
               </p>
