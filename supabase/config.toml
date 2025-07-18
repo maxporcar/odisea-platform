@@ -12,7 +12,7 @@ max_rows = 1000
 enabled = true
 port = 54322
 site_url = "http://localhost:3000"
-additional_redirect_urls = ["https://lovable.dev", "http://localhost:5173"]
+additional_redirect_urls = ["https://localhost:3000"]
 jwt_expiry = 3600
 refresh_token_rotation_enabled = true
 refresh_token_reuse_interval = 10
@@ -23,11 +23,12 @@ enable_signup = true
 double_confirm_changes = true
 enable_confirmations = false
 
-[edge_functions]
-enabled = true
+[db]
+port = 54323
+major_version = 15
 
 [functions.create-checkout]
-verify_jwt = false
+verify_jwt = true
 
 [functions.stripe-webhook]
 verify_jwt = false
@@ -38,5 +39,19 @@ verify_jwt = true
 [functions.admin-users]
 verify_jwt = true
 
-[functions.pull-country-content]
-verify_jwt = false
+[realtime]
+enabled = true
+port = 54324
+tenant_id = "realtime-dev"
+max_concurrent_users = 200
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://localhost:54321"
+
+[inbucket]
+enabled = true
+port = 54325
+smtp_port = 54326
+pop3_port = 54327

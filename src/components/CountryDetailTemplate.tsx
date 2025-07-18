@@ -1,12 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, MapPin } from 'lucide-react';
 import { useCountry } from '../hooks/useCountries';
 import { useCities } from '../hooks/useCities';
-import { useCountryContent } from '../hooks/useCountryContent';
-import CountryMap2D from './CountryMap2D';
-import CountryContentAccordion from './CountryContentAccordion';
+import Globe3D from './Globe3D';
 import { useTranslation } from 'react-i18next';
 
 interface Section {
@@ -16,17 +14,20 @@ interface Section {
 
 const CountryDetailTemplate = () => {
   const { countryId } = useParams<{ countryId: string }>();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { data: country, isLoading, error } = useCountry(countryId!);
   const { data: cities = [] } = useCities(countryId);
-  const { data: countryContent = [] } = useCountryContent(countryId || '');
-  const [activeSection, setActiveSection] = useState('content');
+  const [activeSection, setActiveSection] = useState('cities');
 
   // Define sections with proper translation keys
   const sections: Section[] = [
-    { id: 'content', title: t('countryDetail.sections.studyGuide', 'Study Guide') },
-    { id: 'cities', title: t('countryDetail.sections.cities', 'Cities') },
+    { id: 'cities', title: t('countryDetail.sections.bigCities') },
+    { id: 'culture', title: t('countryDetail.sections.culture') },
+    { id: 'life-activities', title: t('countryDetail.sections.lifeActivities') },
+    { id: 'scholarships', title: t('countryDetail.sections.scholarships') },
+    { id: 'visa', title: t('countryDetail.sections.visa') },
+    { id: 'medical', title: t('countryDetail.sections.medical') },
+    { id: 'country-cities', title: t('countryDetail.sections.cities') },
   ];
 
   useEffect(() => {
@@ -55,10 +56,6 @@ const CountryDetailTemplate = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
-
-  const handleCityClick = (citySlug: string) => {
-    navigate(`/paises/${countryId}/ciudades/${citySlug}`);
   };
 
   if (isLoading) {
@@ -117,7 +114,7 @@ const CountryDetailTemplate = () => {
           <div className="lg:col-span-3">
             <nav className="sticky top-8 space-y-2">
               <h3 className="font-glacial text-lg font-semibold text-foreground mb-4">
-                📚 Sections
+                📚 Study Guide Sections
               </h3>
               {sections.map((section, index) => (
                 <button
@@ -139,29 +136,139 @@ const CountryDetailTemplate = () => {
             </nav>
           </div>
 
-          {/* Right Column - Map */}
+          {/* Right Column - Map with Perfect Centering */}
           <div className="lg:col-span-4">
             <div className="sticky top-8">
-              <CountryMap2D 
-                countryId={countryId!}
-                cities={cities.filter(city => city.latitude && city.longitude)}
-                onCityClick={handleCityClick}
-              />
+              <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+                <div className="p-4 border-b border-border">
+                  <h3 className="font-glacial text-lg font-semibold text-foreground">
+                    🗺️ {t('map.title')}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Click on cities to explore
+                  </p>
+                </div>
+                
+                {/* Perfectly Centered Map Container */}
+                <div className="flex justify-center items-center w-full py-4">
+                  <div className="w-full sm:w-11/12 md:w-10/12 lg:w-full xl:w-11/12 max-w-4xl transition-all duration-200 ease-in-out">
+                    <div className="h-[500px] relative flex justify-center">
+                      <Globe3D 
+                        width={400} 
+                        height={500} 
+                        countryCode={countryId}
+                        enhancedContrast={true}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Content Column */}
           <div className="lg:col-span-5 space-y-12">
-            {/* Study Guide Content */}
-            <section id="content" className="animate-fade-in-up">
-              <CountryContentAccordion 
-                content={countryContent}
-                countryName={country.name}
-              />
+            {/* Big Cities vs Small Towns */}
+            <section id="cities" className="animate-fade-in-up">
+              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
+                🏙️ {t('countryDetail.sections.bigCities')}
+              </h2>
+              <div className="prose prose-lg max-w-none">
+                <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                  <h3 className="font-poppins text-xl font-semibold text-foreground mb-4">Major Cities</h3>
+                  <p className="font-poppins text-muted-foreground leading-relaxed mb-6">
+                    Discover the vibrant urban centers of {country.name}, where international students thrive in cosmopolitan environments with world-class universities, diverse cultural scenes, and extensive networking opportunities.
+                  </p>
+                  
+                  <h3 className="font-poppins text-xl font-semibold text-foreground mb-4">Smaller Communities</h3>
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Experience the charm of smaller towns and cities, offering intimate learning environments, closer connections with locals, lower living costs, and authentic cultural immersion opportunities.
+                  </p>
+                </div>
+              </div>
             </section>
 
-            {/* Cities Section */}
-            <section id="cities" className="animate-fade-in-up">
+            {/* Culture */}
+            <section id="culture" className="animate-fade-in-up">
+              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
+                🎭 {t('countryDetail.sections.culture')}
+              </h2>
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <p className="font-poppins text-muted-foreground leading-relaxed mb-6">
+                  Immerse yourself in the rich cultural tapestry of {country.name}. From traditional celebrations to modern artistic expressions, understanding the local culture will enhance your study abroad experience significantly.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-poppins font-semibold text-foreground mb-2">🎉 Traditions & Festivals</h4>
+                    <p className="font-poppins text-sm text-muted-foreground">
+                      Participate in local celebrations and understand cultural significance.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-poppins font-semibold text-foreground mb-2">🍽️ Food Culture</h4>
+                    <p className="font-poppins text-sm text-muted-foreground">
+                      Discover local cuisine and dining customs that define social interactions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* All remaining sections */}
+            {sections.slice(2, -1).map((section) => (
+              <section key={section.id} id={section.id} className="animate-fade-in-up">
+                <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
+                  {section.id === 'life-activities' && '🎨 ' + t('countryDetail.sections.lifeActivities')}
+                  {section.id === 'scholarships' && '💰 ' + t('countryDetail.sections.scholarships')}
+                  {section.id === 'visa' && '📋 ' + t('countryDetail.sections.visa')}
+                  {section.id === 'medical' && '🏥 ' + t('countryDetail.sections.medical')}
+                </h2>
+                
+                <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                  <p className="font-poppins text-muted-foreground leading-relaxed mb-4">
+                    {section.id === 'life-activities' && 
+                      `Explore the endless possibilities for recreation, travel, and personal growth in ${country.name}. From outdoor adventures to cultural experiences, discover how to make the most of your time abroad.`
+                    }
+                    {section.id === 'scholarships' && 
+                      `Unlock funding opportunities and student benefits available in ${country.name}. Learn about scholarships, grants, work-study programs, and other financial support options for international students.`
+                    }
+                    {section.id === 'visa' && 
+                      `Navigate the visa process for studying in ${country.name}. Get detailed information about requirements, application procedures, processing times, and renewal processes.`
+                    }
+                    {section.id === 'medical' && 
+                      `Understand healthcare systems and medical requirements for studying in ${country.name}. Learn about insurance options, healthcare access, and maintaining your health abroad.`
+                    }
+                  </p>
+                  
+                  {section.id === 'visa' && country.visa_info && (
+                    <div className="mt-4 p-4 bg-muted rounded-lg">
+                      <p className="font-poppins text-sm text-foreground">{country.visa_info}</p>
+                    </div>
+                  )}
+                  
+                  {section.id === 'medical' && (
+                    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 bg-muted rounded-lg">
+                        <h4 className="font-poppins font-semibold text-foreground mb-2">🏥 Healthcare System</h4>
+                        <p className="font-poppins text-sm text-muted-foreground">
+                          Overview of the healthcare system and how international students can access medical services.
+                        </p>
+                      </div>
+                      <div className="p-4 bg-muted rounded-lg">
+                        <h4 className="font-poppins font-semibold text-foreground mb-2">🛡️ Insurance Requirements</h4>
+                        <p className="font-poppins text-sm text-muted-foreground">
+                          Information about mandatory health insurance and coverage options for students.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </section>
+            ))}
+
+            {/* Cities Section - Added at the bottom */}
+            <section id="country-cities" className="animate-fade-in-up">
               <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
                 🏙️ {t('countryDetail.cities.title')}
               </h2>
