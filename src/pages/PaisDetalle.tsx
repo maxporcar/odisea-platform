@@ -111,7 +111,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.about', { country: country.name })}
                   </h2>
-                  <MarkdownContent content={country.overview_md || country.description} />
+                   <MarkdownContent content={country.overview_md || country.description} />
                 </div>
               </TabsContent>
 
@@ -120,7 +120,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.culture')}
                   </h2>
-                  <MarkdownContent content={country.culture_md || ''} />
+                  <MarkdownContent content={country.culture_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -129,7 +129,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.cities')}
                   </h2>
-                  <MarkdownContent content={country.big_cities_vs_small_towns_md || ''} />
+                  <MarkdownContent content={country.big_cities_vs_small_towns_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -138,7 +138,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.dosAndDonts')}
                   </h2>
-                  <MarkdownContent content={country.dos_and_donts_md || ''} />
+                  <MarkdownContent content={country.dos_and_donts_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -147,7 +147,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.visa')}
                   </h2>
-                  <MarkdownContent content={country.visa_information_md || country.visa_info || ''} />
+                  <MarkdownContent content={country.visa_information_md || country.visa_info || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -156,7 +156,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.activities')}
                   </h2>
-                  <MarkdownContent content={country.life_activities_travel_md || ''} />
+                  <MarkdownContent content={country.life_activities_travel_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -165,7 +165,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.medical')}
                   </h2>
-                  <MarkdownContent content={country.medical_md || ''} />
+                  <MarkdownContent content={country.medical_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
 
@@ -174,7 +174,7 @@ const PaisDetalle = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     {t('countryDetail.sections.scholarships')}
                   </h2>
-                  <MarkdownContent content={country.student_benefits_scholarships_md || ''} />
+                  <MarkdownContent content={country.student_benefits_scholarships_md || t('countryDetail.noContent')} />
                 </div>
               </TabsContent>
             </Tabs>
@@ -249,7 +249,7 @@ const PaisDetalle = () => {
               </h3>
               <div className="space-y-3">
                 <Link
-                  to={`/paises/${country.slug}/ciudades`}
+                  to={`/paises/${country.slug || country.id}/ciudades`}
                   className="w-full bg-primary text-primary-foreground py-3 px-4 rounded-lg font-semibold hover:bg-primary/90 transition-colors text-center block"
                 >
                   {t('countryDetail.viewCities')}

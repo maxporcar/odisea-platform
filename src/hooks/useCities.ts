@@ -13,15 +13,7 @@ export const useCities = (countryId?: string) => {
       
       let query = supabase
         .from('cities')
-        .select(`
-          *,
-          countries (
-            id,
-            name,
-            flag,
-            slug
-          )
-        `)
+        .select('*')
         .order('name');
       
       if (countryId) {
@@ -52,15 +44,7 @@ export const useCitiesByCountrySlug = (countrySlug: string) => {
       
       const { data, error } = await supabase
         .from('cities')
-        .select(`
-          *,
-          countries (
-            id,
-            name,
-            flag,
-            slug
-          )
-        `)
+        .select('*')
         .eq('country_slug', countrySlug)
         .order('name');
 
@@ -78,23 +62,41 @@ export const useCitiesByCountrySlug = (countrySlug: string) => {
   });
 };
 
+export const useCity = (id: string) => {
+  return useQuery({
+    queryKey: ['city', id],
+    queryFn: async (): Promise<City | null> => {
+      console.log(`🔍 Fetching city ${id} from Supabase...`);
+      
+      const { data, error } = await supabase
+        .from('cities')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (error) {
+        console.error(`❌ Error fetching city ${id}:`, error);
+        throw new Error(`Error fetching city: ${error.message}`);
+      }
+
+      console.log(`✅ Fetched city ${id}:`, data?.name || 'Not found');
+      return data;
+    },
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+};
+
 export const useCityBySlug = (slug: string) => {
   return useQuery({
-    queryKey: ['city', slug],
+    queryKey: ['city-by-slug', slug],
     queryFn: async (): Promise<City | null> => {
       console.log(`🔍 Fetching city with slug ${slug}...`);
       
       const { data, error } = await supabase
         .from('cities')
-        .select(`
-          *,
-          countries (
-            id,
-            name,
-            flag,
-            slug
-          )
-        `)
+        .select('*')
         .eq('slug', slug)
         .maybeSingle();
 

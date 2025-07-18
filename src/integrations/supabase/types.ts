@@ -16,39 +16,63 @@ export type Database = {
     Tables: {
       cities: {
         Row: {
+          climate_md: string | null
+          cost_of_living_md: string | null
           country_id: string
+          country_slug: string | null
           created_at: string | null
           description: string | null
+          events_md: string | null
           id: string
           image_url: string | null
           latitude: number | null
           longitude: number | null
           name: string
+          rent_md: string | null
+          safety_md: string | null
           slug: string | null
+          social_md: string | null
+          universities_md: string | null
           updated_at: string | null
         }
         Insert: {
+          climate_md?: string | null
+          cost_of_living_md?: string | null
           country_id: string
+          country_slug?: string | null
           created_at?: string | null
           description?: string | null
+          events_md?: string | null
           id?: string
           image_url?: string | null
           latitude?: number | null
           longitude?: number | null
           name: string
+          rent_md?: string | null
+          safety_md?: string | null
           slug?: string | null
+          social_md?: string | null
+          universities_md?: string | null
           updated_at?: string | null
         }
         Update: {
+          climate_md?: string | null
+          cost_of_living_md?: string | null
           country_id?: string
+          country_slug?: string | null
           created_at?: string | null
           description?: string | null
+          events_md?: string | null
           id?: string
           image_url?: string | null
           latitude?: number | null
           longitude?: number | null
           name?: string
+          rent_md?: string | null
+          safety_md?: string | null
           slug?: string | null
+          social_md?: string | null
+          universities_md?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -63,70 +87,97 @@ export type Database = {
       }
       countries: {
         Row: {
+          big_cities_vs_small_towns_md: string | null
           capital: string
           capital_description: string
           continent: string
           cost_of_living: Database["public"]["Enums"]["cost_level"]
           created_at: string | null
+          culture_md: string | null
           currency: string
           description: string
+          dos_and_donts_md: string | null
           flag: string | null
           housing: string | null
           id: string
           image_url: string | null
           language: string
           latitude: number | null
+          life_activities_travel_md: string | null
           longitude: number | null
+          medical_md: string | null
           name: string
+          overview_md: string | null
           population: string
+          slug: string | null
+          student_benefits_scholarships_md: string | null
           student_population: string | null
           transportation: string | null
           updated_at: string | null
           visa_info: string | null
+          visa_information_md: string | null
         }
         Insert: {
+          big_cities_vs_small_towns_md?: string | null
           capital: string
           capital_description: string
           continent: string
           cost_of_living?: Database["public"]["Enums"]["cost_level"]
           created_at?: string | null
+          culture_md?: string | null
           currency: string
           description: string
+          dos_and_donts_md?: string | null
           flag?: string | null
           housing?: string | null
           id: string
           image_url?: string | null
           language: string
           latitude?: number | null
+          life_activities_travel_md?: string | null
           longitude?: number | null
+          medical_md?: string | null
           name: string
+          overview_md?: string | null
           population: string
+          slug?: string | null
+          student_benefits_scholarships_md?: string | null
           student_population?: string | null
           transportation?: string | null
           updated_at?: string | null
           visa_info?: string | null
+          visa_information_md?: string | null
         }
         Update: {
+          big_cities_vs_small_towns_md?: string | null
           capital?: string
           capital_description?: string
           continent?: string
           cost_of_living?: Database["public"]["Enums"]["cost_level"]
           created_at?: string | null
+          culture_md?: string | null
           currency?: string
           description?: string
+          dos_and_donts_md?: string | null
           flag?: string | null
           housing?: string | null
           id?: string
           image_url?: string | null
           language?: string
           latitude?: number | null
+          life_activities_travel_md?: string | null
           longitude?: number | null
+          medical_md?: string | null
           name?: string
+          overview_md?: string | null
           population?: string
+          slug?: string | null
+          student_benefits_scholarships_md?: string | null
           student_population?: string | null
           transportation?: string | null
           updated_at?: string | null
           visa_info?: string | null
+          visa_information_md?: string | null
         }
         Relationships: []
       }

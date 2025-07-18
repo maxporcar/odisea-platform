@@ -112,41 +112,18 @@ const CountryCities = () => {
                 </div>
 
                 <div className="space-y-3 mb-4">
-                  {city.climate_md && (
-                    <div className="flex items-start">
-                      <Thermometer className="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="text-sm font-medium text-foreground">{t('cities.climate')}</span>
-                        <p className="text-xs text-muted-foreground line-clamp-2">
-                          {city.climate_md.replace(/[#*]/g, '').substring(0, 100)}...
-                        </p>
-                      </div>
+                  <div className="flex items-start">
+                    <MapPin className="w-4 h-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <span className="text-sm font-medium text-foreground">{t('cities.location')}</span>
+                      <p className="text-xs text-muted-foreground">
+                        {city.latitude && city.longitude 
+                          ? `${city.latitude.toFixed(2)}, ${city.longitude.toFixed(2)}`
+                          : t('cities.coordinatesNotAvailable')
+                        }
+                      </p>
                     </div>
-                  )}
-
-                  {city.cost_of_living_md && (
-                    <div className="flex items-start">
-                      <DollarSign className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="text-sm font-medium text-foreground">{t('cities.costOfLiving')}</span>
-                        <p className="text-xs text-muted-foreground line-clamp-2">
-                          {city.cost_of_living_md.replace(/[#*]/g, '').substring(0, 100)}...
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {city.safety_md && (
-                    <div className="flex items-start">
-                      <Shield className="w-4 h-4 text-amber-500 mr-2 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="text-sm font-medium text-foreground">{t('cities.safety')}</span>
-                        <p className="text-xs text-muted-foreground line-clamp-2">
-                          {city.safety_md.replace(/[#*]/g, '').substring(0, 100)}...
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
                 
                 <button className="w-full bg-primary text-primary-foreground py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
