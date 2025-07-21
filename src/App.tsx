@@ -18,6 +18,8 @@ import Testimonios from "./pages/Testimonios";
 import Comunidad from "./pages/Comunidad";
 import Login from "./pages/Login";
 import AdminUsers from "./pages/AdminUsers";
+import AdminChecklist from "./pages/AdminChecklist";
+import Dashboard from "./pages/Dashboard";
 import PremiumSuccess from "./pages/PremiumSuccess";
 import PremiumCancel from "./pages/PremiumCancel";
 import NotFound from "./pages/NotFound";
@@ -54,6 +56,8 @@ const App = () => {
               <Route path="/comunidad" element={<Layout><Comunidad /></Layout>} />
               <Route path="/login" element={<Login />} />
               <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/checklist" element={<AdminChecklist />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/premium-success" element={<PremiumSuccess />} />
               <Route path="/premium-cancel" element={<PremiumCancel />} />
               <Route path="*" element={<NotFound />} />

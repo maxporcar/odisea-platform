@@ -14,41 +14,160 @@ export type Database = {
   }
   public: {
     Tables: {
-      cities: {
+      checklist_items: {
         Row: {
-          country_id: string
           created_at: string | null
           description: string | null
+          id: string
+          is_active: boolean | null
+          order_index: number
+          template_id: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          template_id: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          template_id?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_items_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "checklist_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      checklist_templates: {
+        Row: {
+          category: Database["public"]["Enums"]["checklist_category"]
+          city_id: string | null
+          country_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          order_index: number
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["checklist_category"]
+          city_id?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["checklist_category"]
+          city_id?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_templates_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checklist_templates_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cities: {
+        Row: {
+          climate_md: string | null
+          cost_of_living_md: string | null
+          country_id: string
+          country_slug: string | null
+          created_at: string | null
+          description: string | null
+          events_md: string | null
           id: string
           image_url: string | null
           latitude: number | null
           longitude: number | null
           name: string
+          rent_md: string | null
+          safety_md: string | null
           slug: string | null
+          social_md: string | null
+          universities_md: string | null
           updated_at: string | null
         }
         Insert: {
+          climate_md?: string | null
+          cost_of_living_md?: string | null
           country_id: string
+          country_slug?: string | null
           created_at?: string | null
           description?: string | null
+          events_md?: string | null
           id?: string
           image_url?: string | null
           latitude?: number | null
           longitude?: number | null
           name: string
+          rent_md?: string | null
+          safety_md?: string | null
           slug?: string | null
+          social_md?: string | null
+          universities_md?: string | null
           updated_at?: string | null
         }
         Update: {
+          climate_md?: string | null
+          cost_of_living_md?: string | null
           country_id?: string
+          country_slug?: string | null
           created_at?: string | null
           description?: string | null
+          events_md?: string | null
           id?: string
           image_url?: string | null
           latitude?: number | null
           longitude?: number | null
           name?: string
+          rent_md?: string | null
+          safety_md?: string | null
           slug?: string | null
+          social_md?: string | null
+          universities_md?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -63,70 +182,97 @@ export type Database = {
       }
       countries: {
         Row: {
+          big_cities_vs_small_cities_md: string | null
           capital: string
           capital_description: string
           continent: string
           cost_of_living: Database["public"]["Enums"]["cost_level"]
           created_at: string | null
+          culture_md: string | null
           currency: string
           description: string
+          dos_and_donts_md: string | null
           flag: string | null
           housing: string | null
           id: string
           image_url: string | null
           language: string
           latitude: number | null
+          life_activities_travel_md: string | null
           longitude: number | null
+          medical_md: string | null
           name: string
+          overview_md: string | null
           population: string
+          slug: string | null
+          student_benefits_scholarships_md: string | null
           student_population: string | null
           transportation: string | null
           updated_at: string | null
           visa_info: string | null
+          visa_information_md: string | null
         }
         Insert: {
+          big_cities_vs_small_cities_md?: string | null
           capital: string
           capital_description: string
           continent: string
           cost_of_living?: Database["public"]["Enums"]["cost_level"]
           created_at?: string | null
+          culture_md?: string | null
           currency: string
           description: string
+          dos_and_donts_md?: string | null
           flag?: string | null
           housing?: string | null
           id: string
           image_url?: string | null
           language: string
           latitude?: number | null
+          life_activities_travel_md?: string | null
           longitude?: number | null
+          medical_md?: string | null
           name: string
+          overview_md?: string | null
           population: string
+          slug?: string | null
+          student_benefits_scholarships_md?: string | null
           student_population?: string | null
           transportation?: string | null
           updated_at?: string | null
           visa_info?: string | null
+          visa_information_md?: string | null
         }
         Update: {
+          big_cities_vs_small_cities_md?: string | null
           capital?: string
           capital_description?: string
           continent?: string
           cost_of_living?: Database["public"]["Enums"]["cost_level"]
           created_at?: string | null
+          culture_md?: string | null
           currency?: string
           description?: string
+          dos_and_donts_md?: string | null
           flag?: string | null
           housing?: string | null
           id?: string
           image_url?: string | null
           language?: string
           latitude?: number | null
+          life_activities_travel_md?: string | null
           longitude?: number | null
+          medical_md?: string | null
           name?: string
+          overview_md?: string | null
           population?: string
+          slug?: string | null
+          student_benefits_scholarships_md?: string | null
           student_population?: string | null
           transportation?: string | null
           updated_at?: string | null
           visa_info?: string | null
+          visa_information_md?: string | null
         }
         Relationships: []
       }
@@ -370,6 +516,102 @@ export type Database = {
           },
         ]
       }
+      user_checklist_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          item_id: string
+          trip_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          item_id: string
+          trip_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          item_id?: string
+          trip_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_checklist_progress_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "checklist_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_checklist_progress_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "user_trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_trips: {
+        Row: {
+          city_id: string | null
+          country_id: string | null
+          created_at: string | null
+          departure_date: string | null
+          destination_name: string
+          id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          city_id?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          departure_date?: string | null
+          destination_name: string
+          id?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          city_id?: string | null
+          country_id?: string | null
+          created_at?: string | null
+          departure_date?: string | null
+          destination_name?: string
+          id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_trips_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_trips_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -378,6 +620,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      checklist_category:
+        | "three_months_before"
+        | "one_two_months_before"
+        | "two_weeks_before"
+        | "travel_day"
+        | "first_week_abroad"
+        | "packing_suitcase"
       cost_level: "low" | "medium" | "high"
     }
     CompositeTypes: {
@@ -506,6 +755,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      checklist_category: [
+        "three_months_before",
+        "one_two_months_before",
+        "two_weeks_before",
+        "travel_day",
+        "first_week_abroad",
+        "packing_suitcase",
+      ],
       cost_level: ["low", "medium", "high"],
     },
   },

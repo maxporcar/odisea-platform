@@ -5,10 +5,12 @@ import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import UserMenu from './UserMenu';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
   const location = useLocation();
   const { t } = useTranslation();
+  const { profile } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [
@@ -50,6 +52,22 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
+            {profile?.is_premium && (
+              <Link
+                to="/dashboard"
+                className={`font-poppins font-medium transition-colors ${
+                  location.pathname === '/dashboard'
+                    ? 'border-b-2 pb-1'
+                    : 'hover:text-orange-600'
+                }`}
+                style={{
+                  color: location.pathname === '/dashboard' ? '#FF6600' : '#2B2B2B',
+                  borderColor: location.pathname === '/dashboard' ? '#FF6600' : 'transparent'
+                }}
+              >
+                Dashboard
+              </Link>
+            )}
           </div>
 
           {/* Desktop Actions */}
