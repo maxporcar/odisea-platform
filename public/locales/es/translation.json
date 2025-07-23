@@ -5,8 +5,7 @@
     "test": "Test",
     "countries": "Países",
     "testimonials": "Testimonios",
-    "community": "Comunidad",
-    "login": "Iniciar Sesión"
+    "community": "Comunidad"
   },
   "auth": {
     "login": {
@@ -21,7 +20,7 @@
     },
     "signup": {
       "title": "Únete a Odisea",
-      "subtitle": "Crea tu cuenta y comienza tu aventura internacional",
+      "subtitle": "Crea tu cuenta y comienza tu odisea internacional",
       "fullName": "Nombre completo",
       "email": "Correo electrónico",
       "password": "Contraseña",
@@ -41,10 +40,10 @@
         "support": "Soporte prioritario 24/7",
         "guides": "Guías detalladas por destino"
       },
-      "price": "20€",
-      "period": "pago único de por vida",
-      "startTrial": "Obtener Odisea+",
-      "cancelAnytime": "Acceso de por vida. Sin suscripciones.",
+      "price": "€9.99",
+      "period": "por mes",
+      "startTrial": "Comenzar prueba gratuita",
+      "cancelAnytime": "Cancela cuando quieras. Sin compromiso.",
       "comingSoon": "Próximamente",
       "comingSoonFeatures": {
         "housing": "🏠 Alojamiento verificado",
@@ -165,11 +164,12 @@
   "home": {
     "hero": {
       "title": "PREPÁRATE PARA TU",
-      "odyssey": "Aventura Internacional ✈️",
+      "odyssey": "Odisea ✈️",
       "subtitle": "🌍 Descubre el mundo con confianza. Plataforma creada por estudiantes, para estudiantes, que te ayuda a navegar tu aventura internacional 🎒",
       "cta_test": "Hacer el Test 📝",
       "cta_map": "Ver Mapa Mundial 🗺️",
-      "new_badge": "¡Nuevo! ✨"
+      "new_badge": "¡Nuevo! ✨",
+      
     },
     "about": {
       "title": "👥 SOMOS ESTUDIANTES COMO TÚ",
@@ -197,7 +197,7 @@
       }
     },
     "cta": {
-      "title": "🤝 ÚNETE A LOS ESTUDIANTES INTERNACIONALES",
+      "title": "🤝 ÚNETE A LOS ODISEANOS",
       "description": "💪 No estás solo en este viaje. Conecta con estudiantes de todo el mundo que han vivido la misma aventura. Comparte consejos, haz preguntas y encuentra a tu gente.",
       "subtitle": "✨ Juntos, hacemos que estudiar en el extranjero sea más fácil y mucho más divertido.",
       "button": "ÚNETE 🚀"
@@ -333,36 +333,5 @@
     "sessionClosed": "Sesión cerrada",
     "sessionClosedDescription": "Has cerrado sesión correctamente",
     "errorClosingSession": "No se pudo cerrar la sesión"
-  },
-  "premium": {
-    "title": "Odisea+",
-    "subtitle": "Desbloquea todas las funcionalidades premium",
-    "price": "20€",
-    "lifetime": "Pago único de por vida",
-    "features": {
-      "title": "¿Qué incluye Odisea+?",
-      "checklist": "📋 Checklist interactivo personalizado",
-      "mentoring": "👥 Acceso a mentorías con estudiantes veteranos",
-      "housing": "🏠 Alojamiento verificado y seguro",
-      "community": "💬 Comunidad premium exclusiva",
-      "support": "🆘 Soporte prioritario 24/7",
-      "guides": "📖 Guías detalladas por destino",
-      "notes": "📝 Notas personales de viaje",
-      "favorites": "❤️ Países favoritos guardados"
-    },
-    "freeVs": {
-      "title": "Gratis vs Odisea+",
-      "free": "Gratis",
-      "premium": "Odisea+",
-      "basicInfo": "Información básica de países",
-      "testimonials": "Testimonios de estudiantes",
-      "community": "Comunidad básica",
-      "premiumFeatures": "Todas las funcionalidades premium",
-      "personalizedSupport": "Soporte personalizado",
-      "advancedTools": "Herramientas avanzadas"
-    },
-    "upgrade": "Obtener Odisea+",
-    "alreadyPremium": "Ya tienes Odisea+",
-    "benefits": "Con Odisea+ tendrás acceso completo a todas las herramientas que necesitas para tu aventura internacional."
   }
 }
