@@ -7,6 +7,7 @@ const LANGUAGES = [
   { code: 'en', label: 'EN', flag: '🇺🇸' },
   { code: 'es', label: 'ES', flag: '🇪🇸' },
   { code: 'fr', label: 'FR', flag: '🇫🇷' },
+  { code: 'ca', label: 'CA', flag: '🇪🇸' },
 ];
 
 export default function LanguageSelector() {

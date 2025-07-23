@@ -68,7 +68,7 @@ const Header = () => {
                     <DropdownMenuItem asChild>
                       <Link to="/perfil">
                         <User className="mr-2 h-4 w-4" />
-                        <span>My Profile</span>
+                        <span>{t('user.profile')}</span>
                       </Link>
                     </DropdownMenuItem>
                     {subscription?.subscribed && (
@@ -81,7 +81,7 @@ const Header = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={signOut}>
                       <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
+                      <span>{t('user.logout')}</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -91,7 +91,7 @@ const Header = () => {
                 <SubscribeButton />
                 <Link to="/login">
                   <Button variant="outline" size="sm">
-                    {t('nav.login')}
+                    {t('user.login')}
                   </Button>
                 </Link>
               </div>

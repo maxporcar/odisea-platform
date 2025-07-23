@@ -1,3 +1,4 @@
+
 {
   "nav": {
     "home": "Inicio",
@@ -136,6 +137,24 @@
     "cityDestination": "Destino urbano",
     "exploreCity": "Explorar ciudad →"
   },
+  "universities": {
+    "loading": "Cargando universidades...",
+    "error": {
+      "title": "Error al cargar universidades",
+      "description": "No pudimos cargar las universidades de este país."
+    },
+    "backToCountry": "Volver al país",
+    "title": "Universidades en",
+    "subtitle": "Explora las mejores instituciones educativas del país",
+    "count": "{{count}} universidades disponibles",
+    "noUniversities": {
+      "title": "No hay universidades disponibles",
+      "description": "Aún no tenemos información sobre universidades en este país."
+    },
+    "defaultDescription": "Una institución educativa de excelencia que ofrece programas académicos de alta calidad.",
+    "ranking": "Ranking",
+    "visitWebsite": "Visitar sitio web"
+  },
   "cityDetail": {
     "loading": "Cargando información de la ciudad...",
     "notFound": {
@@ -168,8 +187,7 @@
       "subtitle": "🌍 Descubre el mundo con confianza. Plataforma creada por estudiantes, para estudiantes, que te ayuda a navegar tu aventura internacional 🎒",
       "cta_test": "Hacer el Test 📝",
       "cta_map": "Ver Mapa Mundial 🗺️",
-      "new_badge": "¡Nuevo! ✨",
-      
+      "new_badge": "¡Nuevo! ✨"
     },
     "about": {
       "title": "👥 SOMOS ESTUDIANTES COMO TÚ",
