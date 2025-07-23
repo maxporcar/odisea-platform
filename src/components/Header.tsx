@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { User, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
-import { LanguageSelector } from './LanguageSelector';
-import { SubscribeButton } from './SubscribeButton';
+import LanguageSelector from './LanguageSelector';
+import SubscribeButton from './SubscribeButton';
 
 const Header = () => {
   const { user, signOut, profile } = useAuth();

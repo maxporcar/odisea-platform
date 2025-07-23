@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTrips } from '@/hooks/useTrips';
-import { useChecklist } from '@/hooks/useChecklist';
 import { useCountries } from '@/hooks/useCountries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,50 +32,22 @@ export default function Profile() {
   });
   const [favoriteCountries, setFavoriteCountries] = useState<string[]>([]);
   const [travelNotes, setTravelNotes] = useState('');
-  const [isLoadingNotes, setIsLoadingNotes] = useState(true);
+  const [isLoadingNotes, setIsLoadingNotes] = useState(false);
 
   // Load user preferences
   useEffect(() => {
     if (user) {
-      loadUserPreferences();
+      // For now, just set loading to false since table doesn't exist yet
+      setIsLoadingNotes(false);
     }
   }, [user]);
 
-  const loadUserPreferences = async () => {
-    try {
-      // Load favorite countries and travel notes from user preferences
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .select('favorite_countries, travel_notes')
-        .eq('user_id', user?.id)
-        .single();
-
-      if (data) {
-        setFavoriteCountries(data.favorite_countries || []);
-        setTravelNotes(data.travel_notes || '');
-      }
-    } catch (error) {
-      console.error('Error loading user preferences:', error);
-    } finally {
-      setIsLoadingNotes(false);
-    }
-  };
-
   const saveUserPreferences = async () => {
     try {
-      const { error } = await supabase
-        .from('user_preferences')
-        .upsert({
-          user_id: user?.id,
-          favorite_countries: favoriteCountries,
-          travel_notes: travelNotes,
-        });
-
-      if (error) throw error;
-      
+      // Temporarily disabled until user_preferences table is created
       toast({
-        title: "Preferences saved",
-        description: "Your preferences have been updated successfully.",
+        title: "Coming Soon",
+        description: "User preferences will be available after database migration.",
       });
     } catch (error) {
       console.error('Error saving preferences:', error);
@@ -126,25 +97,8 @@ export default function Profile() {
 
   // Calculate overall progress across all trips
   const calculateOverallProgress = () => {
-    if (trips.length === 0) return 0;
-    
-    let totalCompleted = 0;
-    let totalItems = 0;
-    
-    trips.forEach(trip => {
-      const { checklist } = useChecklist(trip.id);
-      const tripTotal = checklist.reduce((acc, section) => acc + section.items.length, 0);
-      const tripCompleted = checklist.reduce((acc, section) => {
-        return acc + section.items.filter(item => 
-          section.progress.find(p => p.item_id === item.id)?.completed
-        ).length;
-      }, 0);
-      
-      totalItems += tripTotal;
-      totalCompleted += tripCompleted;
-    });
-    
-    return totalItems > 0 ? (totalCompleted / totalItems) * 100 : 0;
+    // For now, return 0 since checklist hook has issues
+    return 0;
   };
 
   if (!user) {

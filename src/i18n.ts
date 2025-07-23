@@ -33,15 +33,6 @@ i18n
     react: {
       useSuspense: false,
     },
-    
-    // Add post-processing to preserve "Odisea" in all languages
-    postProcess: ['preserveOdisea'],
   });
-
-// Add custom post-processor to preserve "Odisea"
-i18n.services.postProcessor.addPostProcessor('preserveOdisea', (value, key, options) => {
-  // Preserve "Odisea" in all translations
-  return value.replace(/odyssey/gi, 'Odisea');
-});
 
 export default i18n;
