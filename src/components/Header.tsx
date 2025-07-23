@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import LanguageSelector from './LanguageSelector';
 import UserMenu from './UserMenu';
-import SubscribeButton from './SubscribeButton';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
@@ -62,7 +61,6 @@ const Header = () => {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSelector />
-            {!profile?.is_premium && <SubscribeButton />}
             <UserMenu />
           </div>
 
@@ -93,7 +91,6 @@ const Header = () => {
                 </button>
                 <div className="border-t pt-4 space-y-4">
                   <LanguageSelector />
-                  {!profile?.is_premium && <SubscribeButton className="w-full" />}
                   <UserMenu />
                 </div>
               </nav>

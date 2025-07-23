@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -15,6 +15,44 @@ import ContactForm from '@/components/ContactForm';
 const Premium = () => {
   const { user, profile } = useAuth();
   const { subscription, loading } = useSubscription();
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+
+  // Countdown timer that resets every 8 hours
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const eightHoursInMs = 8 * 60 * 60 * 1000;
+      const cycleStart = Math.floor(now / eightHoursInMs) * eightHoursInMs;
+      const cycleEnd = cycleStart + eightHoursInMs;
+      const difference = cycleEnd - now;
+
+      if (difference > 0) {
+        const hours = Math.floor(difference / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        
+        return { hours, minutes, seconds };
+      }
+      return { hours: 0, minutes: 0, seconds: 0 };
+    };
+
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    // Initial calculation
+    setTimeLeft(calculateTimeLeft());
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleLimitedOfferClick = () => {
+    // Create a click event for the subscribe button
+    const subscribeButton = document.querySelector('[data-subscribe-button]');
+    if (subscribeButton) {
+      (subscribeButton as HTMLElement).click();
+    }
+  };
 
   const features = [
     {
@@ -117,7 +155,10 @@ const Premium = () => {
                 </Button>
               </div>
             ) : (
-              <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white mb-8">
+              <div 
+                className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white mb-8 cursor-pointer hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
+                onClick={handleLimitedOfferClick}
+              >
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Clock className="w-6 h-6" />
                   <span className="text-lg font-semibold">Limited Time Offer</span>
@@ -125,7 +166,27 @@ const Premium = () => {
                 <div className="text-center">
                   <div className="text-4xl font-bold mb-2">€19.99</div>
                   <div className="text-lg opacity-90 mb-4">One-time payment • Lifetime access</div>
-                  <div className="text-sm opacity-80">No monthly fees • Cancel anytime</div>
+                  <div className="text-sm opacity-80 mb-4">No monthly fees • Cancel anytime</div>
+                  <div className="bg-white/20 rounded-lg px-4 py-3 mb-4">
+                    <div className="text-sm font-medium mb-2">Offer expires in:</div>
+                    <div className="flex items-center justify-center gap-4 text-2xl font-bold">
+                      <div className="flex flex-col items-center">
+                        <span>{String(timeLeft.hours).padStart(2, '0')}</span>
+                        <span className="text-xs opacity-80">Hours</span>
+                      </div>
+                      <span>:</span>
+                      <div className="flex flex-col items-center">
+                        <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
+                        <span className="text-xs opacity-80">Minutes</span>
+                      </div>
+                      <span>:</span>
+                      <div className="flex flex-col items-center">
+                        <span>{String(timeLeft.seconds).padStart(2, '0')}</span>
+                        <span className="text-xs opacity-80">Seconds</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-sm opacity-90">Click here to claim your lifetime access!</div>
                 </div>
               </div>
             )}
@@ -235,7 +296,9 @@ const Premium = () => {
                       ))}
                     </div>
                     {!isSubscribed && (
-                      <SubscribeButton type="individual" className="w-full py-4 text-lg font-semibold" />
+                      <div data-subscribe-button>
+                        <SubscribeButton type="individual" className="w-full py-4 text-lg font-semibold" />
+                      </div>
                     )}
                   </CardContent>
                 </Card>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Globe, Eye, EyeOff, Star, CheckCircle } from 'lucide-react';
@@ -263,15 +264,15 @@ const Login = () => {
 
             <div className="border-t border-gray-700 pt-6 sm:pt-8 mb-6 sm:mb-8">
               <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold mb-2">{t('auth.premium.price')}</div>
-                <div className="text-gray-400">{t('auth.premium.period')}</div>
+                <div className="text-3xl sm:text-4xl font-bold mb-2">€19.99</div>
+                <div className="text-gray-400">Lifetime Access</div>
               </div>
             </div>
 
             <div className="space-y-4">
               <SubscribeButton className="w-full bg-white text-black hover:bg-gray-100" />
               <p className="text-xs text-gray-400 text-center">
-                {t('auth.premium.cancelAnytime')}
+                One-time payment • No recurring fees
               </p>
             </div>
 
