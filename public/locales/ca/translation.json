@@ -5,338 +5,120 @@
     "test": "Test",
     "countries": "Països",
     "testimonials": "Testimonis",
-    "community": "Comunitat",
-    "login": "Login"
-  },
-  "auth": {
-    "login": {
-      "title": "Benvingut",
-      "subtitle": "Inicia sessió per continuar la teva aventura",
-      "email": "Correu electrònic",
-      "password": "Contrasenya",
-      "forgotPassword": "Has oblidat la contrasenya?",
-      "signInButton": "Iniciar sessió",
-      "noAccount": "No tens compte? Registra't",
-      "signingIn": "Iniciant sessió..."
-    },
-    "signup": {
-      "title": "Uneix-te a Odisea",
-      "subtitle": "Crea el teu compte i comença la teva odissea internacional",
-      "fullName": "Nom complet",
-      "email": "Correu electrònic",
-      "password": "Contrasenya",
-      "confirmPassword": "Confirma la contrasenya",
-      "createAccount": "Crear compte",
-      "hasAccount": "Ja tens compte? Inicia sessió",
-      "creatingAccount": "Creant compte..."
-    },
-    "premium": {
-      "title": "Odisea+",
-      "subtitle": "Desbloqueja funcionalitats premium per maximitzar la teva experiència internacional",
-      "features": {
-        "checklist": "Llista de verificació interactiva personalitzada",
-        "mentoring": "Accés a mentoratge amb estudiants veterans",
-        "housing": "Allotjament verificat i segur",
-        "community": "Comunitat premium exclusiva",
-        "support": "Suport prioritari 24/7",
-        "guides": "Guies detallades per destinació"
-      },
-      "price": "€9.99",
-      "period": "per mes",
-      "startTrial": "Començar prova gratuïta",
-      "cancelAnytime": "Cancel·la quan vulguis. Sense compromís.",
-      "comingSoon": "Properament",
-      "comingSoonFeatures": {
-        "housing": "🏠 Allotjament verificat",
-        "mentoring": "👥 Mentoratge personalitzat",
-        "checklist": "📋 Llista de verificació interactiva"
-      }
-    },
-    "errors": {
-      "signInError": "Error en iniciar sessió",
-      "signUpError": "Error en crear el compte",
-      "passwordMismatch": "Les contrasenyes no coincideixen",
-      "passwordTooShort": "La contrasenya ha de tenir almenys 6 caràcters",
-      "genericError": "Alguna cosa ha anat malament. Torna-ho a intentar."
-    },
-    "success": {
-      "welcome": "Benvingut!",
-      "signedIn": "Has iniciat sessió correctament",
-      "accountCreated": "Compte creat!",
-      "checkEmail": "Comprova el teu correu per confirmar el compte"
-    }
-  },
-  "home": {
-    "hero": {
-      "title": "PREPARA'T PER LA TEVA",
-      "odyssey": "Odisea ✈️",
-      "subtitle": "🌍 Descobreix el món amb confiança. Plataforma creada per estudiants, per a estudiants, que t'ajuda a navegar la teva aventura internacional 🎒",
-      "cta_test": "Fer el Test 📝",
-      "cta_map": "Veure Mapa Mundial 🗺️",
-      "new_badge": "Nou! ✨",
-      "map_prompt": "Prova el mapa 3D! 🎯"
-    },
-    "about": {
-      "title": "👥 SOM ESTUDIANTS COM TU",
-      "description1": "💭 Vam haver d'organitzar el nostre propi intercanvi o pràctiques a l'estranger, i sovint ens vam sentir perduts, aclaparats i sense orientació. Per això vam crear Odisea, una plataforma interactiva feta per estudiants, per a estudiants, per ajudar-te a navegar el teu viatge de mobilitat internacional amb confiança i claredat.",
-      "description2": "🏠 Des de consells de destinació fins a consells d'allotjament, et donem suport en cada pas del camí.",
-      "cta": "Descobrir més històries 📖"
-    },
-    "features": {
-      "title": "🚀 ORGANITZA EL TEU PROPER VIATGE",
-      "subtitle": "Descobreix totes les opcions que tenim per a tu ✨",
-      "exchange": {
-        "title": "🎓 INTERCANVI",
-        "description": "Descobreix programes d'intercanvi en universitats d'arreu del món. Viu una experiència acadèmica internacional única.",
-        "cta": "Explorar destinacions 🌟 →"
-      },
-      "internship": {
-        "title": "💼 PRÀCTIQUES",
-        "description": "Troba oportunitats de pràctiques professionals en empreses internacionals.",
-        "coming_soon": "Properament 🔜"
-      },
-      "gap_year": {
-        "title": "🌍 ANY SABÀTIC",
-        "description": "Pren un any per explorar el món, aprendre idiomes i créixer personalment.",
-        "coming_soon": "Properament 🔜"
-      }
-    },
-    "cta": {
-      "title": "🤝 UNEIX-TE A LA COMUNITAT ODISEA",
-      "description": "💪 No estàs sol en aquest viatge. Connecta amb estudiants d'arreu del món que han viscut la mateixa aventura. Comparteix consells, fes preguntes i troba la teva gent.",
-      "subtitle": "✨ Junts, fem que estudiar a l'estranger sigui més fàcil i molt més divertit.",
-      "button": "UNIR-SE 🚀"
-    }
+    "community": "Comunitat"
   },
   "test": {
-    "title": "Test d'Orientació",
-    "subtitle": "Descobreix la teva destinació d'estudis ideal a l'estranger",
-    "description": "Fes el nostre test complet per trobar la combinació perfecta per a la teva aventura internacional",
-    "iframe_title": "Test d'Orientació Odisea",
+    "title": "Avaluació de Preparació",
+    "subtitle": "Descobreix com de preparat estàs per a la teva aventura d'estudis a l'estranger",
+    "description": "Completa la nostra avaluació integral per rebre recomanacions personalitzades i identificar les àrees on necessites més preparació.",
+    "iframe_title": "Formulari d'Avaluació de Preparació",
     "loading": "Carregant..."
-  },
-  "countries": {
-    "hero": {
-      "title": "🌍 Explora països en 3D",
-      "subtitle": "Fes clic en qualsevol país per descobrir més informació"
-    },
-    "search": {
-      "placeholder": "🔍 Cercar país o capital..."
-    },
-    "filters": {
-      "allContinents": "🌎 Tots els continents",
-      "continents": ["Àfrica", "Àsia", "Europa", "Amèrica del Nord", "Amèrica del Sud", "Oceania"]
-    },
-    "tabs": {
-      "countries": "PAÏSOS",
-      "cities": "CIUTATS",
-      "availableCities": "Ciutats disponibles",
-      "citiesCount": "{{count}} ciutats disponibles",
-      "noCities": "No s'han trobat ciutats",
-      "comingSoon": "Properament - estem afegint més ciutats!"
-    },
-    "grid": {
-      "availableCountries": "Països disponibles",
-      "results": "{{count}} de {{total}} països",
-      "resultsWithSearch": "que coincideixen amb \"{{search}}\"",
-      "noResults": "No s'han trobat països",
-      "tryDifferent": "Prova ajustar la teva cerca o filtres",
-      "seeMore": "Veure més →"
-    },
-    "loading": "Carregant països...",
-    "error": {
-      "title": "Error en carregar països",
-      "description": "No hem pogut carregar la informació dels països.",
-      "retry": "Tornar a intentar"
-    },
-    "legend": {
-      "title": "🗺️ Llegenda del Mapa",
-      "withTestimonials": "Amb testimonis",
-      "availableDestination": "Destinació disponible",
-      "otherCountries": "Altres països",
-      "clickExplore": "💡 Fes clic per explorar",
-      "dragRotate": "🖱️ Arrossega per rotar"
-    },
-    "cost": {
-      "low": "€",
-      "medium": "€€",
-      "high": "€€€"
-    }
-  },
-  "countryDetail": {
-    "back": "← Tornar als països",
-    "loading": "Carregant informació del país...",
-    "notFound": {
-      "title": "País no trobat",
-      "description": "No hem pogut trobar informació d'aquest país.",
-      "backButton": "Tornar als països"
-    },
-    "about": "Sobre {{country}}",
-    "quickFacts": "Dades clau",
-    "continent": "Continent",
-    "population": "Població",
-    "currency": "Moneda",
-    "language": "Idioma",
-    "costOfLiving": "Cost de vida",
-    "students": "estudiants",
-    "actions": "Accions",
-    "viewTestimonials": "Veure testimonis",
-    "joinCommunity": "Unir-se a la comunitat",
-    "studyGuideSections": "Seccions de la Guia d'Estudi",
-    "sections": {
-      "bigCities": "Grans Ciutats vs Pobles Petits",
-      "culture": "Cultura",
-      "lifeActivities": "Vida, Activitats i Viatges",
-      "scholarships": "Beneficis Estudiantils i Beques",
-      "visa": "Informació de Visa",
-      "medical": "Mèdic"
-    },
-    "cities": {
-      "title": "Ciutats",
-      "subtitle": "Explora les principals ciutats estudiantils de {{country}}",
-      "viewAll": "Veure totes les ciutats a {{country}}"
-    }
-  },
-  "cities": {
-    "loading": "Carregant ciutats...",
-    "error": {
-      "title": "Error en carregar ciutats",
-      "description": "No hem pogut carregar les ciutats d'aquest país."
-    },
-    "backToCountry": "Tornar al país",
-    "title": "Ciutats a",
-    "subtitle": "Explora les principals ciutats estudiantils del país",
-    "count": "{{count}} ciutats disponibles",
-    "noCities": {
-      "title": "No hi ha ciutats disponibles",
-      "description": "Encara no tenim informació sobre ciutats d'aquest país."
-    },
-    "defaultDescription": "Una ciutat increïble per estudiar i viure experiències úniques.",
-    "unknownCountry": "País Desconegut",
-    "cityDestination": "Destinació urbana",
-    "exploreCity": "Explorar ciutat →"
-  },
-  "map": {
-    "title": "Mapa Interactiu",
-    "subtitle": "Explora destinacions arreu del món",
-    "interactiveGlobe": "Globus Interactiu",
-    "legend": {
-      "withTestimonials": "Amb testimonis",
-      "availableDestination": "Destinació disponible"
-    },
-    "searchPlaceholder": "Cercar país o ciutat...",
-    "allContinents": "Tots els continents",
-    "seeMoreInfo": "Veure més informació"
-  },
-  "footer": {
-    "description": "Plataforma creada per estudiants, per a estudiants. T'ajudem a navegar la teva aventura internacional amb confiança i claredat.",
-    "links": "Enllaços",
-    "legal": "Legal",
-    "contact": "Contacte",
-    "terms": "Termes i Condicions",
-    "privacy": "Política de Privacitat",
-    "copyright": "© 2024 Odisea. Tots els drets reservats."
-  },
-  "common": {
-    "loading": "Carregant...",
-    "error": "Error",
-    "retry": "Tornar a intentar",
-    "back": "Enrere",
-    "next": "Següent",
-    "previous": "Anterior",
-    "close": "Tancar",
-    "save": "Guardar",
-    "cancel": "Cancel·lar",
-    "confirm": "Confirmar",
-    "delete": "Eliminar",
-    "edit": "Editar",
-    "view": "Veure",
-    "search": "Cercar",
-    "filter": "Filtrar",
-    "clear": "Netejar",
-    "all": "Tots",
-    "none": "Cap",
-    "yes": "Sí",
-    "no": "No"
   },
   "user": {
     "login": "Iniciar Sessió",
     "logout": "Tancar Sessió",
-    "profile": "El meu Perfil",
-    "premium": "Odisea+",
+    "profile": "Perfil",
+    "premium": "Premium",
     "menu": "Menú d'usuari",
     "sessionClosed": "Sessió tancada",
-    "sessionClosedDescription": "Has tancat sessió correctament",
+    "sessionClosedDescription": "Has tancat la sessió correctament",
     "errorClosingSession": "Error en tancar la sessió"
   },
-  "testimonials": {
-    "loading": "Carregant testimonis...",
-    "error": "Error en carregar testimonis",
-    "hero": {
-      "title": "DESCOBREIX TESTIMONIS EXCLUSIUS D'ESTUDIANTS QUE HAN ESTAT EN LA TEVA SITUACIÓ",
-      "subtitle": "Històries reals d'estudiants que han viscut experiències increïbles a l'estranger. Els seus consells i experiències t'ajudaran a preparar la teva pròpia aventura."
-    },
-    "filters": {
-      "byCountry": "Filtrar per país",
-      "selectCountry": "Seleccionar país",
-      "allCountries": "Tots els països"
-    },
-    "readFullStory": "Llegir història completa",
-    "cta": {
-      "title": "Ja tens la teva història per explicar?",
-      "subtitle": "Si has viscut una experiència internacional, comparteix-la amb la comunitat Odisea",
-      "button": "Compartir la meva història"
-    },
-    "destination": "Destinació",
-    "experience": "Experiència",
-    "excellent": "Excel·lent",
-    "myStory": "La meva Història",
-    "myTips": "Els meus Consells per a Tu",
-    "contactWith": "Contactar amb",
-    "seeMoreAbout": "Veure més sobre"
+  "common": {
+    "error": "Error",
+    "loading": "Carregant...",
+    "search": "Cercar",
+    "filter": "Filtrar",
+    "clear": "Esborrar",
+    "save": "Guardar",
+    "cancel": "Cancel·lar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Tornar",
+    "next": "Següent",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "close": "Tancar",
+    "open": "Obrir",
+    "yes": "Sí",
+    "no": "No",
+    "confirm": "Confirmar",
+    "viewMore": "Veure més",
+    "viewLess": "Veure menys",
+    "readMore": "Llegir més",
+    "showMore": "Mostrar més",
+    "showLess": "Mostrar menys"
   },
-  "community": {
-    "hero": {
-      "title": "COMUNITAT ODISEA",
-      "subtitle": "Connecta amb estudiants d'arreu del món. Comparteix consells, fes preguntes i troba la teva gent."
-    },
-    "search": {
-      "placeholder": "Cercar a la comunitat..."
-    },
-    "filters": {
-      "allPosts": "Tots els posts",
-      "erasmus": "Erasmus",
-      "tips": "Consells",
-      "housing": "Allotjament",
-      "events": "Esdeveniments"
-    },
-    "popularTags": "Etiquetes populars",
-    "shareWithCommunity": "Compartir alguna cosa amb la comunitat",
-    "newPost": {
-      "title": "Nou Post",
-      "placeholder": "Què vols compartir amb la comunitat?",
-      "cancel": "Cancel·lar",
-      "publish": "Publicar"
-    },
-    "postImage": "Imatge del post",
-    "loadMore": "Carregar més posts"
+  "countryDetail": {
+    "generalInfo": "Informació General",
+    "livingCost": "Cost de Vida",
+    "documentation": "Documentació",
+    "culture": "Cultura",
+    "universities": "Universitats",
+    "cities": "Ciutats",
+    "viewUniversities": "Veure Universitats",
+    "viewCities": "Veure Ciutats",
+    "language": "Idioma",
+    "currency": "Moneda",
+    "timeZone": "Zona Horària",
+    "population": "Població",
+    "capital": "Capital",
+    "government": "Govern",
+    "economy": "Economia",
+    "climate": "Clima",
+    "education": "Educació",
+    "healthSystem": "Sistema de Salut",
+    "transportation": "Transport",
+    "housing": "Habitatge",
+    "food": "Menjar",
+    "safety": "Seguretat",
+    "workOpportunities": "Oportunitats de Treball",
+    "studentLife": "Vida Estudiantil",
+    "socialLife": "Vida Social",
+    "recreation": "Oci",
+    "shopping": "Compres",
+    "communication": "Comunicació",
+    "banking": "Banca",
+    "insurance": "Assegurances",
+    "taxes": "Impostos",
+    "legalSystem": "Sistema Legal",
+    "emergencyServices": "Serveis d'Emergència",
+    "customs": "Costums",
+    "festivals": "Festivals",
+    "sports": "Esports",
+    "arts": "Art",
+    "music": "Música",
+    "literature": "Literatura",
+    "cuisine": "Cuina",
+    "fashion": "Moda",
+    "technology": "Tecnologia"
   },
-  "cityDetail": {
-    "loading": "Carregant informació de la ciutat...",
-    "notFound": {
-      "title": "Ciutat no trobada",
-      "description": "No hem pogut trobar informació d'aquesta ciutat."
-    },
-    "backToCities": "Tornar a ciutats",
-    "about": "Sobre",
-    "defaultDescription": "{{cityName}} és una ciutat increïble per a estudiants internacionals, oferint una barreja única de cultura, educació de qualitat i oportunitats de creixement personal.",
+  "universities": {
+    "title": "Universitats",
+    "searchPlaceholder": "Cercar universitats...",
+    "filterByType": "Filtrar per tipus",
+    "allTypes": "Tots els tipus",
+    "public": "Pública",
+    "private": "Privada",
+    "noUniversities": "No s'han trobat universitats",
+    "loadingUniversities": "Carregant universitats...",
+    "viewDetails": "Veure detalls",
+    "website": "Lloc web",
     "location": "Ubicació",
-    "mapOf": "Mapa de",
-    "coordinates": "Coordenades",
-    "universitiesIn": "Universitats a",
-    "viewAllUniversities": "Veure totes les universitats",
-    "noUniversities": "No hi ha universitats registrades en aquesta ciutat.",
-    "experiencesIn": "Experiències a",
-    "noTestimonials": "No hi ha testimonis disponibles per a aquesta ciutat."
+    "type": "Tipus",
+    "studentsCount": "Nombre d'estudiants",
+    "foundedYear": "Any de fundació",
+    "ranking": "Rànquing",
+    "programs": "Programes",
+    "admissionRequirements": "Requisits d'admissió",
+    "tuitionFees": "Taxes de matrícula",
+    "scholarships": "Beques",
+    "campusLife": "Vida al campus",
+    "facilities": "Instal·lacions",
+    "researchOpportunities": "Oportunitats de recerca",
+    "internationalPrograms": "Programes internacionals",
+    "languageRequirements": "Requisits d'idioma",
+    "applicationDeadline": "Data límit d'aplicació",
+    "contactInfo": "Informació de contacte"
   }
 }

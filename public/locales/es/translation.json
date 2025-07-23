@@ -2,354 +2,123 @@
 {
   "nav": {
     "home": "Inicio",
-    "test": "Test", 
+    "test": "Test",
     "countries": "Países",
     "testimonials": "Testimonios",
-    "community": "Comunidad",
-    "login": "Login"
-  },
-  "auth": {
-    "login": {
-      "title": "Bienvenido",
-      "subtitle": "Inicia sesión para continuar tu aventura",
-      "email": "Correo electrónico",
-      "password": "Contraseña",
-      "forgotPassword": "¿Olvidaste tu contraseña?",
-      "signInButton": "Iniciar sesión",
-      "noAccount": "¿No tienes cuenta? Regístrate",
-      "signingIn": "Iniciando sesión..."
-    },
-    "signup": {
-      "title": "Únete a Odisea",
-      "subtitle": "Crea tu cuenta y comienza tu odisea internacional",
-      "fullName": "Nombre completo",
-      "email": "Correo electrónico",
-      "password": "Contraseña",
-      "confirmPassword": "Confirmar contraseña",
-      "createAccount": "Crear Cuenta",
-      "hasAccount": "¿Ya tienes cuenta? Inicia sesión",
-      "creatingAccount": "Creando cuenta..."
-    },
-    "premium": {
-      "title": "Odisea+",
-      "subtitle": "Desbloquea funcionalidades premium para maximizar tu experiencia internacional",
-      "features": {
-        "checklist": "Checklist interactivo personalizado",
-        "mentoring": "Acceso a mentorías con estudiantes veteranos",
-        "housing": "Alojamiento verificado y seguro",
-        "community": "Comunidad premium exclusiva",
-        "support": "Soporte prioritario 24/7",
-        "guides": "Guías detalladas por destino"
-      },
-      "price": "€9.99",
-      "period": "por mes",
-      "startTrial": "Comenzar prueba gratuita",
-      "cancelAnytime": "Cancela cuando quieras. Sin compromiso.",
-      "comingSoon": "Próximamente",
-      "comingSoonFeatures": {
-        "housing": "🏠 Alojamiento verificado",
-        "mentoring": "👥 Mentorías personalizadas",
-        "checklist": "📋 Checklist interactivo"
-      }
-    },
-    "errors": {
-      "signInError": "Error al iniciar sesión",
-      "signUpError": "Error al crear la cuenta",
-      "passwordMismatch": "Las contraseñas no coinciden",
-      "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
-      "genericError": "Algo salió mal. Inténtalo de nuevo."
-    },
-    "success": {
-      "welcome": "¡Bienvenido!",
-      "signedIn": "Has iniciado sesión exitosamente",
-      "accountCreated": "¡Cuenta creada!",
-      "checkEmail": "Revisa tu email para confirmar tu cuenta"
-    }
-  },
-  "testimonials": {
-    "loading": "Cargando testimonios...",
-    "error": "Error al cargar testimonios",
-    "hero": {
-      "title": "DESCUBRE TESTIMONIOS EXCLUSIVOS DE ESTUDIANTES QUE HAN ESTADO EN TUS ZAPATOS",
-      "subtitle": "Historias reales de estudiantes que vivieron experiencias increíbles en el extranjero. Sus consejos y vivencias te ayudarán a prepararte para tu propia aventura."
-    },
-    "filters": {
-      "byCountry": "Filtrar por país",
-      "selectCountry": "Seleccionar país",
-      "allCountries": "Todos los países"
-    },
-    "readFullStory": "Leer historia completa",
-    "cta": {
-      "title": "¿Ya tienes tu historia que contar?",
-      "subtitle": "Si has vivido una experiencia internacional, compártela con la comunidad de Odisea",
-      "button": "Compartir mi historia"
-    },
-    "destination": "Destino",
-    "experience": "Experiencia",
-    "excellent": "Excelente",
-    "myStory": "Mi Historia",
-    "myTips": "Mis Consejos para Ti",
-    "contactWith": "Contactar con",
-    "seeMoreAbout": "Ver más sobre"
-  },
-  "community": {
-    "hero": {
-      "title": "COMUNIDAD ODISEA",
-      "subtitle": "Conecta con estudiantes de todo el mundo. Comparte consejos, haz preguntas y encuentra tu gente."
-    },
-    "search": {
-      "placeholder": "Buscar en la comunidad..."
-    },
-    "filters": {
-      "allPosts": "Todos los posts",
-      "erasmus": "Erasmus",
-      "tips": "Consejos",
-      "housing": "Alojamiento",
-      "events": "Eventos"
-    },
-    "popularTags": "Tags populares",
-    "shareWithCommunity": "Compartir algo con la comunidad",
-    "newPost": {
-      "title": "Nuevo Post",
-      "placeholder": "¿Qué quieres compartir con la comunidad?",
-      "cancel": "Cancelar",
-      "publish": "Publicar"
-    },
-    "postImage": "Imagen del post",
-    "loadMore": "Cargar más posts"
-  },
-  "cities": {
-    "loading": "Cargando ciudades...",
-    "error": {
-      "title": "Error al cargar ciudades",
-      "description": "No pudimos cargar las ciudades de este país."
-    },
-    "backToCountry": "Volver al país",
-    "title": "Ciudades en",
-    "subtitle": "Explora las principales ciudades estudiantiles del país",
-    "count": "{{count}} ciudades disponibles",
-    "noCities": {
-      "title": "No hay ciudades disponibles",
-      "description": "Aún no tenemos información sobre ciudades en este país."
-    },
-    "defaultDescription": "Una ciudad increíble para estudiar y vivir experiencias únicas.",
-    "unknownCountry": "País Desconocido",
-    "cityDestination": "Destino urbano",
-    "exploreCity": "Explorar ciudad →"
-  },
-  "universities": {
-    "loading": "Cargando universidades...",
-    "error": {
-      "title": "Error al cargar universidades",
-      "description": "No pudimos cargar las universidades de este país."
-    },
-    "backToCountry": "Volver al país",
-    "title": "Universidades en",
-    "subtitle": "Explora las mejores instituciones educativas del país",
-    "count": "{{count}} universidades disponibles",
-    "noUniversities": {
-      "title": "No hay universidades disponibles",
-      "description": "Aún no tenemos información sobre universidades en este país."
-    },
-    "defaultDescription": "Una institución educativa de excelencia que ofrece programas académicos de alta calidad.",
-    "ranking": "Ranking",
-    "visitWebsite": "Visitar sitio web"
-  },
-  "cityDetail": {
-    "loading": "Cargando información de la ciudad...",
-    "notFound": {
-      "title": "Ciudad no encontrada",
-      "description": "No pudimos encontrar la información de esta ciudad."
-    },
-    "backToCities": "Volver a ciudades",
-    "about": "Sobre",
-    "defaultDescription": "{{cityName}} es una ciudad increíble para estudiantes internacionales, ofreciendo una mezcla única de cultura, educación de calidad y oportunidades de crecimiento personal.",
-    "location": "Ubicación",
-    "mapOf": "Mapa de",
-    "coordinates": "Coordenadas",
-    "universitiesIn": "Universidades en",
-    "viewAllUniversities": "Ver todas las universidades",
-    "noUniversities": "No hay universidades registradas en esta ciudad.",
-    "experiencesIn": "Experiencias en",
-    "noTestimonials": "No hay testimonios disponibles para esta ciudad."
+    "community": "Comunidad"
   },
   "test": {
-    "title": "Test de Orientación",
-    "subtitle": "Descubre tu destino ideal para estudiar en el extranjero",
-    "description": "Realiza nuestro test integral para encontrar la combinación perfecta para tu aventura internacional",
-    "iframe_title": "Test de Orientación Odisea",
+    "title": "Evaluación de Preparación",
+    "subtitle": "Descubre qué tan preparado estás para tu aventura de estudios en el extranjero",
+    "description": "Completa nuestra evaluación integral para recibir recomendaciones personalizadas y identificar las áreas donde necesitas más preparación.",
+    "iframe_title": "Formulario de Evaluación de Preparación",
     "loading": "Cargando..."
-  },
-  "home": {
-    "hero": {
-      "title": "PREPÁRATE PARA TU",
-      "odyssey": "Odisea ✈️",
-      "subtitle": "🌍 Descubre el mundo con confianza. Plataforma creada por estudiantes, para estudiantes, que te ayuda a navegar tu aventura internacional 🎒",
-      "cta_test": "Hacer el Test 📝",
-      "cta_map": "Ver Mapa Mundial 🗺️",
-      "new_badge": "¡Nuevo! ✨"
-    },
-    "about": {
-      "title": "👥 SOMOS ESTUDIANTES COMO TÚ",
-      "description1": "💭 Tuvimos que organizar nuestro propio estudio o internship en el extranjero, y a menudo nos sentimos perdidos, abrumados y sin orientación. Por eso creamos Odisea, una plataforma interactiva hecha por estudiantes, para estudiantes, para ayudarte a navegar tu viaje de movilidad internacional con confianza y claridad.",
-      "description2": "🏠 Desde consejos de destinos hasta consejos de vivienda, te apoyamos en cada paso del camino.",
-      "cta": "Conoce más historias 📖"
-    },
-    "features": {
-      "title": "🚀 ORGANIZA TU PRÓXIMO VIAJE",
-      "subtitle": "Descubre todas las opciones que tenemos para ti ✨",
-      "exchange": {
-        "title": "🎓 INTERCAMBIO",
-        "description": "Descubre programas de intercambio en universidades de todo el mundo. Vive una experiencia académica internacional única.",
-        "cta": "Explorar destinos 🌟 →"
-      },
-      "internship": {
-        "title": "💼 PRÁCTICAS",
-        "description": "Encuentra oportunidades de prácticas profesionales en empresas internacionales.",
-        "coming_soon": "Próximamente disponible 🔜"
-      },
-      "gap_year": {
-        "title": "🌍 GAP YEAR",
-        "description": "Tómate un año para explorar el mundo, aprender idiomas y crecer personalmente.",
-        "coming_soon": "Próximamente disponible 🔜"
-      }
-    },
-    "cta": {
-      "title": "🤝 ÚNETE A LOS ODISEANOS",
-      "description": "💪 No estás solo en este viaje. Conecta con estudiantes de todo el mundo que han vivido la misma aventura. Comparte consejos, haz preguntas y encuentra a tu gente.",
-      "subtitle": "✨ Juntos, hacemos que estudiar en el extranjero sea más fácil y mucho más divertido.",
-      "button": "ÚNETE 🚀"
-    }
-  },
-  "countries": {
-    "hero": {
-      "title": "🌍 Explora países en 3D",
-      "subtitle": "Haz clic en cualquier país para descubrir más información"
-    },
-    "search": {
-      "placeholder": "🔍 Buscar país o capital..."
-    },
-    "filters": {
-      "allContinents": "🌎 Todos los continentes",
-      "continents": ["África", "Asia", "Europa", "América del Norte", "América del Sur", "Oceanía"]
-    },
-    "tabs": {
-      "countries": "PAÍSES",
-      "cities": "CIUDADES",
-      "availableCities": "Ciudades disponibles",
-      "citiesCount": "{{count}} ciudades disponibles",
-      "noCities": "No se encontraron ciudades",
-      "comingSoon": "Próximamente - ¡estamos añadiendo más ciudades!"
-    },
-    "grid": {
-      "availableCountries": "Países disponibles",
-      "results": "{{count}} de {{total}} países",
-      "resultsWithSearch": "que coinciden con \"{{search}}\"",
-      "noResults": "No se encontraron países",
-      "tryDifferent": "Intenta ajustar tu búsqueda o filtros",
-      "seeMore": "Ver más →"
-    },
-    "loading": "Cargando países...",
-    "error": {
-      "title": "Error al cargar países",
-      "description": "No pudimos cargar la información de los países.",
-      "retry": "Reintentar"
-    },
-    "legend": {
-      "title": "🗺️ Leyenda del Mapa",
-      "withTestimonials": "Con testimonios",
-      "availableDestination": "Destino disponible",
-      "otherCountries": "Otros países",
-      "clickExplore": "💡 Haz clic para explorar",
-      "dragRotate": "🖱️ Arrastra para rotar"
-    },
-    "cost": {
-      "low": "€",
-      "medium": "€€",
-      "high": "€€€"
-    }
-  },
-  "countryDetail": {
-    "back": "← Volver a países",
-    "loading": "Cargando información del país...",
-    "notFound": {
-      "title": "País no encontrado",
-      "description": "No pudimos encontrar información de este país.",
-      "backButton": "Volver a países"
-    },
-    "about": "Sobre {{country}}",
-    "quickFacts": "Datos clave",
-    "continent": "Continente",
-    "population": "Población",
-    "currency": "Moneda",
-    "language": "Idioma",
-    "costOfLiving": "Costo de vida",
-    "students": "estudiantes",
-    "actions": "Acciones",
-    "viewTestimonials": "Ver testimonios",
-    "joinCommunity": "Unirse a la comunidad",
-    "sections": {
-      "visa": "Información de Visa",
-      "housing": "Alojamiento",
-      "transportation": "Transporte"
-    },
-    "cities": {
-      "title": "Ciudades",
-      "subtitle": "Explora las principales ciudades estudiantiles de {{country}}",
-      "viewAll": "Ver todas las ciudades en {{country}}"
-    }
-  },
-  "map": {
-    "title": "Mapa Interactivo",
-    "subtitle": "Explora destinos alrededor del mundo",
-    "interactiveGlobe": "Globo Interactivo",
-    "legend": {
-      "withTestimonials": "Con testimonios",
-      "availableDestination": "Destino disponible"
-    },
-    "searchPlaceholder": "Buscar país o ciudad...",
-    "allContinents": "Todos los continentes",
-    "seeMoreInfo": "Ver más información"
-  },
-  "footer": {
-    "description": "Plataforma creada por estudiantes, para estudiantes. Te ayudamos a navegar tu aventura internacional con confianza y claridad.",
-    "links": "Enlaces",
-    "legal": "Legal",
-    "contact": "Contacto",
-    "terms": "Términos y Condiciones",
-    "privacy": "Política de Privacidad",
-    "copyright": "© 2024 Odisea. Todos los derechos reservados."
-  },
-  "common": {
-    "loading": "Cargando...",
-    "error": "Error",
-    "retry": "Reintentar",
-    "back": "Atrás",
-    "next": "Siguiente",
-    "previous": "Anterior",
-    "close": "Cerrar",
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "confirm": "Confirmar",
-    "delete": "Eliminar",
-    "edit": "Editar",
-    "view": "Ver",
-    "search": "Buscar",
-    "filter": "Filtrar",
-    "clear": "Limpiar",
-    "all": "Todos",
-    "none": "Ninguno",
-    "yes": "Sí",
-    "no": "No"
   },
   "user": {
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión",
-    "profile": "Mi Perfil",
-    "premium": "Odisea+",
+    "profile": "Perfil",
+    "premium": "Premium",
     "menu": "Menú de usuario",
     "sessionClosed": "Sesión cerrada",
-    "sessionClosedDescription": "Has cerrado sesión correctamente",
-    "errorClosingSession": "No se pudo cerrar la sesión"
+    "sessionClosedDescription": "Has cerrado sesión exitosamente",
+    "errorClosingSession": "Error al cerrar la sesión"
+  },
+  "common": {
+    "error": "Error",
+    "loading": "Cargando...",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "yes": "Sí",
+    "no": "No",
+    "confirm": "Confirmar",
+    "viewMore": "Ver más",
+    "viewLess": "Ver menos",
+    "readMore": "Leer más",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos"
+  },
+  "countryDetail": {
+    "generalInfo": "Información General",
+    "livingCost": "Costo de Vida",
+    "documentation": "Documentación",
+    "culture": "Cultura",
+    "universities": "Universidades",
+    "cities": "Ciudades",
+    "viewUniversities": "Ver Universidades",
+    "viewCities": "Ver Ciudades",
+    "language": "Idioma",
+    "currency": "Moneda",
+    "timeZone": "Zona Horaria",
+    "population": "Población",
+    "capital": "Capital",
+    "government": "Gobierno",
+    "economy": "Economía",
+    "climate": "Clima",
+    "education": "Educación",
+    "healthSystem": "Sistema de Salud",
+    "transportation": "Transporte",
+    "housing": "Vivienda",
+    "food": "Comida",
+    "safety": "Seguridad",
+    "workOpportunities": "Oportunidades de Trabajo",
+    "studentLife": "Vida Estudiantil",
+    "socialLife": "Vida Social",
+    "recreation": "Recreación",
+    "shopping": "Compras",
+    "communication": "Comunicación",
+    "banking": "Banca",
+    "insurance": "Seguros",
+    "taxes": "Impuestos",
+    "legalSystem": "Sistema Legal",
+    "emergencyServices": "Servicios de Emergencia",
+    "customs": "Costumbres",
+    "festivals": "Festivales",
+    "sports": "Deportes",
+    "arts": "Arte",
+    "music": "Música",
+    "literature": "Literatura",
+    "cuisine": "Cocina",
+    "fashion": "Moda",
+    "technology": "Tecnología"
+  },
+  "universities": {
+    "title": "Universidades",
+    "searchPlaceholder": "Buscar universidades...",
+    "filterByType": "Filtrar por tipo",
+    "allTypes": "Todos los tipos",
+    "public": "Pública",
+    "private": "Privada",
+    "noUniversities": "No se encontraron universidades",
+    "loadingUniversities": "Cargando universidades...",
+    "viewDetails": "Ver detalles",
+    "website": "Sitio web",
+    "location": "Ubicación",
+    "type": "Tipo",
+    "studentsCount": "Número de estudiantes",
+    "foundedYear": "Año de fundación",
+    "ranking": "Ranking",
+    "programs": "Programas",
+    "admissionRequirements": "Requisitos de admisión",
+    "tuitionFees": "Tarifas de matrícula",
+    "scholarships": "Becas",
+    "campusLife": "Vida en el campus",
+    "facilities": "Instalaciones",
+    "researchOpportunities": "Oportunidades de investigación",
+    "internationalPrograms": "Programas internacionales",
+    "languageRequirements": "Requisitos de idioma",
+    "applicationDeadline": "Fecha límite de aplicación",
+    "contactInfo": "Información de contacto"
   }
 }

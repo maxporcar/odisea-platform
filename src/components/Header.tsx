@@ -17,6 +17,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const navigationItems = [
+    { key: 'test', path: '/test' },
     { key: 'countries', path: '/paises' },
     { key: 'testimonials', path: '/testimonios' },
     { key: 'community', path: '/comunidad' },

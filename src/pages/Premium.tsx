@@ -3,13 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
-import { Crown, CheckCircle, Users, MapPin, BookOpen, Star, ArrowRight, Shield, Calendar, MessageCircle } from 'lucide-react';
+import { Crown, Check, Users, MapPin, BookOpen, Star, ArrowRight, Shield, Calendar, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Layout from '@/components/Layout';
 import SubscribeButton from '@/components/SubscribeButton';
+import ContactForm from '@/components/ContactForm';
 
 const Premium = () => {
   const { user, profile } = useAuth();
@@ -17,40 +18,34 @@ const Premium = () => {
 
   const features = [
     {
-      icon: <MessageCircle className="w-6 h-6 text-primary" />,
-      title: "Priority Mentoring Support",
-      description: "Get personalized guidance from experienced mentors who have studied abroad",
-      premium: true
+      icon: <MessageCircle className="w-5 h-5 text-green-600" />,
+      title: "Mentoring Support",
+      description: "Guidance from experienced mentors"
     },
     {
-      icon: <MapPin className="w-6 h-6 text-primary" />,
-      title: "Exclusive Housing Recommendations",
-      description: "Access to vetted housing options and insider tips for each destination",
-      premium: true
+      icon: <MapPin className="w-5 h-5 text-green-600" />,
+      title: "Housing Recommendations",
+      description: "Vetted housing options for each destination"
     },
     {
-      icon: <BookOpen className="w-6 h-6 text-primary" />,
+      icon: <BookOpen className="w-5 h-5 text-green-600" />,
       title: "Advanced Destination Guides",
-      description: "In-depth cultural guides, visa information, and practical living tips",
-      premium: true
+      description: "In-depth cultural and practical guides"
     },
     {
-      icon: <Users className="w-6 h-6 text-primary" />,
+      icon: <Users className="w-5 h-5 text-green-600" />,
       title: "Community Access",
-      description: "Connect with other students planning similar journeys and alumni networks",
-      premium: true
+      description: "Connect with students and alumni"
     },
     {
-      icon: <Calendar className="w-6 h-6 text-primary" />,
+      icon: <Calendar className="w-5 h-5 text-green-600" />,
       title: "Interactive Checklist",
-      description: "Personalized preparation timeline with country-specific tasks and deadlines",
-      premium: true
+      description: "Personalized preparation timeline"
     },
     {
-      icon: <Shield className="w-6 h-6 text-primary" />,
+      icon: <Shield className="w-5 h-5 text-green-600" />,
       title: "Priority Support",
-      description: "Direct access to our support team for urgent questions and assistance",
-      premium: true
+      description: "Direct access to our support team"
     }
   ];
 
@@ -75,38 +70,6 @@ const Premium = () => {
     }
   ];
 
-  const pricingPlans = [
-    {
-      name: "Individual",
-      price: "€9.99",
-      period: "per month",
-      description: "Perfect for individual students planning their study abroad journey",
-      features: [
-        "All premium features",
-        "Priority support",
-        "Interactive checklist",
-        "Community access",
-        "Housing recommendations"
-      ],
-      type: "individual" as const
-    },
-    {
-      name: "Institution",
-      price: "€49.99",
-      period: "per month",
-      description: "Ideal for universities and educational institutions",
-      features: [
-        "All individual features",
-        "Bulk student management",
-        "Institution dashboard",
-        "Custom branding",
-        "Dedicated support"
-      ],
-      type: "institution" as const,
-      popular: true
-    }
-  ];
-
   const isSubscribed = subscription?.subscribed || false;
 
   return (
@@ -125,8 +88,8 @@ const Premium = () => {
               Unlock the full potential of your study abroad journey with premium features designed for success
             </p>
             
-            {isSubscribed ? (
-              <div className="flex items-center justify-center gap-4">
+            {isSubscribed && (
+              <div className="flex items-center justify-center gap-4 mb-8">
                 <Badge variant="default" className="bg-green-100 text-green-800 px-4 py-2">
                   <Crown className="w-4 h-4 mr-2" />
                   Premium Active
@@ -138,28 +101,23 @@ const Premium = () => {
                   </Link>
                 </Button>
               </div>
-            ) : (
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <SubscribeButton type="individual" className="px-8 py-3" />
-                <SubscribeButton type="institution" className="px-8 py-3" />
-              </div>
             )}
           </div>
 
           {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {features.map((feature, index) => (
               <Card key={index} className="border-2 hover:border-primary/20 transition-colors">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    {feature.icon}
-                    <CardTitle className="text-lg">{feature.title}</CardTitle>
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 mt-1">
+                      {feature.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                      <p className="text-muted-foreground text-sm">{feature.description}</p>
+                    </div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">
-                    {feature.description}
-                  </CardDescription>
                 </CardContent>
               </Card>
             ))}
@@ -190,39 +148,80 @@ const Premium = () => {
             </div>
           </div>
 
-          {/* Pricing */}
+          {/* Plans Section */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-center mb-12">Choose Your Plan</h2>
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {pricingPlans.map((plan, index) => (
-                <Card key={index} className={`relative ${plan.popular ? 'border-primary border-2' : ''}`}>
-                  {plan.popular && (
-                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary">
-                      Most Popular
-                    </Badge>
-                  )}
+            <Tabs defaultValue="individual" className="max-w-4xl mx-auto">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="individual">Individual</TabsTrigger>
+                <TabsTrigger value="institution">Institution</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="individual" className="mt-8">
+                <Card className="border-2 border-primary">
                   <CardHeader>
-                    <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                    <CardDescription>{plan.description}</CardDescription>
+                    <CardTitle className="text-2xl">Individual Plan</CardTitle>
+                    <CardDescription>Perfect for individual students planning their study abroad journey</CardDescription>
                     <div className="flex items-baseline gap-1 mt-4">
-                      <span className="text-3xl font-bold">{plan.price}</span>
-                      <span className="text-muted-foreground">/{plan.period}</span>
+                      <span className="text-3xl font-bold">€9.99</span>
+                      <span className="text-muted-foreground">/month</span>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3 mb-6">
-                      {plan.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-sm">{feature}</span>
+                      {features.map((feature, index) => (
+                        <li key={index} className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm">{feature.title}</span>
                         </li>
                       ))}
                     </ul>
-                    <SubscribeButton type={plan.type} className="w-full" />
+                    {!isSubscribed && (
+                      <SubscribeButton type="individual" className="w-full" />
+                    )}
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+              </TabsContent>
+              
+              <TabsContent value="institution" className="mt-8">
+                <div className="space-y-8">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-2xl">Institution Plan</CardTitle>
+                      <CardDescription>
+                        Ideal for universities and educational institutions. Get in touch with us for custom pricing and features.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3 mb-6">
+                        <li className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm">All individual features</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm">Bulk student management</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm">Institution dashboard</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm">Custom branding</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm">Dedicated support</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                  
+                  <ContactForm />
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* CTA Section */}
