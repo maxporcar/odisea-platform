@@ -1,11 +1,11 @@
-
 {
   "nav": {
     "home": "Inicio",
-    "test": "Test",
+    "test": "Test", 
     "countries": "Países",
     "testimonials": "Testimonios",
-    "community": "Comunidad"
+    "community": "Comunidad",
+    "login": "Login"
   },
   "auth": {
     "login": {

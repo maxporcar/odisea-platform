@@ -52,18 +52,19 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({
     }
   };
 
-  const buttonText = type === 'individual' ? 'Odisea+ Individual - €9.99/month' : 'Odisea+ Institution - €49.99/month';
+  const buttonText = type === 'individual' ? 'Odisea+' : 'Odisea+ Institution';
 
   return (
     <Button
       onClick={handleSubscribe}
       disabled={loading}
-      className={`bg-gradient-to-r from-warm-orange to-warm-amber text-white font-semibold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${className}`}
+      size="sm"
+      className={`bg-gradient-to-r from-warm-orange to-warm-amber text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
     >
       {loading ? (
-        <Loader2 className="w-5 h-5 animate-spin mr-2" />
+        <Loader2 className="w-4 h-4 animate-spin mr-2" />
       ) : (
-        <Crown className="w-5 h-5 mr-2" />
+        <Crown className="w-4 h-4 mr-2" />
       )}
       {loading ? 'Processing...' : buttonText}
     </Button>

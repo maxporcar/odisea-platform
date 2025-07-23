@@ -5,7 +5,8 @@
     "test": "Test",
     "countries": "Countries",
     "testimonials": "Testimonials",
-    "community": "Community"
+    "community": "Community",
+    "login": "Login"
   },
   "auth": {
     "login": {
