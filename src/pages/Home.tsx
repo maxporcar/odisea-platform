@@ -88,7 +88,16 @@ const Home = () => {
               </div>
             </Link>
           </div>
-
+{/* Hand-drawn style arrow pointing to the map button */}
+          <div className="absolute bottom-16 right-10 hidden lg:block">
+            <div className="relative">
+              <div className="font-bold transform rotate-12 animate-bounce" style={{ color: '#FF6600', fontSize: '18px' }}>
+                {t('home.hero.map_prompt')}
+              </div>
+              <div className="absolute -bottom-2 -left-4 text-2xl transform rotate-45" style={{ color: '#FF6600' }}>
+                ↗️
+              </div>
+            </div>
           
           </div>
         </div>
