@@ -1,3 +1,4 @@
+
 {
   "nav": {
     "home": "Accueil",
@@ -181,14 +182,14 @@
     "actions": "Actions",
     "viewTestimonials": "Voir les témoignages",
     "joinCommunity": "Rejoindre la communauté",
+    "studyGuideSections": "Sections du Guide d'Étude",
     "sections": {
       "bigCities": "Grandes Villes vs Petites Villes",
       "culture": "Culture",
       "lifeActivities": "Vie, Activités et Voyages",
       "scholarships": "Avantages Étudiants et Bourses",
       "visa": "Informations Visa",
-      "medical": "Médical",
-      "cities": "Villes"
+      "medical": "Médical"
     },
     "cities": {
       "title": "Villes",
