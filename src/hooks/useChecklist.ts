@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -65,8 +64,7 @@ export const useChecklist = (tripId?: string) => {
       const { data: progress, error: progressError } = await supabase
         .from('user_checklist_progress')
         .select('*')
-        .eq('trip_id', tripId)
-        .eq('user_id', user.id);
+        .eq('trip_id', tripId);
 
       if (progressError) throw progressError;
 
@@ -80,11 +78,11 @@ export const useChecklist = (tripId?: string) => {
           order_index: template.order_index,
           is_active: template.is_active,
         },
-        items: (template.checklist_items as any[])
+        items: template.checklist_items
           ?.filter((item: any) => item.is_active)
           ?.sort((a: any, b: any) => a.order_index - b.order_index) || [],
         progress: progress?.filter(p => 
-          (template.checklist_items as any[])?.some((item: any) => item.id === p.item_id)
+          template.checklist_items?.some((item: any) => item.id === p.item_id)
         ) || [],
       })) || [];
 
