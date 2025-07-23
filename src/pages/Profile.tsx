@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -5,6 +6,7 @@ import { useTrips } from '@/hooks/useTrips';
 import { useCountries } from '@/hooks/useCountries';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Card,
   CardContent,
@@ -35,7 +37,7 @@ const Profile = () => {
   const { user, profile, refreshProfile } = useAuth();
   const { subscription } = useSubscription();
   const { trips, loading: tripsLoading } = useTrips();
-  const { countries } = useCountries();
+  const { data: countries } = useCountries();
   const { toast } = useToast();
   const { t } = useTranslation();
   const { isOpen, openModal, closeModal } = usePremiumModal();
@@ -399,7 +401,7 @@ const Profile = () => {
                       ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {favoriteCountries.map((countryId) => {
-                            const country = countries.find(c => c.id === countryId);
+                            const country = countries?.find(c => c.id === countryId);
                             return country ? (
                               <div key={countryId} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                                 <span className="text-2xl">{country.flag}</span>
