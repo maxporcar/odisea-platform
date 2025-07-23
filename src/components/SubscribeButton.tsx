@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Crown, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface SubscribeButtonProps {
   type?: 'individual' | 'institution';
@@ -18,13 +19,14 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleSubscribe = async () => {
     if (!user) {
       toast({
         variant: "destructive",
         title: "Authentication required",
-        description: "Please log in to subscribe to Odisea+",
+        description: "Please log in to get Odisea+",
       });
       return;
     }
@@ -32,7 +34,11 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: { subscriptionType: type }
+        body: { 
+          subscriptionType: type,
+          amount: 2000, // 20€ in cents
+          isOneTime: true
+        }
       });
 
       if (error) throw error;
@@ -41,10 +47,10 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({
         window.open(data.url, '_blank');
       }
     } catch (error) {
-      console.error('Subscription error:', error);
+      console.error('Payment error:', error);
       toast({
         variant: "destructive",
-        title: "Subscription error",
+        title: "Payment error",
         description: "Failed to create checkout session. Please try again.",
       });
     } finally {
@@ -52,20 +58,18 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({
     }
   };
 
-  const buttonText = type === 'individual' ? 'Odisea+ Individual - €9.99/month' : 'Odisea+ Institution - €49.99/month';
-
   return (
     <Button
       onClick={handleSubscribe}
       disabled={loading}
-      className={`bg-gradient-to-r from-warm-orange to-warm-amber text-white font-semibold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${className}`}
+      className={`bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${className}`}
     >
       {loading ? (
         <Loader2 className="w-5 h-5 animate-spin mr-2" />
       ) : (
         <Crown className="w-5 h-5 mr-2" />
       )}
-      {loading ? 'Processing...' : buttonText}
+      {loading ? 'Processing...' : `${t('premium.upgrade')} - 20€`}
     </Button>
   );
 };

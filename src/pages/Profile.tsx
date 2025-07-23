@@ -1,343 +1,472 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTrips } from '@/hooks/useTrips';
 import { useCountries } from '@/hooks/useCountries';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { supabase } from '@/integrations/supabase/client';
-import { User, MapPin, Calendar, CheckCircle, Heart, Edit, Save, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  User,
+  Save,
+  MapPin,
+  Heart,
+  FileText,
+  CheckCircle,
+  X,
+  Crown,
+  Plane,
+} from 'lucide-react';
+import Layout from '@/components/Layout';
+import { Badge } from '@/components/ui/badge';
+import PremiumModal from '@/components/PremiumModal';
+import { usePremiumModal } from '@/hooks/usePremiumModal';
 
-export default function Profile() {
+const Profile = () => {
   const { user, profile, refreshProfile } = useAuth();
   const { subscription } = useSubscription();
-  const { trips } = useTrips();
-  const { data: countries = [] } = useCountries();
+  const { trips, loading: tripsLoading } = useTrips();
+  const { countries } = useCountries();
   const { toast } = useToast();
-  
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
+  const { t } = useTranslation();
+  const { isOpen, openModal, closeModal } = usePremiumModal();
+
+  const [profileData, setProfileData] = useState({
     full_name: profile?.full_name || '',
     country: profile?.country || '',
+    language: profile?.language || 'en',
   });
   const [favoriteCountries, setFavoriteCountries] = useState<string[]>([]);
   const [travelNotes, setTravelNotes] = useState('');
-  const [isLoadingNotes, setIsLoadingNotes] = useState(false);
 
-  // Load user preferences
+  useEffect(() => {
+    if (profile) {
+      setProfileData({
+        full_name: profile.full_name || '',
+        country: profile.country || '',
+        language: profile.language || 'en',
+      });
+    }
+  }, [profile]);
+
   useEffect(() => {
     if (user) {
-      // For now, just set loading to false since table doesn't exist yet
-      setIsLoadingNotes(false);
+      fetchUserPreferences();
     }
   }, [user]);
 
+  const fetchUserPreferences = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_preferences')
+        .select('*')
+        .eq('user_id', user!.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching user preferences:', error);
+      } else {
+        setFavoriteCountries(data?.favorite_countries || []);
+        setTravelNotes(data?.travel_notes || '');
+      }
+    } catch (error) {
+      console.error('Error fetching user preferences:', error);
+    }
+  };
+
   const saveUserPreferences = async () => {
     try {
-      // Temporarily disabled until user_preferences table is created
-      toast({
-        title: "Coming Soon",
-        description: "User preferences will be available after database migration.",
-      });
+      const { error } = await supabase
+        .from('user_preferences')
+        .upsert(
+          {
+            user_id: user!.id,
+            favorite_countries: favoriteCountries,
+            travel_notes: travelNotes,
+          },
+          { onConflict: 'user_id' }
+        );
+
+      if (error) {
+        console.error('Error saving user preferences:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error saving preferences',
+          description: 'Failed to save your preferences. Please try again.',
+        });
+      } else {
+        toast({
+          title: 'Preferences saved',
+          description: 'Your preferences have been successfully saved.',
+        });
+      }
     } catch (error) {
-      console.error('Error saving preferences:', error);
+      console.error('Error saving user preferences:', error);
       toast({
-        title: "Error",
-        description: "Failed to save preferences. Please try again.",
-        variant: "destructive",
+        variant: 'destructive',
+        title: 'Error saving preferences',
+        description: 'An unexpected error occurred. Please try again.',
       });
     }
   };
 
-  const handleSaveProfile = async () => {
+  const saveProfile = async () => {
     try {
       const { error } = await supabase
         .from('profiles')
-        .update({
-          full_name: formData.full_name,
-          country: formData.country,
-        })
-        .eq('id', user?.id);
+        .update(profileData)
+        .eq('id', user!.id);
 
-      if (error) throw error;
-      
-      await refreshProfile();
-      setIsEditing(false);
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully.",
-      });
+      if (error) {
+        console.error('Error updating profile:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error updating profile',
+          description: 'Failed to update your profile. Please try again.',
+        });
+      } else {
+        toast({
+          title: 'Profile updated',
+          description: 'Your profile has been successfully updated.',
+        });
+        await refreshProfile();
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
-        variant: "destructive",
+        variant: 'destructive',
+        title: 'Error updating profile',
+        description: 'An unexpected error occurred. Please try again.',
       });
     }
   };
 
-  const toggleFavoriteCountry = (countryId: string) => {
-    setFavoriteCountries(prev => 
-      prev.includes(countryId) 
-        ? prev.filter(id => id !== countryId)
-        : [...prev, countryId]
-    );
+  const calculateOverallProgress = () => {
+    // Replace with your actual logic to calculate overall progress
+    return 75;
   };
 
-  // Calculate overall progress across all trips
-  const calculateOverallProgress = () => {
-    // For now, return 0 since checklist hook has issues
-    return 0;
+  const handleUpgrade = () => {
+    closeModal();
+    // Payment logic will be handled by SubscribeButton
+  };
+
+  const handlePremiumFeature = (featureName: string) => {
+    if (!subscription?.subscribed) {
+      toast({
+        title: "Premium Feature",
+        description: `${featureName} is a premium feature. Upgrade to Odisea+ to unlock it!`,
+        action: (
+          <button
+            onClick={openModal}
+            className="bg-orange-500 text-white px-3 py-1 rounded text-sm hover:bg-orange-600"
+          >
+            Upgrade
+          </button>
+        ),
+      });
+    }
   };
 
   if (!user) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Card className="max-w-md mx-auto">
-          <CardContent className="text-center py-8">
-            <User className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h2 className="text-xl font-semibold mb-2">Please log in</h2>
-            <p className="text-muted-foreground">
-              You need to be logged in to view your profile.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Please log in</h1>
+            <p className="text-gray-600">You need to be logged in to view your profile.</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Loading profile...</h1>
+            <p className="text-gray-600">Fetching your profile information.</p>
+          </div>
+        </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">My Profile</h1>
-          <p className="text-muted-foreground">
-            Manage your account information and travel preferences
-          </p>
-        </div>
+    <Layout>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold">My Profile</h2>
+            <p className="text-gray-500">Manage your profile information and settings</p>
+          </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="trips">My Trips</TabsTrigger>
-            <TabsTrigger value="favorites">Favorites</TabsTrigger>
-            <TabsTrigger value="notes">Travel Notes</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="profile" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column */}
+            <div className="lg:col-span-1 space-y-6">
+              {/* Profile Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="w-5 h-5" />
+                    Profile Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <User className="h-5 w-5" />
-                      Profile Information
-                    </CardTitle>
-                    <CardDescription>
-                      Your basic account information
-                    </CardDescription>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Full Name
+                    </label>
+                    <Input
+                      value={profileData.full_name}
+                      onChange={(e) => setProfileData({ ...profileData, full_name: e.target.value })}
+                      placeholder="Enter your full name"
+                    />
                   </div>
-                  {!isEditing ? (
-                    <Button variant="outline" onClick={() => setIsEditing(true)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </Button>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Country
+                    </label>
+                    <Input
+                      value={profileData.country}
+                      onChange={(e) => setProfileData({ ...profileData, country: e.target.value })}
+                      placeholder="Enter your country"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Language
+                    </label>
+                    <select 
+                      value={profileData.language}
+                      onChange={(e) => setProfileData({ ...profileData, language: e.target.value })}
+                      className="w-full p-2 border rounded-md"
+                    >
+                      <option value="en">English</option>
+                      <option value="es">Español</option>
+                      <option value="fr">Français</option>
+                    </select>
+                  </div>
+                  <Button onClick={saveProfile} className="w-full">
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Profile
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Subscription Status */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Crown className="w-5 h-5" />
+                    Subscription Status
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {subscription?.subscribed ? (
+                    <div className="flex items-center gap-2 text-green-600">
+                      <CheckCircle className="w-5 h-5" />
+                      <span className="font-medium">Odisea+ Active</span>
+                    </div>
                   ) : (
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => setIsEditing(false)}>
-                        <X className="h-4 w-4 mr-2" />
-                        Cancel
-                      </Button>
-                      <Button onClick={handleSaveProfile}>
-                        <Save className="h-4 w-4 mr-2" />
-                        Save
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <X className="w-5 h-5" />
+                        <span>Free Plan</span>
+                      </div>
+                      <Button 
+                        onClick={openModal}
+                        className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
+                      >
+                        <Crown className="w-4 h-4 mr-2" />
+                        Upgrade to Odisea+
                       </Button>
                     </div>
                   )}
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      value={user.email || ''}
-                      disabled
-                      className="bg-muted"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="full_name">Full Name</Label>
-                    <Input
-                      id="full_name"
-                      value={formData.full_name}
-                      onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
-                      disabled={!isEditing}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="country">Country</Label>
-                  <Input
-                    id="country"
-                    value={formData.country}
-                    onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
-                    disabled={!isEditing}
-                    placeholder="Your home country"
-                  />
-                </div>
-                
-                <Separator />
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">Subscription Status</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {subscription?.subscribed ? 'Odisea+ Member' : 'Free Account'}
-                    </p>
-                  </div>
-                  <Badge variant={subscription?.subscribed ? 'default' : 'secondary'}>
-                    {subscription?.subscribed ? 'Premium' : 'Free'}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                </CardContent>
+              </Card>
+            </div>
 
-          <TabsContent value="trips" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5" />
-                  My Trips & Progress
-                </CardTitle>
-                <CardDescription>
-                  Track your travel preparation progress
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {trips.length === 0 ? (
-                  <div className="text-center py-8">
-                    <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="text-lg font-medium mb-2">No trips yet</h3>
-                    <p className="text-muted-foreground mb-4">
-                      Create your first trip to start tracking your preparation progress
-                    </p>
-                    <Button asChild>
-                      <Link to="/dashboard">Create Trip</Link>
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {trips.map(trip => (
-                      <div key={trip.id} className="border rounded-lg p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <h4 className="font-medium">{trip.destination_name}</h4>
-                            {trip.departure_date && (
-                              <p className="text-sm text-muted-foreground">
-                                Departure: {new Date(trip.departure_date).toLocaleDateString()}
-                              </p>
-                            )}
-                          </div>
-                          <Button variant="outline" size="sm" asChild>
-                            <Link to="/dashboard">View Details</Link>
-                          </Button>
+            {/* Right Column */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Trip Progress */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="w-5 h-5" />
+                    My Trips Progress
+                  </CardTitle>
+                  <CardDescription>
+                    Track your preparation progress for each trip
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {tripsLoading ? (
+                    <div className="space-y-4">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="animate-pulse">
+                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                          <div className="h-2 bg-gray-200 rounded w-full"></div>
                         </div>
-                        <div className="mt-4">
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>Preparation Progress</span>
-                            <span>0% completed</span>
-                          </div>
-                          <Progress value={0} className="h-2" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="favorites" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="h-5 w-5" />
-                  Favorite Countries
-                </CardTitle>
-                <CardDescription>
-                  Countries you're interested in for future travels
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                  {countries.map(country => (
-                    <div
-                      key={country.id}
-                      className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                        favoriteCountries.includes(country.id)
-                          ? 'border-primary bg-primary/5'
-                          : 'border-border hover:border-primary/50'
-                      }`}
-                      onClick={() => toggleFavoriteCountry(country.id)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl">{country.flag}</span>
-                          <span className="font-medium">{country.name}</span>
-                        </div>
-                        {favoriteCountries.includes(country.id) && (
-                          <Heart className="h-4 w-4 text-primary fill-primary" />
-                        )}
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <Button onClick={saveUserPreferences}>
-                  Save Favorites
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                  ) : trips.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Plane className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-500">No trips planned yet</p>
+                      <Button className="mt-4" onClick={() => window.location.href = '/paises'}>
+                        Plan Your First Trip
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {trips.map((trip) => (
+                        <div key={trip.id} className="p-4 border rounded-lg">
+                          <div className="flex justify-between items-start mb-2">
+                            <div>
+                              <h3 className="font-medium">{trip.destination_name}</h3>
+                              <p className="text-sm text-gray-500">
+                                {trip.departure_date ? new Date(trip.departure_date).toLocaleDateString() : 'Date not set'}
+                              </p>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handlePremiumFeature('Trip Checklist')}
+                            >
+                              View Checklist
+                            </Button>
+                          </div>
+                          <div className="mt-2">
+                            <div className="flex justify-between text-sm mb-1">
+                              <span>Progress</span>
+                              <span>{Math.round(calculateOverallProgress())}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-orange-500 h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${calculateOverallProgress()}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
 
-          <TabsContent value="notes" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Travel Notes</CardTitle>
-                <CardDescription>
-                  Keep track of your travel ideas, plans, and important information
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <Textarea
-                    placeholder="Write your travel notes here... Ideas, plans, important information, etc."
-                    value={travelNotes}
-                    onChange={(e) => setTravelNotes(e.target.value)}
-                    className="min-h-[200px]"
-                  />
-                  <Button onClick={saveUserPreferences}>
-                    Save Notes
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              {/* Favorite Countries */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Heart className="w-5 h-5" />
+                    Favorite Countries
+                    {!subscription?.subscribed && (
+                      <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+                        Premium
+                      </Badge>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {!subscription?.subscribed ? (
+                    <div className="text-center py-8">
+                      <Crown className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-500 mb-4">Save your favorite countries with Odisea+</p>
+                      <Button 
+                        onClick={openModal}
+                        className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
+                      >
+                        Upgrade to Odisea+
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {favoriteCountries.length === 0 ? (
+                        <p className="text-gray-500 text-center py-4">No favorite countries yet</p>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {favoriteCountries.map((countryId) => {
+                            const country = countries.find(c => c.id === countryId);
+                            return country ? (
+                              <div key={countryId} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                <span className="text-2xl">{country.flag}</span>
+                                <span className="font-medium">{country.name}</span>
+                              </div>
+                            ) : null;
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Travel Notes */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    Travel Notes
+                    {!subscription?.subscribed && (
+                      <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+                        Premium
+                      </Badge>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {!subscription?.subscribed ? (
+                    <div className="text-center py-8">
+                      <Crown className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-500 mb-4">Keep personal travel notes with Odisea+</p>
+                      <Button 
+                        onClick={openModal}
+                        className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
+                      >
+                        Upgrade to Odisea+
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <Textarea
+                        value={travelNotes}
+                        onChange={(e) => setTravelNotes(e.target.value)}
+                        placeholder="Write your travel notes, ideas, and plans here..."
+                        className="min-h-[200px]"
+                      />
+                      <Button onClick={saveUserPreferences}>
+                        <Save className="w-4 h-4 mr-2" />
+                        Save Notes
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <PremiumModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        onUpgrade={handleUpgrade}
+      />
+    </Layout>
   );
-}
+};
+
+export default Profile;
