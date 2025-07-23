@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const { user, profile } = useAuth();
-  const { isSubscribed } = useSubscription();
+  const { subscription } = useSubscription();
 
   if (!user) {
     return (
@@ -28,6 +28,8 @@ export default function Profile() {
       </div>
     );
   }
+
+  const isSubscribed = subscription?.subscribed || false;
 
   return (
     <div className="container mx-auto px-4 py-8">
