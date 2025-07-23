@@ -4,7 +4,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTrips } from '@/hooks/useTrips';
 import { useCountries } from '@/hooks/useCountries';
-import { usePremiumModal } from '@/hooks/usePremiumModal';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,7 +17,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { User, MapPin, Calendar, CheckCircle, Heart, Edit, Save, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import PremiumModal from '@/components/PremiumModal';
 
 export default function Profile() {
   const { user, profile, refreshProfile } = useAuth();
@@ -26,7 +24,6 @@ export default function Profile() {
   const { trips } = useTrips();
   const { data: countries = [] } = useCountries();
   const { toast } = useToast();
-  const { isOpen, feature, openModal, closeModal } = usePremiumModal();
   
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -35,16 +32,31 @@ export default function Profile() {
   });
   const [favoriteCountries, setFavoriteCountries] = useState<string[]>([]);
   const [travelNotes, setTravelNotes] = useState('');
+  const [isLoadingNotes, setIsLoadingNotes] = useState(false);
 
-  const isPremium = profile?.is_premium || subscription?.subscribed;
-
-  const handlePremiumFeatureClick = (featureName: string) => {
-    if (!isPremium) {
-      openModal(featureName);
-      return;
+  // Load user preferences
+  useEffect(() => {
+    if (user) {
+      // For now, just set loading to false since table doesn't exist yet
+      setIsLoadingNotes(false);
     }
-    // If user is premium, allow access to the feature
-    // This would be implemented based on the specific feature
+  }, [user]);
+
+  const saveUserPreferences = async () => {
+    try {
+      // Temporarily disabled until user_preferences table is created
+      toast({
+        title: "Coming Soon",
+        description: "User preferences will be available after database migration.",
+      });
+    } catch (error) {
+      console.error('Error saving preferences:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save preferences. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -76,10 +88,6 @@ export default function Profile() {
   };
 
   const toggleFavoriteCountry = (countryId: string) => {
-    if (!isPremium) {
-      openModal('favorite countries');
-      return;
-    }
     setFavoriteCountries(prev => 
       prev.includes(countryId) 
         ? prev.filter(id => id !== countryId)
@@ -87,12 +95,10 @@ export default function Profile() {
     );
   };
 
-  const handleNotesChange = (value: string) => {
-    if (!isPremium) {
-      openModal('travel notes');
-      return;
-    }
-    setTravelNotes(value);
+  // Calculate overall progress across all trips
+  const calculateOverallProgress = () => {
+    // For now, return 0 since checklist hook has issues
+    return 0;
   };
 
   if (!user) {
@@ -199,24 +205,13 @@ export default function Profile() {
                   <div>
                     <h4 className="font-medium">Subscription Status</h4>
                     <p className="text-sm text-muted-foreground">
-                      {isPremium ? 'Odisea+ Member' : 'Free Account'}
+                      {subscription?.subscribed ? 'Odisea+ Member' : 'Free Account'}
                     </p>
                   </div>
-                  <Badge variant={isPremium ? 'default' : 'secondary'}>
-                    {isPremium ? 'Premium' : 'Free'}
+                  <Badge variant={subscription?.subscribed ? 'default' : 'secondary'}>
+                    {subscription?.subscribed ? 'Premium' : 'Free'}
                   </Badge>
                 </div>
-                
-                {!isPremium && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <p className="text-sm text-yellow-800 mb-2">
-                      Upgrade to Odisea+ to unlock all premium features
-                    </p>
-                    <Button asChild size="sm" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
-                      <Link to="/premium">Upgrade Now - 20€</Link>
-                    </Button>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -257,16 +252,8 @@ export default function Profile() {
                               </p>
                             )}
                           </div>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => isPremium ? null : openModal('detailed trip progress')}
-                          >
-                            {isPremium ? (
-                              <Link to="/dashboard">View Details</Link>
-                            ) : (
-                              'View Details'
-                            )}
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to="/dashboard">View Details</Link>
                           </Button>
                         </div>
                         <div className="mt-4">
@@ -290,7 +277,6 @@ export default function Profile() {
                 <CardTitle className="flex items-center gap-2">
                   <Heart className="h-5 w-5" />
                   Favorite Countries
-                  {!isPremium && <Badge variant="secondary" className="ml-2">Premium</Badge>}
                 </CardTitle>
                 <CardDescription>
                   Countries you're interested in for future travels
@@ -302,10 +288,10 @@ export default function Profile() {
                     <div
                       key={country.id}
                       className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                        favoriteCountries.includes(country.id) && isPremium
+                        favoriteCountries.includes(country.id)
                           ? 'border-primary bg-primary/5'
                           : 'border-border hover:border-primary/50'
-                      } ${!isPremium ? 'opacity-50' : ''}`}
+                      }`}
                       onClick={() => toggleFavoriteCountry(country.id)}
                     >
                       <div className="flex items-center justify-between">
@@ -313,23 +299,16 @@ export default function Profile() {
                           <span className="text-2xl">{country.flag}</span>
                           <span className="font-medium">{country.name}</span>
                         </div>
-                        {favoriteCountries.includes(country.id) && isPremium && (
+                        {favoriteCountries.includes(country.id) && (
                           <Heart className="h-4 w-4 text-primary fill-primary" />
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
-                {!isPremium && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-                    <p className="text-sm text-yellow-800 mb-2">
-                      Upgrade to Odisea+ to save your favorite countries
-                    </p>
-                    <Button asChild size="sm" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
-                      <Link to="/premium">Upgrade Now - 20€</Link>
-                    </Button>
-                  </div>
-                )}
+                <Button onClick={saveUserPreferences}>
+                  Save Favorites
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -337,10 +316,7 @@ export default function Profile() {
           <TabsContent value="notes" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  Travel Notes
-                  {!isPremium && <Badge variant="secondary">Premium</Badge>}
-                </CardTitle>
+                <CardTitle>Travel Notes</CardTitle>
                 <CardDescription>
                   Keep track of your travel ideas, plans, and important information
                 </CardDescription>
@@ -348,34 +324,20 @@ export default function Profile() {
               <CardContent>
                 <div className="space-y-4">
                   <Textarea
-                    placeholder={isPremium ? "Write your travel notes here... Ideas, plans, important information, etc." : "Upgrade to Odisea+ to unlock travel notes"}
+                    placeholder="Write your travel notes here... Ideas, plans, important information, etc."
                     value={travelNotes}
-                    onChange={(e) => handleNotesChange(e.target.value)}
+                    onChange={(e) => setTravelNotes(e.target.value)}
                     className="min-h-[200px]"
-                    disabled={!isPremium}
                   />
-                  {!isPremium && (
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-                      <p className="text-sm text-yellow-800 mb-2">
-                        Upgrade to Odisea+ to save your travel notes
-                      </p>
-                      <Button asChild size="sm" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
-                        <Link to="/premium">Upgrade Now - 20€</Link>
-                      </Button>
-                    </div>
-                  )}
+                  <Button onClick={saveUserPreferences}>
+                    Save Notes
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-
-      <PremiumModal 
-        isOpen={isOpen} 
-        onClose={closeModal} 
-        feature={feature}
-      />
     </div>
   );
 }

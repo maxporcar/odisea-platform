@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -55,19 +54,18 @@ export default function Dashboard() {
     );
   }
 
-  // Redirect non-premium users to premium page
-  if (!profile?.is_premium && !subscription?.subscribed) {
+  if (!subscription?.subscribed) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <Card className="max-w-md mx-auto border-yellow-200">
+        <Card className="max-w-md mx-auto">
           <CardContent className="text-center py-8">
-            <Lock className="h-12 w-12 mx-auto mb-4 text-yellow-600" />
-            <h2 className="text-xl font-semibold mb-2">Premium Feature</h2>
+            <Lock className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+            <h2 className="text-xl font-semibold mb-2">Odisea+ Required</h2>
             <p className="text-muted-foreground mb-4">
-              The interactive checklist dashboard is available exclusively for Odisea+ users.
+              The interactive checklist is available exclusively for Odisea+ subscribers.
             </p>
-            <Button asChild className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
-              <Link to="/premium">Upgrade to Odisea+ - 20€</Link>
+            <Button asChild>
+              <Link to="/premium">Upgrade to Odisea+</Link>
             </Button>
           </CardContent>
         </Card>
