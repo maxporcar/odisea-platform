@@ -76,14 +76,6 @@ const UserMenu = () => {
             {t('user.profile')}
           </Link>
         </DropdownMenuItem>
-        {!profile?.is_premium && (
-          <DropdownMenuItem asChild>
-            <Link to="/premium" className="cursor-pointer">
-              <Crown className="mr-2 h-4 w-4" />
-              {t('user.premium')}
-            </Link>
-          </DropdownMenuItem>
-        )}
         {profile?.is_admin && (
           <>
             <DropdownMenuSeparator />

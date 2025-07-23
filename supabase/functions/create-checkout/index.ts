@@ -45,13 +45,12 @@ serve(async (req) => {
       customerId = customers.data[0].id;
     }
 
-    // Different prices for individual vs institution
+    // Updated pricing - €19.99 lifetime (one-time payment)
     const priceData = subscriptionType === "individual" 
       ? {
           currency: "eur",
-          product_data: { name: "Odisea+ Individual" },
-          unit_amount: 999, // €9.99
-          recurring: { interval: "month" },
+          product_data: { name: "Odisea+ Lifetime Access" },
+          unit_amount: 1999, // €19.99
         }
       : {
           currency: "eur", 
@@ -60,21 +59,24 @@ serve(async (req) => {
           recurring: { interval: "month" },
         };
 
-    const session = await stripe.checkout.sessions.create({
+    // Use "payment" mode for one-time payment (lifetime access)
+    const sessionConfig = {
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
       line_items: [{
         price_data: priceData,
         quantity: 1,
       }],
-      mode: "subscription",
+      mode: subscriptionType === "individual" ? "payment" : "subscription",
       metadata: { 
         userId: user.id,
         subscriptionType 
       },
       success_url: `${req.headers.get("origin")}/premium-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get("origin")}/premium-cancel`,
-    });
+    };
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     return new Response(
       JSON.stringify({ url: session.url }),

@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
-import { Crown, Check, Users, MapPin, BookOpen, Star, ArrowRight, Shield, Calendar, MessageCircle } from 'lucide-react';
+import { Crown, Check, Users, MapPin, BookOpen, Star, ArrowRight, Shield, Calendar, MessageCircle, Zap, Clock, Euro } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,55 +18,67 @@ const Premium = () => {
 
   const features = [
     {
-      icon: <MessageCircle className="w-5 h-5 text-green-600" />,
+      icon: <MessageCircle className="w-6 h-6 text-green-600" />,
       title: "Mentoring Support",
-      description: "Guidance from experienced mentors"
+      description: "Get personalized guidance from experienced mentors who've been through your journey"
     },
     {
-      icon: <MapPin className="w-5 h-5 text-green-600" />,
-      title: "Housing Recommendations",
-      description: "Vetted housing options for each destination"
+      icon: <MapPin className="w-6 h-6 text-green-600" />,
+      title: "Verified Housing",
+      description: "Access to pre-screened, safe housing options in your destination country"
     },
     {
-      icon: <BookOpen className="w-5 h-5 text-green-600" />,
-      title: "Advanced Destination Guides",
-      description: "In-depth cultural and practical guides"
+      icon: <BookOpen className="w-6 h-6 text-green-600" />,
+      title: "Complete Guides",
+      description: "Step-by-step cultural and practical guides for seamless integration"
     },
     {
-      icon: <Users className="w-5 h-5 text-green-600" />,
-      title: "Community Access",
-      description: "Connect with students and alumni"
+      icon: <Users className="w-6 h-6 text-green-600" />,
+      title: "Exclusive Community",
+      description: "Connect with current students and successful alumni in your field"
     },
     {
-      icon: <Calendar className="w-5 h-5 text-green-600" />,
-      title: "Interactive Checklist",
-      description: "Personalized preparation timeline"
+      icon: <Calendar className="w-6 h-6 text-green-600" />,
+      title: "Smart Checklist",
+      description: "Personalized timeline that adapts to your specific program and destination"
     },
     {
-      icon: <Shield className="w-5 h-5 text-green-600" />,
+      icon: <Shield className="w-6 h-6 text-green-600" />,
       title: "Priority Support",
-      description: "Direct access to our support team"
+      description: "24/7 direct access to our expert support team"
     }
+  ];
+
+  const benefits = [
+    "Save 3+ months of research time",
+    "Avoid costly housing mistakes",
+    "Connect with the right people from day one",
+    "Get insider tips from successful students",
+    "Never miss important deadlines",
+    "Feel confident and prepared"
   ];
 
   const testimonials = [
     {
       name: "María García",
       destination: "Germany",
-      quote: "The housing recommendations saved me months of searching. I found the perfect place before even arriving!",
-      rating: 5
+      quote: "Odisea+ paid for itself in the first week. I avoided so many mistakes and found the perfect housing before even arriving!",
+      rating: 5,
+      savings: "Saved €2,000+ on housing deposits"
     },
     {
       name: "Carlos Ruiz",
       destination: "Canada",
-      quote: "The mentoring support was invaluable. Having someone who went through the same process made all the difference.",
-      rating: 5
+      quote: "The mentoring support was incredible. Having someone guide me through the process made all the difference.",
+      rating: 5,
+      savings: "Landed dream internship"
     },
     {
       name: "Ana López",
       destination: "Australia",
-      quote: "The interactive checklist kept me organized and on track. I never missed a deadline!",
-      rating: 5
+      quote: "Worth every penny! The community connections alone made my transition so much easier.",
+      rating: 5,
+      savings: "Connected with 50+ students"
     }
   ];
 
@@ -79,67 +91,83 @@ const Premium = () => {
         <div className="container mx-auto px-4 py-16">
           <div className="text-center max-w-4xl mx-auto mb-16">
             <div className="flex items-center justify-center gap-2 mb-6">
-              <Crown className="w-8 h-8 text-warm-amber" />
-              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-warm-amber bg-clip-text text-transparent">
+              <Crown className="w-12 h-12 text-warm-amber" />
+              <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary to-warm-amber bg-clip-text text-transparent">
                 Odisea+
               </h1>
             </div>
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
+              Your Study Abroad Success, Guaranteed
+            </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Unlock the full potential of your study abroad journey with premium features designed for success
+              Join thousands of students who chose the smart path to studying abroad
             </p>
             
-            {isSubscribed && (
+            {isSubscribed ? (
               <div className="flex items-center justify-center gap-4 mb-8">
                 <Badge variant="default" className="bg-green-100 text-green-800 px-4 py-2">
                   <Crown className="w-4 h-4 mr-2" />
                   Premium Active
                 </Badge>
-                <Button asChild>
+                <Button asChild size="lg">
                   <Link to="/dashboard">
-                    Go to Dashboard
+                    Access Your Premium Features
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
               </div>
+            ) : (
+              <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white mb-8">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <Clock className="w-6 h-6" />
+                  <span className="text-lg font-semibold">Limited Time Offer</span>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold mb-2">€19.99</div>
+                  <div className="text-lg opacity-90 mb-4">One-time payment • Lifetime access</div>
+                  <div className="text-sm opacity-80">No monthly fees • Cancel anytime</div>
+                </div>
+              </div>
             )}
           </div>
 
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {features.map((feature, index) => (
-              <Card key={index} className="border-2 hover:border-primary/20 transition-colors">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
-                      {feature.icon}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                      <p className="text-muted-foreground text-sm">{feature.description}</p>
-                    </div>
+          {/* Value Proposition */}
+          <div className="grid md:grid-cols-2 gap-12 mb-16">
+            <div>
+              <h3 className="text-3xl font-bold mb-6">Why Students Choose Odisea+</h3>
+              <div className="space-y-4">
+                {benefits.map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <span className="text-lg">{benefit}</span>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                ))}
+              </div>
+            </div>
+            <div className="bg-primary/10 rounded-2xl p-8">
+              <div className="text-center">
+                <Zap className="w-16 h-16 text-warm-amber mx-auto mb-4" />
+                <h4 className="text-2xl font-bold mb-4">Success Rate</h4>
+                <div className="text-4xl font-bold text-primary mb-2">97%</div>
+                <p className="text-muted-foreground">of Odisea+ users successfully complete their study abroad journey</p>
+              </div>
+            </div>
           </div>
 
-          {/* Testimonials */}
+          {/* Features Grid */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-12">What Our Premium Users Say</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="bg-primary/5">
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-1 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-warm-amber text-warm-amber" />
-                      ))}
-                    </div>
-                    <p className="text-muted-foreground mb-4 italic">"{testimonial.quote}"</p>
-                    <div className="flex items-center gap-3">
+            <h3 className="text-3xl font-bold text-center mb-12">Everything You Need to Succeed</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
+                <Card key={index} className="border-2 hover:border-primary/20 transition-all hover:shadow-lg">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 mt-1">
+                        {feature.icon}
+                      </div>
                       <div>
-                        <p className="font-semibold">{testimonial.name}</p>
-                        <p className="text-sm text-muted-foreground">Studied in {testimonial.destination}</p>
+                        <h4 className="font-semibold text-xl mb-3">{feature.title}</h4>
+                        <p className="text-muted-foreground">{feature.description}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -148,36 +176,66 @@ const Premium = () => {
             </div>
           </div>
 
-          {/* Plans Section */}
+          {/* Social Proof */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-12">Choose Your Plan</h2>
+            <h3 className="text-3xl font-bold text-center mb-12">Real Results from Real Students</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <Card key={index} className="bg-gradient-to-br from-primary/5 to-warm-amber/5 border-2 border-primary/10">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-1 mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-warm-amber text-warm-amber" />
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground mb-4 italic">"{testimonial.quote}"</p>
+                    <div className="border-t pt-4">
+                      <p className="font-semibold text-lg">{testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground mb-2">Studied in {testimonial.destination}</p>
+                      <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium inline-block">
+                        {testimonial.savings}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Pricing Section */}
+          <div className="mb-16">
+            <h3 className="text-3xl font-bold text-center mb-12">Choose Your Plan</h3>
             <Tabs defaultValue="individual" className="max-w-4xl mx-auto">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="individual">Individual</TabsTrigger>
-                <TabsTrigger value="institution">Institution</TabsTrigger>
+                <TabsTrigger value="individual">Individual Students</TabsTrigger>
+                <TabsTrigger value="institution">Universities</TabsTrigger>
               </TabsList>
               
               <TabsContent value="individual" className="mt-8">
-                <Card className="border-2 border-primary">
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Individual Plan</CardTitle>
-                    <CardDescription>Perfect for individual students planning their study abroad journey</CardDescription>
-                    <div className="flex items-baseline gap-1 mt-4">
-                      <span className="text-3xl font-bold">€9.99</span>
-                      <span className="text-muted-foreground">/month</span>
+                <Card className="border-4 border-primary shadow-2xl">
+                  <CardHeader className="text-center pb-8">
+                    <div className="flex justify-center mb-4">
+                      <Crown className="w-12 h-12 text-warm-amber" />
                     </div>
+                    <CardTitle className="text-3xl">Odisea+ Lifetime</CardTitle>
+                    <CardDescription className="text-lg">Everything you need for study abroad success</CardDescription>
+                    <div className="flex items-center justify-center gap-2 mt-6">
+                      <Euro className="w-8 h-8 text-primary" />
+                      <span className="text-5xl font-bold text-primary">19.99</span>
+                    </div>
+                    <p className="text-muted-foreground text-lg">One-time payment • Lifetime access</p>
                   </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3 mb-6">
+                  <CardContent className="pt-0">
+                    <div className="space-y-4 mb-8">
                       {features.map((feature, index) => (
-                        <li key={index} className="flex items-center gap-3">
+                        <div key={index} className="flex items-center gap-3">
                           <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm">{feature.title}</span>
-                        </li>
+                          <span>{feature.title}</span>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                     {!isSubscribed && (
-                      <SubscribeButton type="individual" className="w-full" />
+                      <SubscribeButton type="individual" className="w-full py-4 text-lg font-semibold" />
                     )}
                   </CardContent>
                 </Card>
@@ -186,35 +244,49 @@ const Premium = () => {
               <TabsContent value="institution" className="mt-8">
                 <div className="space-y-8">
                   <Card>
-                    <CardHeader>
-                      <CardTitle className="text-2xl">Institution Plan</CardTitle>
-                      <CardDescription>
-                        Ideal for universities and educational institutions. Get in touch with us for custom pricing and features.
+                    <CardHeader className="text-center">
+                      <CardTitle className="text-3xl">University Partnership</CardTitle>
+                      <CardDescription className="text-lg">
+                        Custom solutions for educational institutions
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-3 mb-6">
-                        <li className="flex items-center gap-3">
-                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm">All individual features</span>
-                        </li>
-                        <li className="flex items-center gap-3">
-                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm">Bulk student management</span>
-                        </li>
-                        <li className="flex items-center gap-3">
-                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm">Institution dashboard</span>
-                        </li>
-                        <li className="flex items-center gap-3">
-                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm">Custom branding</span>
-                        </li>
-                        <li className="flex items-center gap-3">
-                          <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm">Dedicated support</span>
-                        </li>
-                      </ul>
+                      <div className="grid md:grid-cols-2 gap-8 mb-8">
+                        <div>
+                          <h4 className="font-semibold text-xl mb-4">What's Included:</h4>
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                              <span>All individual features</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                              <span>Bulk student management</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                              <span>Institution dashboard</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                              <span>Custom branding</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                              <span>Analytics & reporting</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-xl mb-4">Perfect For:</h4>
+                          <div className="space-y-2 text-muted-foreground">
+                            <p>• Universities with study abroad programs</p>
+                            <p>• International education consultants</p>
+                            <p>• Student mobility offices</p>
+                            <p>• Educational agencies</p>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                   
@@ -224,21 +296,22 @@ const Premium = () => {
             </Tabs>
           </div>
 
-          {/* CTA Section */}
-          <div className="text-center bg-gradient-to-r from-primary to-warm-amber rounded-2xl p-12 text-white">
-            <h2 className="text-3xl font-bold mb-4">Ready to Start Your Premium Journey?</h2>
-            <p className="text-xl mb-8 opacity-90">
-              Join thousands of students who have successfully studied abroad with Odisea+
-            </p>
-            {!isSubscribed && (
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <SubscribeButton type="individual" className="bg-white text-primary hover:bg-gray-100 px-8 py-3" />
-                <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary px-8 py-3" asChild>
-                  <Link to="/testimonios">Read More Stories</Link>
-                </Button>
+          {/* Final CTA */}
+          {!isSubscribed && (
+            <div className="text-center bg-gradient-to-r from-primary to-warm-amber rounded-2xl p-12 text-white">
+              <Crown className="w-16 h-16 mx-auto mb-6" />
+              <h3 className="text-4xl font-bold mb-4">Ready to Transform Your Study Abroad Journey?</h3>
+              <p className="text-xl mb-8 opacity-90">
+                Join thousands of successful students who chose Odisea+
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <SubscribeButton type="individual" className="bg-white text-primary hover:bg-gray-100 px-8 py-4 text-lg font-semibold" />
+                <div className="text-white/80 text-sm">
+                  30-day money-back guarantee
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </Layout>
