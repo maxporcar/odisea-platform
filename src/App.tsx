@@ -22,6 +22,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminChecklist from "./pages/AdminChecklist";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Premium from "./pages/Premium";
 import PremiumSuccess from "./pages/PremiumSuccess";
 import PremiumCancel from "./pages/PremiumCancel";
 import NotFound from "./pages/NotFound";
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="/admin/checklist" element={<AdminChecklist />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/perfil" element={<Layout><Profile /></Layout>} />
+              <Route path="/premium" element={<Premium />} />
               <Route path="/premium-success" element={<PremiumSuccess />} />
               <Route path="/premium-cancel" element={<PremiumCancel />} />
               <Route path="*" element={<NotFound />} />
