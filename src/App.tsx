@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -20,6 +21,7 @@ import Login from "./pages/Login";
 import AdminUsers from "./pages/AdminUsers";
 import AdminChecklist from "./pages/AdminChecklist";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import PremiumSuccess from "./pages/PremiumSuccess";
 import PremiumCancel from "./pages/PremiumCancel";
 import NotFound from "./pages/NotFound";
@@ -58,6 +60,7 @@ const App = () => {
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/checklist" element={<AdminChecklist />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/perfil" element={<Layout><Profile /></Layout>} />
               <Route path="/premium-success" element={<PremiumSuccess />} />
               <Route path="/premium-cancel" element={<PremiumCancel />} />
               <Route path="*" element={<NotFound />} />

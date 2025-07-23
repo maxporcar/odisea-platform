@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Globe, MapPin, MessageCircle } from 'lucide-react';
+import { Users, Globe, MapPin, MessageCircle, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ScrollAnimations from '../components/ScrollAnimations';
 
@@ -46,7 +46,7 @@ const Home = () => {
               {t('home.hero.title')}
               <br />
               <span className="relative" style={{ color: '#FF6600' }}>
-                {t('home.hero.odyssey')}
+                Odisea
                 <div className="absolute -bottom-2 left-0 right-0 h-1" style={{ backgroundColor: '#FF6600' }}></div>
               </span>
             </h1>
@@ -88,18 +88,6 @@ const Home = () => {
               </div>
             </Link>
           </div>
-{/* Hand-drawn style arrow pointing to the map button */}
-          <div className="absolute bottom-16 right-10 hidden lg:block">
-            <div className="relative">
-              <div className="font-bold transform rotate-12 animate-bounce" style={{ color: '#FF6600', fontSize: '18px' }}>
-                {t('home.hero.map_prompt')}
-              </div>
-              <div className="absolute -bottom-2 -left-4 text-2xl transform rotate-45" style={{ color: '#FF6600' }}>
-                ↗️
-              </div>
-            </div>
-          
-          </div>
         </div>
       </section>
 
@@ -132,23 +120,51 @@ const Home = () => {
             <div className="flex justify-center opacity-0 animate-fade-in-up" data-aos="fade-left" style={{animationDelay: '0.2s'}}>
               <div className="flex flex-col sm:flex-row items-center space-y-8 sm:space-y-0 sm:space-x-8">
                 <div className="relative">
-                  <div className="w-48 h-48 rounded-full bg-gradient-to-br from-orange-200 to-orange-300 flex items-center justify-center shadow-xl">
-                    <Users className="w-20 h-20 text-orange-700" />
+                  <div className="w-48 h-48 rounded-full overflow-hidden shadow-xl">
+                    <img 
+                      src="https://media.licdn.com/dms/image/v2/D4E03AQE2rZDpsI4Xag/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1729959485722?e=2147483647&v=beta&t=5ZSM5acAxbeTPH0kNac9OFQEoglVfQrbsDJuzfWHYm0"
+                      alt="Max Porcar"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   {/* Hand-drawn label for Max */}
                   <div className="absolute -bottom-6 -left-8 flex items-center">
                     <div className="text-2xl transform -rotate-12">↙️</div>
-                    <span className="ml-2 text-xl font-bold transform rotate-3" style={{ color: '#FF6600' }}>Max</span>
+                    <div className="ml-2 flex items-center">
+                      <span className="text-xl font-bold transform rotate-3" style={{ color: '#FF6600' }}>Max</span>
+                      <a 
+                        href="https://www.linkedin.com/in/max-porcar-arenós"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-2 text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <ExternalLink size={16} />
+                      </a>
+                    </div>
                   </div>
                 </div>
                 
                 <div className="relative">
-                  <div className="w-48 h-48 rounded-full bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center shadow-xl">
-                    <Users className="w-20 h-20 text-blue-700" />
+                  <div className="w-48 h-48 rounded-full overflow-hidden shadow-xl">
+                    <img 
+                      src="https://media.licdn.com/dms/image/v2/D4E03AQGNnCClndyaUQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1684991898892?e=2147483647&v=beta&t=1cTMZboGX2opsJNMrTPhHuIwZNtPqrOZfzxQgh0BhtA"
+                      alt="Flavie Tandar"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   {/* Hand-drawn label for Flavie */}
                   <div className="absolute -bottom-6 -right-8 flex items-center">
-                    <span className="mr-2 text-xl font-bold transform -rotate-3" style={{ color: '#FF6600' }}>Flavie</span>
+                    <div className="mr-2 flex items-center">
+                      <span className="text-xl font-bold transform -rotate-3" style={{ color: '#FF6600' }}>Flavie</span>
+                      <a 
+                        href="https://www.linkedin.com/in/flavie-tandar/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-2 text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <ExternalLink size={16} />
+                      </a>
+                    </div>
                     <div className="text-2xl transform rotate-12">↘️</div>
                   </div>
                 </div>
