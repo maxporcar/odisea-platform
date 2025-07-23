@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -271,25 +270,7 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="checklist" className="space-y-6">
-            {!isSubscribed ? (
-              <Card>
-                <CardContent className="text-center py-12">
-                  <Crown className="w-16 h-16 mx-auto mb-4 text-warm-amber" />
-                  <h3 className="text-2xl font-bold mb-4">Premium Feature</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Access the interactive travel checklist with Odisea+ Premium
-                  </p>
-                  <Button asChild size="lg">
-                    <Link to="/premium">
-                      Upgrade to Premium
-                      <Crown className="w-4 h-4 ml-2" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <TravelChecklist />
-            )}
+            <TravelChecklist />
           </TabsContent>
 
           <TabsContent value="favorites" className="space-y-6">
