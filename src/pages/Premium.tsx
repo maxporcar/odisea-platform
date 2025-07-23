@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -155,44 +154,51 @@ const Premium = () => {
                 </Button>
               </div>
             ) : (
-              <div 
-                className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white mb-8 cursor-pointer hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
-                onClick={handleLimitedOfferClick}
-              >
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Clock className="w-6 h-6" />
-                  <span className="text-lg font-semibold">Limited Time Offer</span>
+              <div className="mb-8">
+                <div className="bg-red-500 text-white px-4 py-2 rounded-full inline-block mb-4">
+                  <span className="font-semibold">63% OFF - Limited Time!</span>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold mb-2">€19.99</div>
-                  <div className="text-lg opacity-90 mb-4">One-time payment • Lifetime access</div>
-                  <div className="text-sm opacity-80 mb-4">No monthly fees • Cancel anytime</div>
-                  <div className="bg-white/20 rounded-lg px-4 py-3 mb-4">
-                    <div className="text-sm font-medium mb-2">Offer expires in:</div>
-                    <div className="flex items-center justify-center gap-4 text-2xl font-bold">
-                      <div className="flex flex-col items-center">
-                        <span>{String(timeLeft.hours).padStart(2, '0')}</span>
-                        <span className="text-xs opacity-80">Hours</span>
-                      </div>
-                      <span>:</span>
-                      <div className="flex flex-col items-center">
-                        <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
-                        <span className="text-xs opacity-80">Minutes</span>
-                      </div>
-                      <span>:</span>
-                      <div className="flex flex-col items-center">
-                        <span>{String(timeLeft.seconds).padStart(2, '0')}</span>
-                        <span className="text-xs opacity-80">Seconds</span>
+                <div 
+                  className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white cursor-pointer hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105"
+                  onClick={handleLimitedOfferClick}
+                >
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Clock className="w-6 h-6" />
+                    <span className="text-lg font-semibold">Limited Time Offer</span>
+                  </div>
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <span className="text-2xl line-through opacity-75">€54</span>
+                      <span className="text-4xl font-bold">€19.99</span>
+                    </div>
+                    <div className="text-lg opacity-90 mb-4">One-time payment • Lifetime access</div>
+                    <div className="text-sm opacity-80 mb-4">No monthly fees • Cancel anytime</div>
+                    <div className="bg-white/20 rounded-lg px-4 py-3 mb-4">
+                      <div className="text-sm font-medium mb-2">Offer expires in:</div>
+                      <div className="flex items-center justify-center gap-4 text-2xl font-bold">
+                        <div className="flex flex-col items-center">
+                          <span>{String(timeLeft.hours).padStart(2, '0')}</span>
+                          <span className="text-xs opacity-80">Hours</span>
+                        </div>
+                        <span>:</span>
+                        <div className="flex flex-col items-center">
+                          <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
+                          <span className="text-xs opacity-80">Minutes</span>
+                        </div>
+                        <span>:</span>
+                        <div className="flex flex-col items-center">
+                          <span>{String(timeLeft.seconds).padStart(2, '0')}</span>
+                          <span className="text-xs opacity-80">Seconds</span>
+                        </div>
                       </div>
                     </div>
+                    <div className="text-sm opacity-90">Click here to claim your lifetime access!</div>
                   </div>
-                  <div className="text-sm opacity-90">Click here to claim your lifetime access!</div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Value Proposition */}
           <div className="grid md:grid-cols-2 gap-12 mb-16">
             <div>
               <h3 className="text-3xl font-bold mb-6">Why Students Choose Odisea+</h3>
@@ -215,7 +221,6 @@ const Premium = () => {
             </div>
           </div>
 
-          {/* Features Grid */}
           <div className="mb-16">
             <h3 className="text-3xl font-bold text-center mb-12">Everything You Need to Succeed</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -237,7 +242,6 @@ const Premium = () => {
             </div>
           </div>
 
-          {/* Social Proof */}
           <div className="mb-16">
             <h3 className="text-3xl font-bold text-center mb-12">Real Results from Real Students</h3>
             <div className="grid md:grid-cols-3 gap-8">
@@ -278,10 +282,14 @@ const Premium = () => {
                     <div className="flex justify-center mb-4">
                       <Crown className="w-12 h-12 text-warm-amber" />
                     </div>
+                    <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium inline-block mb-4">
+                      63% OFF - Limited Time!
+                    </div>
                     <CardTitle className="text-3xl">Odisea+ Lifetime</CardTitle>
                     <CardDescription className="text-lg">Everything you need for study abroad success</CardDescription>
                     <div className="flex items-center justify-center gap-2 mt-6">
                       <Euro className="w-8 h-8 text-primary" />
+                      <span className="text-2xl line-through opacity-75">€54</span>
                       <span className="text-5xl font-bold text-primary">19.99</span>
                     </div>
                     <p className="text-muted-foreground text-lg">One-time payment • Lifetime access</p>
@@ -305,56 +313,7 @@ const Premium = () => {
               </TabsContent>
               
               <TabsContent value="institution" className="mt-8">
-                <div className="space-y-8">
-                  <Card>
-                    <CardHeader className="text-center">
-                      <CardTitle className="text-3xl">University Partnership</CardTitle>
-                      <CardDescription className="text-lg">
-                        Custom solutions for educational institutions
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid md:grid-cols-2 gap-8 mb-8">
-                        <div>
-                          <h4 className="font-semibold text-xl mb-4">What's Included:</h4>
-                          <div className="space-y-3">
-                            <div className="flex items-center gap-3">
-                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                              <span>All individual features</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                              <span>Bulk student management</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                              <span>Institution dashboard</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                              <span>Custom branding</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                              <span>Analytics & reporting</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-xl mb-4">Perfect For:</h4>
-                          <div className="space-y-2 text-muted-foreground">
-                            <p>• Universities with study abroad programs</p>
-                            <p>• International education consultants</p>
-                            <p>• Student mobility offices</p>
-                            <p>• Educational agencies</p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <ContactForm />
-                </div>
+                <ContactForm />
               </TabsContent>
             </Tabs>
           </div>

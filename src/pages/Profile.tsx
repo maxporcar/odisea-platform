@@ -14,9 +14,10 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
-import { User, MapPin, Calendar, CheckCircle, Heart, Edit, Save, X } from 'lucide-react';
+import { User, MapPin, Calendar, CheckCircle, Heart, Edit, Save, X, Crown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { TravelChecklist } from '@/components/TravelChecklist';
 
 export default function Profile() {
   const { user, profile, refreshProfile } = useAuth();
@@ -37,14 +38,12 @@ export default function Profile() {
   // Load user preferences
   useEffect(() => {
     if (user) {
-      // For now, just set loading to false since table doesn't exist yet
       setIsLoadingNotes(false);
     }
   }, [user]);
 
   const saveUserPreferences = async () => {
     try {
-      // Temporarily disabled until user_preferences table is created
       toast({
         title: "Coming Soon",
         description: "User preferences will be available after database migration.",
@@ -95,11 +94,7 @@ export default function Profile() {
     );
   };
 
-  // Calculate overall progress across all trips
-  const calculateOverallProgress = () => {
-    // For now, return 0 since checklist hook has issues
-    return 0;
-  };
+  const isSubscribed = subscription?.subscribed || false;
 
   if (!user) {
     return (
@@ -128,9 +123,13 @@ export default function Profile() {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="trips">My Trips</TabsTrigger>
+            <TabsTrigger value="checklist">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Checklist
+            </TabsTrigger>
             <TabsTrigger value="favorites">Favorites</TabsTrigger>
             <TabsTrigger value="notes">Travel Notes</TabsTrigger>
           </TabsList>
@@ -205,11 +204,11 @@ export default function Profile() {
                   <div>
                     <h4 className="font-medium">Subscription Status</h4>
                     <p className="text-sm text-muted-foreground">
-                      {subscription?.subscribed ? 'Odisea+ Member' : 'Free Account'}
+                      {isSubscribed ? 'Odisea+ Member' : 'Free Account'}
                     </p>
                   </div>
-                  <Badge variant={subscription?.subscribed ? 'default' : 'secondary'}>
-                    {subscription?.subscribed ? 'Premium' : 'Free'}
+                  <Badge variant={isSubscribed ? 'default' : 'secondary'}>
+                    {isSubscribed ? 'Premium' : 'Free'}
                   </Badge>
                 </div>
               </CardContent>
@@ -259,7 +258,7 @@ export default function Profile() {
                         <div className="mt-4">
                           <div className="flex justify-between text-sm mb-1">
                             <span>Preparation Progress</span>
-                            <span>0% completed</span>
+                            <span>Track in Checklist tab</span>
                           </div>
                           <Progress value={0} className="h-2" />
                         </div>
@@ -269,6 +268,28 @@ export default function Profile() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="checklist" className="space-y-6">
+            {!isSubscribed ? (
+              <Card>
+                <CardContent className="text-center py-12">
+                  <Crown className="w-16 h-16 mx-auto mb-4 text-warm-amber" />
+                  <h3 className="text-2xl font-bold mb-4">Premium Feature</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Access the interactive travel checklist with Odisea+ Premium
+                  </p>
+                  <Button asChild size="lg">
+                    <Link to="/premium">
+                      Upgrade to Premium
+                      <Crown className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <TravelChecklist />
+            )}
           </TabsContent>
 
           <TabsContent value="favorites" className="space-y-6">
