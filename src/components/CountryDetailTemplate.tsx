@@ -6,6 +6,7 @@ import { useCountry } from '../hooks/useCountries';
 import { useCities } from '../hooks/useCities';
 import Globe3D from './Globe3D';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '@/integrations/supabase/client';
 
 // Markdown renderer function
 const renderMarkdown = (content: string) => {
@@ -31,19 +32,40 @@ const renderMarkdown = (content: string) => {
   );
 };
 
-// Auto-translation function (placeholder for now)
+// Translation cache to avoid repeated API calls
+const translationCache = new Map<string, string>();
+
+// Auto-translation function using Supabase edge function
 const translateContent = async (content: string, targetLang: string) => {
-  // For now, return the original content
-  // In the future, this could call a translation service
   if (targetLang === 'en' || !content) return content;
   
+  // Check cache first
+  const cacheKey = `${content.substring(0, 50)}_${targetLang}`;
+  if (translationCache.has(cacheKey)) {
+    return translationCache.get(cacheKey)!;
+  }
+  
   try {
-    // This would be where we'd call LibreTranslate or another service
-    // For now, return original content
-    return content;
+    const { data, error } = await supabase.functions.invoke('translate-content', {
+      body: {
+        text: content,
+        targetLang: targetLang,
+        sourceLang: 'en'
+      }
+    });
+
+    if (error) {
+      console.error('Translation error:', error);
+      return content; // Return original on error
+    }
+
+    const translatedText = data?.translatedText || content;
+    // Cache the result
+    translationCache.set(cacheKey, translatedText);
+    return translatedText;
   } catch (error) {
     console.error('Translation error:', error);
-    return content;
+    return content; // Return original on error
   }
 };
 
@@ -59,14 +81,18 @@ const CountryDetailTemplate = () => {
   const { data: cities = [] } = useCities(countryId);
   const [activeSection, setActiveSection] = useState('cities');
   const [translatedContent, setTranslatedContent] = useState<Record<string, string>>({});
+  const [isTranslating, setIsTranslating] = useState(false);
 
   // Handle content translation when language changes
   useEffect(() => {
     if (country && i18n.language !== 'en') {
       const translateMarkdownFields = async () => {
+        setIsTranslating(true);
+        console.log('🔄 Translating content to:', i18n.language);
+        
         const fieldsToTranslate = [
           'overview_md',
-          'big_cities_vs_small_cities_md',
+          'big_cities_vs_small_cities_md', 
           'culture_md',
           'dos_and_donts_md',
           'visa_information_md',
@@ -77,19 +103,33 @@ const CountryDetailTemplate = () => {
 
         const translations: Record<string, string> = {};
         
-        for (const field of fieldsToTranslate) {
+        // Translate fields in parallel for better performance
+        const translationPromises = fieldsToTranslate.map(async (field) => {
           const content = country[field as keyof typeof country] as string;
           if (content) {
-            translations[field] = await translateContent(content, i18n.language);
+            const translated = await translateContent(content, i18n.language);
+            return { field, translated };
           }
-        }
+          return { field, translated: '' };
+        });
+
+        const results = await Promise.all(translationPromises);
         
+        results.forEach(({ field, translated }) => {
+          if (translated) {
+            translations[field] = translated;
+          }
+        });
+        
+        console.log('✅ Translation completed for', Object.keys(translations).length, 'fields');
         setTranslatedContent(translations);
+        setIsTranslating(false);
       };
 
       translateMarkdownFields();
     } else {
       setTranslatedContent({});
+      setIsTranslating(false);
     }
   }, [country, i18n.language]);
 
@@ -168,6 +208,14 @@ const CountryDetailTemplate = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Translation indicator */}
+      {isTranslating && (
+        <div className="fixed top-4 right-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-full shadow-lg flex items-center space-x-2">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
+          <span className="text-sm font-medium">🌐 Translating content...</span>
+        </div>
+      )}
+      
       {/* Header */}
       <div className="bg-white border-b border-border py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

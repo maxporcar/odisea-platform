@@ -4,10 +4,10 @@ import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const LANGUAGES = [
-  { code: 'en', label: 'EN', flag: '🇺🇸' },
-  { code: 'es', label: 'ES', flag: '🇪🇸' },
-  { code: 'fr', label: 'FR', flag: '🇫🇷' },
-  { code: 'ca', label: 'CA', flag: '🇪🇸' },
+  { code: 'en', label: 'English', flag: '🇺🇸' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+  { code: 'ca', label: 'Català', flag: '🏛️' },
 ];
 
 export default function LanguageSelector() {

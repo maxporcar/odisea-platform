@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const API_URL = process.env.LIBRETRANSLATE_URL || 'https://libretranslate.com/translate';
 const SOURCE_LANG = 'en';
-const TARGET_LANGS = ['es', 'fr'];
+const TARGET_LANGS = ['es', 'fr', 'ca'];
 const EN_FILE = path.resolve(__dirname, '../public/locales/en/translation.json');
 
 // Rate limiting to be nice to the free API
