@@ -8,19 +8,30 @@ import Globe3D from './Globe3D';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 
-// Markdown renderer function
+// Enhanced markdown renderer function
 const renderMarkdown = (content: string) => {
   if (!content) return null;
   
-  // Simple markdown parsing for basic formatting
+  // Clean up content and parse markdown properly
   let html = content
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4">$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">$1</h3>')
-    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-4 mt-6">$1</h2>')
+    // Remove content references that shouldn't be displayed
+    .replace(/:contentReference\[.*?\]\{.*?\}/g, '')
+    // Headers
+    .replace(/### (.*?)$/gm, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4">$1</h4>')
+    .replace(/## (.*?)$/gm, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">$1</h3>')
+    .replace(/# (.*?)$/gm, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-4 mt-6">$1</h2>')
+    // Bold and italic
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+    // Lists
+    .replace(/^\* (.*?)$/gm, '<li class="mb-2">$1</li>')
+    .replace(/^- (.*?)$/gm, '<li class="mb-2">$1</li>')
+    // Paragraphs
     .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-4">')
     .replace(/\n/g, '<br>');
+  
+  // Wrap lists
+  html = html.replace(/(<li.*?<\/li>)/g, '<ul class="list-disc list-inside space-y-2 mb-4 ml-4">$1</ul>');
   
   return (
     <div 
