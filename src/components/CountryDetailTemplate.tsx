@@ -8,25 +8,37 @@ import Globe3D from './Globe3D';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 
-// Markdown renderer function
+// Enhanced markdown renderer with better formatting
 const renderMarkdown = (content: string) => {
   if (!content) return null;
   
-  // Simple markdown parsing for basic formatting
+  // Enhanced markdown parsing
   let html = content
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4">$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">$1</h3>')
+    // Handle headers
+    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4 flex items-center"><span class="text-primary mr-2">📍</span>$1</h4>')
+    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6 flex items-center"><span class="text-primary mr-2">🔹</span>$1</h3>')
     .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-4 mt-6">$1</h2>')
+    
+    // Handle lists
+    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-green-500 mr-2 mt-1">✓</span><span>$1</span></li>')
+    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-red-500 mr-2 mt-1">✗</span><span>$1</span></li>')
+    
+    // Handle emphasis
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+    
+    // Handle paragraphs and line breaks
     .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-4">')
     .replace(/\n/g, '<br>');
+
+  // Wrap lists properly
+  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-6 space-y-2">$1</ul>');
   
   return (
     <div 
-      className="prose prose-lg max-w-none" 
+      className="markdown-content" 
       dangerouslySetInnerHTML={{ 
-        __html: `<p class="font-poppins text-muted-foreground leading-relaxed mb-4">${html}</p>` 
+        __html: `<div class="font-poppins text-muted-foreground leading-relaxed">${html}</div>` 
       }} 
     />
   );
@@ -79,7 +91,7 @@ const CountryDetailTemplate = () => {
   const { t, i18n } = useTranslation();
   const { data: country, isLoading, error } = useCountry(countryId!);
   const { data: cities = [] } = useCities(countryId);
-  const [activeSection, setActiveSection] = useState('cities');
+  const [activeSection, setActiveSection] = useState('overview');
   const [translatedContent, setTranslatedContent] = useState<Record<string, string>>({});
   const [isTranslating, setIsTranslating] = useState(false);
 
@@ -141,17 +153,17 @@ const CountryDetailTemplate = () => {
     return translatedContent[field];
   };
 
-  // Define sections with proper translation keys
+  // Define sections with proper translation keys and icons
   const sections: Section[] = [
-    { id: 'cities', title: t('countryDetail.sections.overview', 'Overview') },
-    { id: 'big-cities', title: t('countryDetail.sections.bigCities') },
-    { id: 'culture', title: t('countryDetail.sections.culture') },
-    { id: 'life-activities', title: t('countryDetail.sections.lifeActivities') },
-    { id: 'scholarships', title: t('countryDetail.sections.scholarships') },
-    { id: 'visa', title: t('countryDetail.sections.visa') },
-    { id: 'medical', title: t('countryDetail.sections.medical') },
-    { id: 'dos-donts', title: t('countryDetail.sections.dosAndDonts', 'Dos and Don\'ts') },
-    { id: 'country-cities', title: t('countryDetail.sections.cities') },
+    { id: 'overview', title: '📖 ' + t('countryDetail.sections.overview', 'Overview') },
+    { id: 'big-cities', title: '🏙️ ' + t('countryDetail.sections.bigCities') },
+    { id: 'culture', title: '🎭 ' + t('countryDetail.sections.culture') },
+    { id: 'life-activities', title: '✈️ ' + t('countryDetail.sections.lifeActivities') },
+    { id: 'scholarships', title: '🎓 ' + t('countryDetail.sections.scholarships') },
+    { id: 'visa', title: '📋 ' + t('countryDetail.sections.visa') },
+    { id: 'medical', title: '🏥 ' + t('countryDetail.sections.medical') },
+    { id: 'dos-donts', title: '✅ ' + t('countryDetail.sections.dosAndDonts', 'Dos and Don\'ts') },
+    { id: 'country-cities', title: '🗺️ ' + t('countryDetail.sections.cities') },
   ];
 
   useEffect(() => {
@@ -241,71 +253,76 @@ const CountryDetailTemplate = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column - Navigation Tabs */}
-          <div className="lg:col-span-3">
-            <nav className="sticky top-8 space-y-2">
-              <h3 className="font-glacial text-lg font-semibold text-foreground mb-4">
-                📚 Study Guide Sections
-              </h3>
-              {sections.map((section, index) => (
-                <button
-                  key={section.id}
-                  onClick={() => scrollToSection(section.id)}
-                  className={`
-                    w-full text-left px-4 py-3 rounded-full font-poppins text-sm font-medium transition-all duration-200
-                    animate-fade-in-up
-                    ${activeSection === section.id
-                      ? 'bg-primary text-primary-foreground shadow-md'
-                      : 'bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground'
-                    }
-                  `}
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <span>{section.title}</span>
-                </button>
-              ))}
-            </nav>
-          </div>
-
-          {/* Right Column - Map with Perfect Centering */}
-          <div className="lg:col-span-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left Sidebar - Navigation */}
+          <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
-                <div className="p-4 border-b border-border">
-                  <h3 className="font-glacial text-lg font-semibold text-foreground">
-                    🗺️ {t('map.title')}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Click on cities to explore
-                  </p>
-                </div>
-                
-                {/* Perfectly Centered Map Container */}
-                <div className="flex justify-center items-center w-full py-4">
-                  <div className="w-full sm:w-11/12 md:w-10/12 lg:w-full xl:w-11/12 max-w-4xl transition-all duration-200 ease-in-out">
-                    <div className="h-[500px] relative flex justify-center">
-                      <Globe3D 
-                        width={400} 
-                        height={500} 
-                        countryCode={countryId}
-                        enhancedContrast={true}
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
+                <h3 className="font-montserrat text-lg font-bold text-foreground mb-6">
+                  Navigation
+                </h3>
+                <nav className="space-y-1">
+                  {sections.map((section, index) => (
+                    <button
+                      key={section.id}
+                      onClick={() => scrollToSection(section.id)}
+                      className={`
+                        w-full text-left px-4 py-3 rounded-lg font-poppins text-sm font-medium transition-all duration-200
+                        flex items-center space-x-3
+                        ${activeSection === section.id
+                          ? 'bg-primary text-primary-foreground shadow-md'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        }
+                      `}
+                    >
+                      <span>{section.title}</span>
+                    </button>
+                  ))}
+                </nav>
               </div>
             </div>
           </div>
 
           {/* Content Column */}
-          <div className="lg:col-span-5 space-y-12">
-            {/* Overview */}
-            <section id="cities" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                📖 {t('countryDetail.sections.overview', 'Overview')}
-              </h2>
+          <div className="lg:col-span-3 space-y-8">
+            {/* Header Section */}
+            <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 text-center">
+              <h1 className="font-montserrat text-4xl font-bold text-foreground mb-2">
+                {country.name} Student Guide
+              </h1>
+              <p className="font-poppins text-lg text-muted-foreground">
+                Everything you need to know about studying in {country.name} - from big cities to small towns, culture to visa requirements.
+              </p>
+            </div>
+
+            {/* Map Section in Content */}
+            <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-border">
+                <h3 className="font-montserrat text-xl font-bold text-foreground flex items-center">
+                  🗺️ Explore {country.name}
+                </h3>
+              </div>
+              <div className="flex justify-center items-center w-full py-6">
+                <div className="h-[400px] relative flex justify-center w-full">
+                  <Globe3D 
+                    width={350} 
+                    height={400} 
+                    countryCode={countryId}
+                    enhancedContrast={true}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Overview Section */}
+            <section id="overview" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">📖</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    {t('countryDetail.sections.overview', 'Overview')}
+                  </h2>
+                </div>
                 {getContent('overview_md') ? 
                   renderMarkdown(getContent('overview_md')) :
                   <p className="font-poppins text-muted-foreground leading-relaxed">
@@ -317,22 +334,32 @@ const CountryDetailTemplate = () => {
 
             {/* Big Cities vs Small Towns */}
             <section id="big-cities" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                🏙️ {t('countryDetail.sections.bigCities')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">📍</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Big Cities vs Small Towns
+                  </h2>
+                </div>
                 {getContent('big_cities_vs_small_cities_md') ? 
                   renderMarkdown(getContent('big_cities_vs_small_cities_md')) :
-                  <div>
-                    <h3 className="font-poppins text-xl font-semibold text-foreground mb-4">Major Cities</h3>
-                    <p className="font-poppins text-muted-foreground leading-relaxed mb-6">
-                      Discover the vibrant urban centers of {country.name}, where international students thrive in cosmopolitan environments with world-class universities, diverse cultural scenes, and extensive networking opportunities.
-                    </p>
-                    
-                    <h3 className="font-poppins text-xl font-semibold text-foreground mb-4">Smaller Communities</h3>
-                    <p className="font-poppins text-muted-foreground leading-relaxed">
-                      Experience the charm of smaller towns and cities, offering intimate learning environments, closer connections with locals, lower living costs, and authentic cultural immersion opportunities.
-                    </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="font-poppins text-lg font-semibold text-primary mb-3 flex items-center">
+                        🏙️ Big Cities
+                      </h3>
+                      <p className="font-poppins text-muted-foreground leading-relaxed">
+                        Major urban centers with world-class universities, diverse cultural scenes, and extensive networking opportunities.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="font-poppins text-lg font-semibold text-primary mb-3 flex items-center">
+                        🌲 Small Towns
+                      </h3>
+                      <p className="font-poppins text-muted-foreground leading-relaxed">
+                        Intimate learning environments with closer community connections and authentic cultural immersion.
+                      </p>
+                    </div>
                   </div>
                 }
               </div>
@@ -340,28 +367,31 @@ const CountryDetailTemplate = () => {
 
             {/* Culture */}
             <section id="culture" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                🎭 {t('countryDetail.sections.culture')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">👥</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Culture
+                  </h2>
+                </div>
                 {getContent('culture_md') ? 
                   renderMarkdown(getContent('culture_md')) :
                   <div>
-                    <p className="font-poppins text-muted-foreground leading-relaxed mb-6">
-                      Immerse yourself in the rich cultural tapestry of {country.name}. From traditional celebrations to modern artistic expressions, understanding the local culture will enhance your study abroad experience significantly.
-                    </p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-poppins font-semibold text-foreground mb-2">🎉 Traditions & Festivals</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      <div className="border border-border rounded-lg p-4">
+                        <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
+                          📅 Schedule
+                        </h4>
                         <p className="font-poppins text-sm text-muted-foreground">
-                          Participate in local celebrations and understand cultural significance.
+                          Daily routines and academic schedules
                         </p>
                       </div>
-                      <div>
-                        <h4 className="font-poppins font-semibold text-foreground mb-2">🍽️ Food Culture</h4>
+                      <div className="border border-border rounded-lg p-4">
+                        <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
+                          🍽️ Food Culture
+                        </h4>
                         <p className="font-poppins text-sm text-muted-foreground">
-                          Discover local cuisine and dining customs that define social interactions.
+                          Local cuisine and dining customs
                         </p>
                       </div>
                     </div>
@@ -372,14 +402,18 @@ const CountryDetailTemplate = () => {
 
             {/* Life Activities & Travel */}
             <section id="life-activities" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                🎨 {t('countryDetail.sections.lifeActivities')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">✈️</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Life, Activities & Travel
+                  </h2>
+                  <span className="ml-auto bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">Premium</span>
+                </div>
                 {getContent('life_activities_travel_md') ? 
                   renderMarkdown(getContent('life_activities_travel_md')) :
                   <p className="font-poppins text-muted-foreground leading-relaxed">
-                    Explore the endless possibilities for recreation, travel, and personal growth in {country.name}. From outdoor adventures to cultural experiences, discover how to make the most of your time abroad.
+                    Explore recreational activities, travel opportunities, and lifestyle experiences in {country.name}.
                   </p>
                 }
               </div>
@@ -387,14 +421,18 @@ const CountryDetailTemplate = () => {
 
             {/* Scholarships & Student Benefits */}
             <section id="scholarships" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                💰 {t('countryDetail.sections.scholarships')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">🎓</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Student Benefits & Scholarships
+                  </h2>
+                  <span className="ml-auto bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">Premium</span>
+                </div>
                 {getContent('student_benefits_scholarships_md') ? 
                   renderMarkdown(getContent('student_benefits_scholarships_md')) :
                   <p className="font-poppins text-muted-foreground leading-relaxed">
-                    Unlock funding opportunities and student benefits available in {country.name}. Learn about scholarships, grants, work-study programs, and other financial support options for international students.
+                    Financial support options and student benefits available in {country.name}.
                   </p>
                 }
               </div>
@@ -402,80 +440,103 @@ const CountryDetailTemplate = () => {
 
             {/* Visa Information */}
             <section id="visa" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                📋 {t('countryDetail.sections.visa')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">📋</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Visa Information
+                  </h2>
+                  <span className="ml-auto bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">Premium</span>
+                </div>
                 {getContent('visa_information_md') ? 
                   renderMarkdown(getContent('visa_information_md')) :
                   <p className="font-poppins text-muted-foreground leading-relaxed">
-                    Navigate the visa process for studying in {country.name}. Get detailed information about requirements, application procedures, processing times, and renewal processes.
+                    Comprehensive visa requirements and application processes for studying in {country.name}.
                   </p>
                 }
-                
-                {country.visa_info && (
-                  <div className="mt-4 p-4 bg-muted rounded-lg">
-                    <p className="font-poppins text-sm text-foreground">{country.visa_info}</p>
-                  </div>
-                )}
               </div>
             </section>
 
             {/* Medical & Healthcare */}
             <section id="medical" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                🏥 {t('countryDetail.sections.medical')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">❤️</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Medical
+                  </h2>
+                  <span className="ml-auto bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">Premium</span>
+                </div>
                 {getContent('medical_md') ? 
                   renderMarkdown(getContent('medical_md')) :
-                  <div>
-                    <p className="font-poppins text-muted-foreground leading-relaxed mb-4">
-                      Understand healthcare systems and medical requirements for studying in {country.name}. Learn about insurance options, healthcare access, and maintaining your health abroad.
-                    </p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 bg-muted rounded-lg">
-                        <h4 className="font-poppins font-semibold text-foreground mb-2">🏥 Healthcare System</h4>
-                        <p className="font-poppins text-sm text-muted-foreground">
-                          Overview of the healthcare system and how international students can access medical services.
-                        </p>
-                      </div>
-                      <div className="p-4 bg-muted rounded-lg">
-                        <h4 className="font-poppins font-semibold text-foreground mb-2">🛡️ Insurance Requirements</h4>
-                        <p className="font-poppins text-sm text-muted-foreground">
-                          Information about mandatory health insurance and coverage options for students.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Healthcare information and medical requirements for international students in {country.name}.
+                  </p>
                 }
               </div>
             </section>
 
             {/* Dos and Don'ts */}
             <section id="dos-donts" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                ✅ {t('countryDetail.sections.dosAndDonts', 'Dos and Don\'ts')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">✅</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    DOs and DON'Ts
+                  </h2>
+                </div>
                 {getContent('dos_and_donts_md') ? 
-                  renderMarkdown(getContent('dos_and_donts_md')) :
-                  <p className="font-poppins text-muted-foreground leading-relaxed">
-                    Essential cultural guidelines and practical advice for international students in {country.name}. Learn what to do and what to avoid to ensure a smooth and respectful experience.
-                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <h3 className="font-poppins text-lg font-semibold text-green-800 mb-3 flex items-center">
+                        ✅ DOs
+                      </h3>
+                      <div className="do-content">
+                        {renderMarkdown(getContent('dos_and_donts_md'))}
+                      </div>
+                    </div>
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <h3 className="font-poppins text-lg font-semibold text-red-800 mb-3 flex items-center">
+                        ❌ DON'Ts
+                      </h3>
+                      <div className="dont-content">
+                        {renderMarkdown(getContent('dos_and_donts_md'))}
+                      </div>
+                    </div>
+                  </div> :
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <h3 className="font-poppins text-lg font-semibold text-green-800 mb-3">
+                        ✅ DOs
+                      </h3>
+                      <p className="font-poppins text-sm text-green-700">
+                        Essential guidelines for positive interactions and cultural respect.
+                      </p>
+                    </div>
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <h3 className="font-poppins text-lg font-semibold text-red-800 mb-3">
+                        ❌ DON'Ts
+                      </h3>
+                      <p className="font-poppins text-sm text-red-700">
+                        Common mistakes to avoid and cultural sensitivities to respect.
+                      </p>
+                    </div>
+                  </div>
                 }
               </div>
             </section>
 
-            {/* Cities Section - Added at the bottom */}
+            {/* Cities Section */}
             <section id="country-cities" className="animate-fade-in-up">
-              <h2 className="font-glacial text-3xl font-bold text-foreground mb-6">
-                🏙️ {t('countryDetail.cities.title')}
-              </h2>
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">🗺️</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Cities to Explore
+                  </h2>
+                </div>
                 <p className="font-poppins text-muted-foreground leading-relaxed mb-6">
-                  {t('countryDetail.cities.subtitle', { country: country.name })}
+                  Discover the best cities for international students in {country.name}.
                 </p>
                 
                 {cities.length > 0 ? (
@@ -503,7 +564,7 @@ const CountryDetailTemplate = () => {
                 ) : (
                   <div className="text-center py-8">
                     <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">{t('cities.noCities.description')}</p>
+                    <p className="text-muted-foreground">No cities available yet</p>
                   </div>
                 )}
                 
@@ -513,7 +574,7 @@ const CountryDetailTemplate = () => {
                       to={`/paises/${countryId}/ciudades`}
                       className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
                     >
-                      {t('countryDetail.cities.viewAll', { country: country.name })}
+                      View All Cities in {country.name}
                     </Link>
                   </div>
                 )}
