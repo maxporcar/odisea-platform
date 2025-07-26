@@ -10,65 +10,98 @@ interface CountryMapProps {
   cities: City[];
 }
 
-// SVG maps for different countries (simplified outlines)
+// Function to convert lat/lng to SVG coordinates for each country
+const getCoordinatesForCountry = (countryId: string, lat: number, lng: number) => {
+  switch (countryId.toLowerCase()) {
+    case 'france':
+      // France bounds: lat 41.3-51.1, lng -5.1-9.6
+      const frX = ((lng - (-5.1)) / (9.6 - (-5.1))) * 600 + 100;
+      const frY = ((51.1 - lat) / (51.1 - 41.3)) * 400 + 100;
+      return { x: frX, y: frY };
+    
+    case 'spain':
+      // Spain bounds: lat 35.2-43.8, lng -9.3-4.3
+      const spX = ((lng - (-9.3)) / (4.3 - (-9.3))) * 600 + 100;
+      const spY = ((43.8 - lat) / (43.8 - 35.2)) * 350 + 150;
+      return { x: spX, y: spY };
+    
+    case 'canada':
+      // Canada bounds: lat 41.7-83.1, lng -141.0--52.6
+      const caX = ((lng - (-141.0)) / ((-52.6) - (-141.0))) * 700 + 50;
+      const caY = ((83.1 - lat) / (83.1 - 41.7)) * 400 + 80;
+      return { x: caX, y: caY };
+    
+    default:
+      // Generic conversion
+      const defX = ((lng + 180) / 360) * 600 + 100;
+      const defY = ((90 - lat) / 180) * 400 + 100;
+      return { x: defX, y: defY };
+  }
+};
+
+// More detailed SVG maps for different countries
 const countryMaps: Record<string, React.ReactNode> = {
-  canada: (
+  france: (
     <svg viewBox="0 0 800 600" className="w-full h-full">
-      {/* Canada outline */}
+      {/* France detailed outline */}
       <path
-        d="M100 150 L150 100 L200 80 L250 70 L300 65 L350 60 L400 55 L450 50 L500 55 L550 60 L600 70 L650 80 L700 100 L750 130 L780 150 L790 180 L785 220 L775 260 L760 300 L740 340 L720 380 L690 420 L650 450 L600 470 L550 480 L500 485 L450 490 L400 485 L350 480 L300 470 L250 450 L200 420 L150 380 L120 340 L100 300 L90 260 L85 220 L90 180 Z"
+        d="M200 200 L250 180 L300 170 L350 165 L400 160 L450 155 L500 158 L550 165 L580 180 L600 200 L610 220 L615 240 L620 260 L625 280 L630 300 L635 320 L640 340 L638 360 L635 380 L630 400 L620 420 L600 435 L580 445 L560 450 L540 455 L520 458 L500 460 L480 458 L460 455 L440 450 L420 445 L400 440 L380 430 L360 420 L340 405 L320 390 L300 375 L280 360 L260 340 L240 320 L220 300 L205 280 L195 260 L190 240 L195 220 Z"
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
         className="drop-shadow-sm"
       />
-      {/* Internal borders/provinces */}
+      {/* Corsica */}
       <path
-        d="M200 100 L200 450"
-        stroke="#E5E7EB"
-        strokeWidth="1"
-        strokeDasharray="5,5"
-      />
-      <path
-        d="M350 80 L350 470"
-        stroke="#E5E7EB"
-        strokeWidth="1"
-        strokeDasharray="5,5"
-      />
-      <path
-        d="M500 70 L500 480"
-        stroke="#E5E7EB"
-        strokeWidth="1"
-        strokeDasharray="5,5"
-      />
-      <path
-        d="M650 90 L650 460"
-        stroke="#E5E7EB"
-        strokeWidth="1"
-        strokeDasharray="5,5"
+        d="M580 420 L590 415 L595 425 L590 435 L585 430 Z"
+        fill="#FEF3C7"
+        stroke="#D97706"
+        strokeWidth="2"
       />
     </svg>
   ),
   spain: (
     <svg viewBox="0 0 800 600" className="w-full h-full">
+      {/* Spain detailed outline */}
       <path
-        d="M100 200 L200 180 L300 170 L400 165 L500 160 L600 165 L700 170 L750 190 L780 220 L785 250 L780 280 L770 310 L750 340 L720 370 L680 390 L640 400 L600 405 L550 410 L500 405 L450 400 L400 395 L350 390 L300 380 L250 370 L200 350 L150 330 L120 310 L100 280 L95 250 L100 220 Z"
+        d="M120 250 L180 240 L240 235 L300 230 L360 225 L420 220 L480 225 L540 230 L600 240 L650 255 L680 275 L700 300 L710 325 L715 350 L710 375 L700 400 L680 420 L650 435 L620 445 L580 450 L540 455 L500 458 L460 455 L420 450 L380 445 L340 435 L300 420 L260 400 L220 375 L180 350 L150 325 L130 300 L125 275 Z"
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
         className="drop-shadow-sm"
+      />
+      {/* Balearic Islands */}
+      <path
+        d="M580 380 L590 375 L600 380 L595 390 L585 385 Z"
+        fill="#FEF3C7"
+        stroke="#D97706"
+        strokeWidth="2"
+      />
+      {/* Canary Islands */}
+      <path
+        d="M80 450 L90 445 L100 450 L95 460 L85 455 Z"
+        fill="#FEF3C7"
+        stroke="#D97706"
+        strokeWidth="2"
       />
     </svg>
   ),
-  france: (
+  canada: (
     <svg viewBox="0 0 800 600" className="w-full h-full">
+      {/* Canada detailed outline with provinces */}
       <path
-        d="M200 150 L300 130 L400 120 L500 125 L600 140 L650 170 L680 200 L690 230 L685 260 L675 290 L660 320 L640 350 L610 380 L570 400 L530 410 L490 415 L450 410 L410 400 L370 380 L330 350 L290 320 L250 290 L220 260 L200 230 L195 200 L200 170 Z"
+        d="M50 200 L100 150 L150 120 L200 100 L250 90 L300 85 L350 80 L400 75 L450 70 L500 68 L550 70 L600 75 L650 85 L700 100 L740 120 L770 150 L790 180 L795 210 L790 240 L780 270 L765 300 L745 330 L720 360 L690 390 L655 415 L620 435 L580 450 L540 460 L500 465 L460 468 L420 465 L380 460 L340 450 L300 435 L260 415 L220 390 L180 360 L145 330 L115 300 L90 270 L70 240 L60 210 Z"
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
         className="drop-shadow-sm"
       />
+      {/* Great Lakes */}
+      <ellipse cx="580" cy="380" rx="25" ry="15" fill="#93C5FD" />
+      <ellipse cx="620" cy="390" rx="20" ry="12" fill="#93C5FD" />
+      <ellipse cx="540" cy="400" rx="18" ry="10" fill="#93C5FD" />
+      {/* Hudson Bay */}
+      <ellipse cx="450" cy="250" rx="40" ry="60" fill="#93C5FD" />
     </svg>
   ),
   // Default shape for countries without specific maps
@@ -85,34 +118,14 @@ const countryMaps: Record<string, React.ReactNode> = {
   )
 };
 
-// City positions for different countries (relative to SVG viewBox)
-const cityPositions: Record<string, Record<string, { x: number; y: number; isCapital?: boolean }>> = {
-  canada: {
-    toronto: { x: 600, y: 400 },
-    vancouver: { x: 150, y: 350 },
-    montreal: { x: 650, y: 380 },
-    calgary: { x: 300, y: 320 },
-    ottawa: { x: 620, y: 370, isCapital: true },
-    quebec: { x: 680, y: 360 },
-    winnipeg: { x: 400, y: 350 },
-    halifax: { x: 750, y: 390 },
-  },
-  spain: {
-    madrid: { x: 400, y: 300, isCapital: true },
-    barcelona: { x: 650, y: 250 },
-    valencia: { x: 580, y: 320 },
-    sevilla: { x: 300, y: 380 },
-    bilbao: { x: 350, y: 220 },
-    granada: { x: 320, y: 370 },
-  },
-  france: {
-    paris: { x: 450, y: 250, isCapital: true },
-    lyon: { x: 500, y: 320 },
-    marseille: { x: 520, y: 380 },
-    toulouse: { x: 350, y: 360 },
-    nice: { x: 580, y: 390 },
-    strasbourg: { x: 580, y: 220 },
-  }
+// Get capital city name for each country
+const getCapitalCity = (countryId: string) => {
+  const capitals: Record<string, string> = {
+    france: 'Paris',
+    spain: 'Madrid', 
+    canada: 'Ottawa'
+  };
+  return capitals[countryId.toLowerCase()];
 };
 
 const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities }) => {
@@ -121,22 +134,24 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
   // Get the appropriate map or use default
   const mapComponent = countryMaps[countryId.toLowerCase()] || countryMaps.default;
   
-  // Get city positions for this country
-  const positions = cityPositions[countryId.toLowerCase()] || {};
+  // Get capital city name
+  const capitalCity = getCapitalCity(countryId);
   
-  // Create city markers based on database cities and positions
-  const cityMarkers = cities
-    .filter(city => positions[city.name.toLowerCase()])
-    .map(city => {
-      const position = positions[city.name.toLowerCase()];
-      const hasGuide = !!city.description; // Check if city has content
-      
-      return {
-        ...city,
-        ...position,
-        hasGuide
-      };
-    });
+  // Create city markers based on database cities with real coordinates
+  const cityMarkers = cities.map(city => {
+    if (!city.latitude || !city.longitude) return null;
+    
+    const position = getCoordinatesForCountry(countryId, city.latitude, city.longitude);
+    const hasGuide = !!city.description;
+    const isCapital = city.name.toLowerCase() === capitalCity?.toLowerCase();
+    
+    return {
+      ...city,
+      ...position,
+      hasGuide,
+      isCapital
+    };
+  }).filter(Boolean);
 
   return (
     <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
@@ -154,10 +169,15 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
           </div>
           
           {/* Country Name Label */}
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-            <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-200">
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+            <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-200">
               <div className="flex items-center space-x-2">
-                <span className="text-2xl">🍁</span>
+                <span className="text-2xl">
+                  {countryId === 'canada' && '🍁'}
+                  {countryId === 'france' && '🇫🇷'}
+                  {countryId === 'spain' && '🇪🇸'}
+                  {countryId !== 'canada' && countryId !== 'france' && countryId !== 'spain' && '🌍'}
+                </span>
                 <span className="font-montserrat text-lg font-bold text-primary">
                   {countryName.toUpperCase()}
                 </span>
@@ -166,28 +186,40 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
           </div>
           
           {/* City Markers */}
-          {cityMarkers.map((city) => (
+          {cityMarkers.map((city) => city && (
             <div
               key={city.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-20"
               style={{ left: `${city.x}px`, top: `${city.y}px` }}
             >
               <div className={`
-                w-6 h-6 rounded-full shadow-lg border-2 border-white transition-all duration-200 
+                w-6 h-6 rounded-full shadow-lg border-2 border-white transition-all duration-300 
                 ${city.hasGuide 
-                  ? 'bg-teal-500 hover:bg-teal-600 hover:scale-110' 
-                  : 'bg-gray-400 hover:bg-gray-500'
+                  ? 'bg-teal-500 hover:bg-teal-600 hover:scale-125 hover:shadow-xl' 
+                  : 'bg-gray-400 hover:bg-gray-500 hover:scale-110'
                 }
-                ${city.isCapital ? 'ring-2 ring-yellow-400 ring-offset-2' : ''}
+                ${city.isCapital ? 'ring-3 ring-yellow-400 ring-offset-2 bg-yellow-500 hover:bg-yellow-600' : ''}
               `}>
+                {city.isCapital && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-white text-xs">★</span>
+                  </div>
+                )}
               </div>
               
               {/* City name tooltip */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                <div className="bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                  {city.name}
-                  {city.isCapital && ' (Capital)'}
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-30">
+                <div className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap shadow-xl">
+                  <div className="font-semibold">{city.name}</div>
+                  {city.isCapital && (
+                    <div className="text-xs text-yellow-200">Capital City</div>
+                  )}
+                  {city.hasGuide && (
+                    <div className="text-xs text-green-200">Guide Available</div>
+                  )}
                 </div>
+                {/* Tooltip arrow */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
               </div>
             </div>
           ))}
@@ -198,23 +230,25 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
           <h4 className="font-poppins text-sm font-semibold text-gray-700 mb-3">
             {t('countryDetail.map.legend', 'Study Destinations')}
           </h4>
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="flex items-center space-x-3">
-              <div className="w-4 h-4 bg-teal-500 rounded-full border-2 border-white shadow"></div>
+              <div className="w-5 h-5 bg-yellow-500 rounded-full border-2 border-white shadow ring-2 ring-yellow-400 ring-offset-1 flex items-center justify-center">
+                <span className="text-white text-xs">★</span>
+              </div>
+              <span className="font-poppins text-sm text-gray-600">
+                {t('countryDetail.map.capital', 'Capital city')}
+              </span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-5 h-5 bg-teal-500 rounded-full border-2 border-white shadow"></div>
               <span className="font-poppins text-sm text-gray-600">
                 {t('countryDetail.map.availableGuides', 'Available city guides')}
               </span>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-4 h-4 bg-gray-400 rounded-full border-2 border-white shadow"></div>
+              <div className="w-5 h-5 bg-gray-400 rounded-full border-2 border-white shadow"></div>
               <span className="font-poppins text-sm text-gray-600">
                 {t('countryDetail.map.comingSoon', 'Coming soon')}
-              </span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-4 h-4 bg-teal-500 rounded-full border-2 border-white shadow ring-2 ring-yellow-400 ring-offset-1"></div>
-              <span className="font-poppins text-sm text-gray-600">
-                {t('countryDetail.map.capital', 'Capital city')}
               </span>
             </div>
           </div>
