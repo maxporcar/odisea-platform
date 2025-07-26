@@ -184,12 +184,14 @@
     "joinCommunity": "Join community",
     "studyGuideSections": "Study Guide Sections",
     "sections": {
+      "overview": "Overview",
       "bigCities": "Big Cities vs Small Towns",
       "culture": "Culture",
       "lifeActivities": "Life, Activities and Travel",
       "scholarships": "Student Benefits and Scholarships",
       "visa": "Visa Information",
-      "medical": "Medical"
+      "medical": "Medical",
+      "dosAndDonts": "Dos and Don'ts"
     },
     "cities": {
       "title": "Cities",
