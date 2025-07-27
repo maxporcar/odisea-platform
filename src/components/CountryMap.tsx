@@ -1,14 +1,9 @@
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Database } from '@/integrations/supabase/types';
-
-type City = Database['public']['Tables']['cities']['Row'];
-
-interface CountryMapProps {
-  countryId: string;
-  countryName: string;
-  cities: City[];
-}
+import { useNavigate } from 'react-router-dom';
+import { useCountryMapData } from '@/hooks/useCountryMapData';
+import { Loader2, AlertCircle } from 'lucide-react';
 
 // Function to convert lat/lng to SVG coordinates for each country
 const getCoordinatesForCountry = (countryId: string, lat: number, lng: number) => {
@@ -49,7 +44,7 @@ const countryMaps: Record<string, React.ReactNode> = {
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
-        className="drop-shadow-sm"
+        className="drop-shadow-sm hover:fill-yellow-100 transition-colors cursor-pointer"
       />
       {/* Corsica */}
       <path
@@ -57,6 +52,7 @@ const countryMaps: Record<string, React.ReactNode> = {
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
+        className="hover:fill-yellow-100 transition-colors cursor-pointer"
       />
     </svg>
   ),
@@ -68,7 +64,7 @@ const countryMaps: Record<string, React.ReactNode> = {
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
-        className="drop-shadow-sm"
+        className="drop-shadow-sm hover:fill-yellow-100 transition-colors cursor-pointer"
       />
       {/* Balearic Islands */}
       <path
@@ -76,6 +72,7 @@ const countryMaps: Record<string, React.ReactNode> = {
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
+        className="hover:fill-yellow-100 transition-colors cursor-pointer"
       />
       {/* Canary Islands */}
       <path
@@ -83,6 +80,7 @@ const countryMaps: Record<string, React.ReactNode> = {
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
+        className="hover:fill-yellow-100 transition-colors cursor-pointer"
       />
     </svg>
   ),
@@ -94,7 +92,7 @@ const countryMaps: Record<string, React.ReactNode> = {
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
-        className="drop-shadow-sm"
+        className="drop-shadow-sm hover:fill-yellow-100 transition-colors cursor-pointer"
       />
       {/* Great Lakes */}
       <ellipse cx="580" cy="380" rx="25" ry="15" fill="#93C5FD" />
@@ -112,7 +110,7 @@ const countryMaps: Record<string, React.ReactNode> = {
         fill="#FEF3C7"
         stroke="#D97706"
         strokeWidth="2"
-        className="drop-shadow-sm"
+        className="drop-shadow-sm hover:fill-yellow-100 transition-colors cursor-pointer"
       />
     </svg>
   )
@@ -128,20 +126,60 @@ const getCapitalCity = (countryId: string) => {
   return capitals[countryId.toLowerCase()];
 };
 
-const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities }) => {
+const CountryMap: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { data, isLoading, error } = useCountryMapData();
+
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-border">
+          <h3 className="font-montserrat text-xl font-bold text-foreground flex items-center">
+            🗺️ {t('countryDetail.map.title', 'Study Destinations')}
+          </h3>
+        </div>
+        <div className="p-6 flex items-center justify-center h-96">
+          <div className="flex items-center space-x-3">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <span className="text-xl text-primary font-poppins">{t('common.loading', 'Loading...')}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-border">
+          <h3 className="font-montserrat text-xl font-bold text-foreground flex items-center">
+            🗺️ {t('countryDetail.map.title', 'Study Destinations')}
+          </h3>
+        </div>
+        <div className="p-6 flex items-center justify-center h-96">
+          <div className="text-center">
+            <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+            <p className="text-red-600">{t('common.error', 'Error loading map data')}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const { country, cities } = data;
   
   // Get the appropriate map or use default
-  const mapComponent = countryMaps[countryId.toLowerCase()] || countryMaps.default;
+  const mapComponent = countryMaps[country.id.toLowerCase()] || countryMaps.default;
   
   // Get capital city name
-  const capitalCity = getCapitalCity(countryId);
+  const capitalCity = getCapitalCity(country.id);
   
   // Create city markers based on database cities with real coordinates
   const cityMarkers = cities.map(city => {
     if (!city.latitude || !city.longitude) return null;
     
-    const position = getCoordinatesForCountry(countryId, city.latitude, city.longitude);
+    const position = getCoordinatesForCountry(country.id, city.latitude, city.longitude);
     const hasGuide = !!city.description;
     const isCapital = city.name.toLowerCase() === capitalCity?.toLowerCase();
     
@@ -152,6 +190,12 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
       isCapital
     };
   }).filter(Boolean);
+
+  const handleCityClick = (city: any) => {
+    if (city.hasGuide && city.slug) {
+      navigate(`/paises/${country.id}/ciudades/${city.slug}`);
+    }
+  };
 
   return (
     <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
@@ -173,13 +217,13 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
             <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-200">
               <div className="flex items-center space-x-2">
                 <span className="text-2xl">
-                  {countryId === 'canada' && '🍁'}
-                  {countryId === 'france' && '🇫🇷'}
-                  {countryId === 'spain' && '🇪🇸'}
-                  {countryId !== 'canada' && countryId !== 'france' && countryId !== 'spain' && '🌍'}
+                  {country.id === 'canada' && '🍁'}
+                  {country.id === 'france' && '🇫🇷'}
+                  {country.id === 'spain' && '🇪🇸'}
+                  {country.id !== 'canada' && country.id !== 'france' && country.id !== 'spain' && '🌍'}
                 </span>
                 <span className="font-montserrat text-lg font-bold text-primary">
-                  {countryName.toUpperCase()}
+                  {country.name.toUpperCase()}
                 </span>
               </div>
             </div>
@@ -189,8 +233,11 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
           {cityMarkers.map((city) => city && (
             <div
               key={city.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-20"
+              className={`absolute transform -translate-x-1/2 -translate-y-1/2 group z-20 ${
+                city.hasGuide ? 'cursor-pointer' : 'cursor-default'
+              }`}
               style={{ left: `${city.x}px`, top: `${city.y}px` }}
+              onClick={() => handleCityClick(city)}
             >
               <div className={`
                 w-6 h-6 rounded-full shadow-lg border-2 border-white transition-all duration-300 
@@ -212,10 +259,13 @@ const CountryMap: React.FC<CountryMapProps> = ({ countryId, countryName, cities 
                 <div className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap shadow-xl">
                   <div className="font-semibold">{city.name}</div>
                   {city.isCapital && (
-                    <div className="text-xs text-yellow-200">Capital City</div>
+                    <div className="text-xs text-yellow-200">{t('countryDetail.map.capital', 'Capital City')}</div>
                   )}
                   {city.hasGuide && (
-                    <div className="text-xs text-green-200">Guide Available</div>
+                    <div className="text-xs text-green-200">{t('countryDetail.map.clickToExplore', 'Click to explore')}</div>
+                  )}
+                  {!city.hasGuide && (
+                    <div className="text-xs text-gray-300">{t('countryDetail.map.comingSoon', 'Coming soon')}</div>
                   )}
                 </div>
                 {/* Tooltip arrow */}
