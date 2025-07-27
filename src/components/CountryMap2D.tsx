@@ -1,9 +1,11 @@
 
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON, CircleMarker, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useCountry } from '@/hooks/useCountries';
 import { useCities } from '@/hooks/useCities';
+import type { Feature, MultiPolygon, FeatureCollection } from 'geojson';
 
 function FitBounds({ geoJson }: { geoJson: any }) {
   const map = useMap();
@@ -32,7 +34,7 @@ export default function CountryMap2D({ slug }: CountryMap2DProps) {
 
   // For now, we'll create a simple boundary around the cities
   // In a real implementation, you'd store GeoJSON data in your database
-  const createCountryBounds = () => {
+  const createCountryBounds = (): Feature<MultiPolygon> | null => {
     if (!cities.length) return null;
     
     const validCities = cities.filter(city => city.latitude && city.longitude);
@@ -48,15 +50,16 @@ export default function CountryMap2D({ slug }: CountryMap2DProps) {
 
     return {
       type: "Feature",
+      properties: {},
       geometry: {
-        type: "Polygon",
-        coordinates: [[
+        type: "MultiPolygon",
+        coordinates: [[[
           [minLng, minLat],
           [maxLng, minLat],
           [maxLng, maxLat],
           [minLng, maxLat],
           [minLng, minLat]
-        ]]
+        ]]]
       }
     };
   };
