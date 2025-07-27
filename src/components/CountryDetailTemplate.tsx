@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, MapPin } from 'lucide-react';
 import { useCountry } from '../hooks/useCountries';
 import { useCities } from '../hooks/useCities';
-import Globe3D from './Globe3D';
+import CountryMap2D from './CountryMap2D';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -295,22 +294,15 @@ const CountryDetailTemplate = () => {
               </p>
             </div>
 
-            {/* Map Section in Content */}
+            {/* Map Section */}
             <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
               <div className="p-6 border-b border-border">
                 <h3 className="font-montserrat text-xl font-bold text-foreground flex items-center">
                   🗺️ Explore {country.name}
                 </h3>
               </div>
-              <div className="flex justify-center items-center w-full py-6">
-                <div className="h-[400px] relative flex justify-center w-full">
-                  <Globe3D 
-                    width={350} 
-                    height={400} 
-                    countryCode={countryId}
-                    enhancedContrast={true}
-                  />
-                </div>
+              <div className="p-6">
+                <CountryMap2D slug={countryId!} />
               </div>
             </div>
 
