@@ -32,6 +32,9 @@ export default function CountryMap2D({ slug }: CountryMap2DProps) {
   const { data: country } = useCountry(slug);
   const { data: cities = [] } = useCities(country?.id);
 
+  console.log('🗺️ CountryMap2D - Country:', country);
+  console.log('🏙️ CountryMap2D - Cities:', cities);
+
   // For now, we'll create a simple boundary around the cities
   // In a real implementation, you'd store GeoJSON data in your database
   const createCountryBounds = (): Feature<MultiPolygon> | null => {
