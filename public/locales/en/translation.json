@@ -197,14 +197,6 @@
       "title": "Cities",
       "subtitle": "Explore the main student cities in {{country}}",
       "viewAll": "View all cities in {{country}}"
-    },
-    "map": {
-      "title": "Study Destinations",
-      "legend": "Study Destinations",
-      "availableGuides": "Available city guides",
-      "comingSoon": "Coming soon",
-      "capital": "Capital city",
-      "instruction": "Click on available cities to explore comprehensive study guides"
     }
   },
   "map": {

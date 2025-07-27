@@ -83,14 +83,6 @@
       "title": "Ciudades",
       "subtitle": "Explora las principales ciudades estudiantiles en {{country}}",
       "viewAll": "Ver todas las ciudades en {{country}}"
-    },
-    "map": {
-      "title": "Destinos de Estudio",
-      "legend": "Destinos de Estudio", 
-      "availableGuides": "Guías de ciudades disponibles",
-      "comingSoon": "Próximamente",
-      "capital": "Ciudad capital",
-      "instruction": "Haz clic en las ciudades disponibles para explorar guías de estudio completas"
     }
   },
   "map": {
