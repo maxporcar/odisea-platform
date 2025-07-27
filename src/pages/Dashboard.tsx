@@ -2,17 +2,18 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useChecklist } from '@/hooks/useChecklist';
-import { TripSelector } from '@/components/TripSelector';
-import { ChecklistSection } from '@/components/ChecklistSection';
+import { useTrips } from '@/hooks/useTrips';
+import { DashboardLayout } from '@/components/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Lock, CheckCircle } from 'lucide-react';
+import { Lock, CheckCircle, FileText, MessageCircle, User, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { user, profile } = useAuth();
   const { subscription, loading: subscriptionLoading } = useSubscription();
+  const { trips } = useTrips();
   const [selectedTripId, setSelectedTripId] = useState<string>();
   const { checklist, loading: checklistLoading, toggleItem } = useChecklist(selectedTripId);
 
@@ -74,90 +75,143 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">
-          Welcome back, {profile?.full_name || user.email}!
-        </h1>
-        <p className="text-muted-foreground">
-          Track your preparation progress for your international mobility
-        </p>
-      </div>
-
-      <div className="grid gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-4">
-          <TripSelector 
-            onTripSelect={setSelectedTripId}
-            selectedTripId={selectedTripId}
-          />
-        </div>
-
-        <div className="lg:col-span-8">
-          {!selectedTripId ? (
-            <Card>
-              <CardContent className="text-center py-12">
-                <CheckCircle className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">Ready to Start?</h3>
-                <p className="text-muted-foreground">
-                  Select or create a trip to access your personalized preparation checklist
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="space-y-6">
-              {/* Overall Progress */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Overall Progress</CardTitle>
-                  <CardDescription>
-                    Your preparation progress across all categories
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-sm">
-                      <span>Total Progress</span>
-                      <span>{completedItems}/{totalItems} tasks completed</span>
-                    </div>
-                    <Progress value={overallProgress} className="h-3" />
-                    <p className="text-sm text-muted-foreground">
-                      {Math.round(overallProgress)}% of your checklist is completed
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Checklist Sections */}
-              {checklistLoading ? (
-                <Card>
-                  <CardContent className="text-center py-8">
-                    <p className="text-muted-foreground">Loading your checklist...</p>
-                  </CardContent>
-                </Card>
-              ) : checklist.length === 0 ? (
-                <Card>
-                  <CardContent className="text-center py-8">
-                    <p className="text-muted-foreground">No checklist items found</p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="space-y-6">
-                  {checklist.map(section => (
-                    <ChecklistSection
-                      key={section.template.id}
-                      title={section.template.title}
-                      description={section.template.description}
-                      items={section.items}
-                      progress={section.progress}
-                      onToggleItem={toggleItem}
-                    />
-                  ))}
-                </div>
-              )}
+    <DashboardLayout>
+      <div className="space-y-6">
+        {/* Welcome Message */}
+        <div>
+          <h1 className="text-2xl font-semibold mb-2">
+            Welcome back, {profile?.full_name?.split(' ')[0] || 'User'}! Ready for your next steps abroad?
+          </h1>
+          <p className="text-muted-foreground">
+            Overall progress
+          </p>
+          <div className="mt-4 bg-warm-amber/10 rounded-lg p-4">
+            <div className="w-full bg-muted rounded-full h-2">
+              <div className="bg-warm-amber h-2 rounded-full" style={{ width: '60%' }}></div>
             </div>
-          )}
+          </div>
         </div>
+
+        {/* My Checklist Preview */}
+        <Card>
+          <CardHeader>
+            <CardTitle>My Checklist</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between py-2">
+                <span className="text-sm">Complete your application</span>
+                <span className="text-xs text-muted-foreground">Due in 2 weeks</span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-sm">Submit your transcript</span>
+                <span className="text-xs text-muted-foreground">Due in 1 month</span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-sm">Schedule your interview</span>
+                <span className="text-xs text-muted-foreground">Due in 2 months</span>
+              </div>
+              <div className="mt-4">
+                <Button asChild className="w-full">
+                  <Link to="/profile?tab=checklist">View Full Checklist</Link>
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quick Access Grid */}
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
+              <Link to="/profile?tab=checklist">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 bg-teal-600 rounded-lg mx-auto mb-3 flex items-center justify-center">
+                    <CheckCircle className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">My Checklist</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Track your progress and complete tasks.
+                  </p>
+                </CardContent>
+              </Link>
+            </Card>
+
+            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
+              <Link to="/profile?tab=documents">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 bg-stone-400 rounded-lg mx-auto mb-3 flex items-center justify-center">
+                    <FileText className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">My Documents</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Manage and upload your required documents.
+                  </p>
+                </CardContent>
+              </Link>
+            </Card>
+
+            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
+              <Link to="/comunidad">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 bg-blue-500 rounded-lg mx-auto mb-3 flex items-center justify-center">
+                    <MessageCircle className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">Chat with Students</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Connect with other students for advice and support.
+                  </p>
+                </CardContent>
+              </Link>
+            </Card>
+
+            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
+              <Link to="/profile?tab=advisor">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 bg-warm-amber rounded-lg mx-auto mb-3 flex items-center justify-center">
+                    <User className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">My Advisor</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Schedule and meet with your advisor.
+                  </p>
+                </CardContent>
+              </Link>
+            </Card>
+          </div>
+        </div>
+
+        {/* Latest Activity */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Latest Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mt-1">
+                  <FileText className="h-4 w-4 text-green-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium">Your transcript has been approved</p>
+                  <p className="text-sm text-muted-foreground">Document Status Changed</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                  <MessageCircle className="h-4 w-4 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium">Message from your advisor</p>
+                  <p className="text-sm text-muted-foreground">New Message</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

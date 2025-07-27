@@ -32,10 +32,11 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-primary to-warm-amber p-2 rounded-lg">
-              <span className="text-white font-bold text-xl">O</span>
-            </div>
-            <span className="text-2xl font-bold text-gray-800">Odisea</span>
+            <img 
+              src="/lovable-uploads/380a8da8-9d6a-43fd-87dc-677aeb149bf2.png" 
+              alt="Odisea Logo" 
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
