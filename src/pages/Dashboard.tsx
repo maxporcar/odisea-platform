@@ -124,8 +124,8 @@ export default function Dashboard() {
         <div>
           <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
-              <Link to="/profile?tab=checklist">
+            <Link to="/profile?tab=checklist">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-teal-600 rounded-lg mx-auto mb-3 flex items-center justify-center">
                     <CheckCircle className="h-6 w-6 text-white" />
@@ -135,11 +135,11 @@ export default function Dashboard() {
                     Track your progress and complete tasks.
                   </p>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
 
-            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
-              <Link to="/profile?tab=documents">
+            <Link to="/profile?tab=documents">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-stone-400 rounded-lg mx-auto mb-3 flex items-center justify-center">
                     <FileText className="h-6 w-6 text-white" />
@@ -149,11 +149,11 @@ export default function Dashboard() {
                     Manage and upload your required documents.
                   </p>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
 
-            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
-              <Link to="/comunidad">
+            <Link to="/comunidad">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-blue-500 rounded-lg mx-auto mb-3 flex items-center justify-center">
                     <MessageCircle className="h-6 w-6 text-white" />
@@ -163,11 +163,11 @@ export default function Dashboard() {
                     Connect with other students for advice and support.
                   </p>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
 
-            <Card className="hover:shadow-md transition-shadow cursor-pointer" asChild>
-              <Link to="/profile?tab=advisor">
+            <Link to="/profile?tab=advisor">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-warm-amber rounded-lg mx-auto mb-3 flex items-center justify-center">
                     <User className="h-6 w-6 text-white" />
@@ -177,8 +177,8 @@ export default function Dashboard() {
                     Schedule and meet with your advisor.
                   </p>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
           </div>
         </div>
 
