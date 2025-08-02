@@ -15,6 +15,7 @@ import CitiesIndex from "./pages/paises/[countryId]/ciudades/index";
 import CityDetail from "./pages/paises/[countryId]/ciudades/[slug]";
 import UniversitiesIndex from "./pages/paises/[countryId]/universidades/index";
 import UniversityDetail from "./pages/paises/[countryId]/universidades/[uniId]";
+import CityDetailStandalone from "./pages/cities/[slug]";
 import Testimonios from "./pages/Testimonios";
 import Comunidad from "./pages/Comunidad";
 import Login from "./pages/Login";
@@ -55,6 +56,7 @@ const App = () => {
               <Route path="/paises/:countryId/ciudades/:slug" element={<Layout><CityDetail /></Layout>} />
               <Route path="/paises/:countryId/universidades" element={<Layout><UniversitiesIndex /></Layout>} />
               <Route path="/paises/:countryId/universidades/:uniId" element={<Layout><UniversityDetail /></Layout>} />
+              <Route path="/cities/:slug" element={<Layout><CityDetailStandalone /></Layout>} />
               <Route path="/testimonios" element={<Layout><Testimonios /></Layout>} />
               <Route path="/comunidad" element={<Layout><Comunidad /></Layout>} />
               <Route path="/login" element={<Login />} />
