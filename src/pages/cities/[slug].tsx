@@ -1,26 +1,185 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, MapPin } from 'lucide-react';
 import { useCity } from '@/hooks/useCities';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslation } from 'react-i18next';
+import { supabase } from '@/integrations/supabase/client';
 
-const CityDetail = () => {
+// Enhanced markdown renderer with better formatting (same as countries)
+const renderMarkdown = (content: string) => {
+  if (!content) return null;
+  
+  // Clean content - remove surrounding quotes if present
+  const cleanContent = content.replace(/^"|"$/g, '');
+  
+  // Enhanced markdown parsing
+  let html = cleanContent
+    // Handle headers
+    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4 flex items-center"><span class="text-primary mr-2">📍</span>$1</h4>')
+    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6 flex items-center"><span class="text-primary mr-2">🔹</span>$1</h3>')
+    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-4 mt-6">$1</h2>')
+    
+    // Handle lists
+    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-green-500 mr-2 mt-1">✓</span><span>$1</span></li>')
+    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-red-500 mr-2 mt-1">✗</span><span>$1</span></li>')
+    
+    // Handle emphasis
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+    
+    // Handle paragraphs and line breaks
+    .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-4">')
+    .replace(/\n/g, '<br>');
+
+  // Wrap lists properly
+  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-6 space-y-2">$1</ul>');
+  
+  return (
+    <div 
+      className="markdown-content" 
+      dangerouslySetInnerHTML={{ 
+        __html: `<div class="font-poppins text-muted-foreground leading-relaxed">${html}</div>` 
+      }} 
+    />
+  );
+};
+
+// Translation cache to avoid repeated API calls
+const translationCache = new Map<string, string>();
+
+// Auto-translation function using Supabase edge function
+const translateContent = async (content: string, targetLang: string) => {
+  if (targetLang === 'en' || !content) return content;
+  
+  // Check cache first
+  const cacheKey = `${content.substring(0, 50)}_${targetLang}`;
+  if (translationCache.has(cacheKey)) {
+    return translationCache.get(cacheKey)!;
+  }
+  
+  try {
+    const { data, error } = await supabase.functions.invoke('translate-content', {
+      body: {
+        text: content,
+        targetLang: targetLang,
+        sourceLang: 'en'
+      }
+    });
+
+    if (error) {
+      console.error('Translation error:', error);
+      return content; // Return original on error
+    }
+
+    const translatedText = data?.translatedText || content;
+    // Cache the result
+    translationCache.set(cacheKey, translatedText);
+    return translatedText;
+  } catch (error) {
+    console.error('Translation error:', error);
+    return content; // Return original on error
+  }
+};
+
+interface Section {
+  id: string;
+  title: string;
+}
+
+const CityDetailTemplate = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: city, isLoading, error } = useCity(slug!);
+  const [activeSection, setActiveSection] = useState('climate');
+  const [translatedContent, setTranslatedContent] = useState<Record<string, string>>({});
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  // Define sections for city pages
+  const sections: Section[] = [
+    { id: 'climate', title: '🌡️ Climate' },
+    { id: 'cost-of-living', title: '💰 Cost of Living' },
+    { id: 'safety', title: '🛡️ Safety' },
+    { id: 'rent', title: '🏠 Rent & Housing' },
+    { id: 'events', title: '🎉 Events' },
+    { id: 'social', title: '👫 Social Life' },
+    { id: 'universities', title: '🎓 Universities' }
+  ];
+
+  // Handle content translation when language changes
+  useEffect(() => {
+    if (city && i18n.language !== 'en') {
+      const translateMarkdownFields = async () => {
+        setIsTranslating(true);
+        const fieldsToTranslate = [
+          'climate_md',
+          'cost_of_living_md', 
+          'safety_md',
+          'rent_md',
+          'events_md',
+          'social_md',
+          'universities_md'
+        ];
+
+        const translations: Record<string, string> = {};
+        
+        for (const field of fieldsToTranslate) {
+          const content = (city as any)[field];
+          if (content) {
+            translations[field] = await translateContent(content, i18n.language);
+          }
+        }
+        
+        setTranslatedContent(translations);
+        setIsTranslating(false);
+      };
+
+      translateMarkdownFields();
+    } else {
+      setTranslatedContent({});
+    }
+  }, [city, i18n.language]);
+
+  // Function to get content (translated or original)
+  const getContent = (field: string) => {
+    return translatedContent[field] || (city as any)?.[field] || '';
+  };
+
+  // Scroll to section functionality
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100;
+      
+      for (const section of sections) {
+        const element = document.getElementById(section.id);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="space-y-6">
-            <Skeleton className="h-8 w-32" />
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-96 w-full" />
-          </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">{t('cityDetail.loading', 'Loading city information...')}</p>
         </div>
       </div>
     );
@@ -29,154 +188,236 @@ const CityDetail = () => {
   if (error || !city) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold text-foreground">
-            {t('city.not_found', 'City not found')}
-          </h1>
-          <p className="text-muted-foreground">
-            {t('city.not_found_description', 'The city you are looking for does not exist or has been moved.')}
-          </p>
-          <Link to="/cities">
-            <Button variant="outline">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              {t('common.back_to_cities', 'Back to cities')}
-            </Button>
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-foreground mb-4">{t('cityDetail.notFound.title', 'City not found')}</h2>
+          <Link to="/cities" className="text-primary hover:underline">
+            {t('cityDetail.back', 'Back to cities')}
           </Link>
         </div>
       </div>
     );
   }
 
-  const renderMarkdownSection = (title: string, content: string | null, icon: React.ReactNode) => {
-    if (!content) return null;
-    
-    // Clean the content - remove surrounding quotes if present
-    const cleanContent = content.replace(/^"|"$/g, '');
-    
-    return (
-      <Card className="mb-8">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            {icon}
-            <h2 className="text-2xl font-bold text-foreground">{title}</h2>
-          </div>
-          <div 
-            className="prose prose-neutral dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: cleanContent.replace(/\n/g, '<br>') }}
-          />
-        </CardContent>
-      </Card>
-    );
-  };
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-primary to-primary-glow">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative max-w-4xl mx-auto px-4 py-16">
-          <Link to="/cities" className="mb-6 inline-block">
-            <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              {t('common.back_to_cities', 'Back to cities')}
-            </Button>
+      {/* Translation indicator */}
+      {isTranslating && (
+        <div className="fixed top-4 right-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-full shadow-lg flex items-center space-x-2">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
+          <span className="text-sm font-medium">🌐 Translating content...</span>
+        </div>
+      )}
+      
+      {/* Header */}
+      <div className="bg-white border-b border-border py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link
+            to="/cities"
+            className="inline-flex items-center text-primary hover:text-primary/80 mb-4 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {t('cityDetail.back', 'Back to cities')}
           </Link>
-          
-          <div className="flex items-center gap-4 mb-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-white">{city.name}</h1>
+          <div className="flex items-center space-x-4">
             {(city as any).countries?.flag && (
-              <img 
-                src={(city as any).countries.flag} 
-                alt={`${(city as any).countries.name} flag`}
-                className="w-12 h-8 object-cover rounded"
-              />
+              <span className="text-4xl">{(city as any).countries.flag}</span>
             )}
+            <div>
+              <h1 className="text-4xl font-montserrat font-bold text-foreground">
+                {city.name}
+              </h1>
+              {(city as any).countries?.name && (
+                <p className="text-xl text-muted-foreground mt-1 flex items-center">
+                  <MapPin className="w-5 h-5 mr-1" />
+                  {(city as any).countries.name}
+                </p>
+              )}
+            </div>
           </div>
-          
-          {(city as any).countries?.name && (
-            <p className="text-white/90 text-lg mb-4">
-              <MapPin className="inline w-5 h-5 mr-2" />
-              {(city as any).countries.name}
-            </p>
-          )}
-          
-          {(city.latitude && city.longitude) && (
-            <p className="text-white/80 text-sm">
-              {t('city.coordinates', 'Coordinates')}: {city.latitude}, {city.longitude}
-            </p>
-          )}
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Basic Description */}
-        {city.description && (
-          <Card className="mb-8">
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">
-                {t('city.about', 'About')} {city.name}
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">{city.description}</p>
-            </CardContent>
-          </Card>
-        )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left Sidebar - Navigation */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-8">
+              <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
+                <h3 className="font-montserrat text-lg font-bold text-foreground mb-6">
+                  Navigation
+                </h3>
+                <nav className="space-y-1">
+                  {sections.map((section) => (
+                    <button
+                      key={section.id}
+                      onClick={() => scrollToSection(section.id)}
+                      className={`
+                        w-full text-left px-4 py-3 rounded-lg font-poppins text-sm font-medium transition-all duration-200
+                        flex items-center space-x-3
+                        ${activeSection === section.id
+                          ? 'bg-primary text-primary-foreground shadow-md'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        }
+                      `}
+                    >
+                      <span>{section.title}</span>
+                    </button>
+                  ))}
+                </nav>
+              </div>
+            </div>
+          </div>
 
-        {/* Markdown Sections */}
-        {renderMarkdownSection(
-          'Climate',
-          city.climate_md,
-          <span className="text-2xl">🌡️</span>
-        )}
+          {/* Content Column */}
+          <div className="lg:col-span-3 space-y-8">
+            {/* Header Section */}
+            <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 text-center">
+              <h1 className="font-montserrat text-4xl font-bold text-foreground mb-2">
+                {city.name} Student Guide
+              </h1>
+              <p className="font-poppins text-lg text-muted-foreground">
+                Everything you need to know about studying in {city.name} - from climate and costs to social life and universities.
+              </p>
+            </div>
 
-        {renderMarkdownSection(
-          'Cost of Living',
-          city.cost_of_living_md,
-          <span className="text-2xl">💰</span>
-        )}
+            {city.description && (
+              <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
+                <p className="font-poppins text-muted-foreground leading-relaxed text-center">
+                  {city.description}
+                </p>
+              </div>
+            )}
 
-        {renderMarkdownSection(
-          'Safety',
-          city.safety_md,
-          <span className="text-2xl">🛡️</span>
-        )}
+            {/* Climate */}
+            <section id="climate" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">🌡️</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Climate
+                  </h2>
+                </div>
+                {getContent('climate_md') ? 
+                  renderMarkdown(getContent('climate_md')) :
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Climate information for {city.name} will be available soon.
+                  </p>
+                }
+              </div>
+            </section>
 
-        {renderMarkdownSection(
-          'Rent & Housing',
-          city.rent_md,
-          <span className="text-2xl">🏠</span>
-        )}
+            {/* Cost of Living */}
+            <section id="cost-of-living" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">💰</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Cost of Living
+                  </h2>
+                </div>
+                {getContent('cost_of_living_md') ? 
+                  renderMarkdown(getContent('cost_of_living_md')) :
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Cost of living information for {city.name} will be available soon.
+                  </p>
+                }
+              </div>
+            </section>
 
-        {renderMarkdownSection(
-          'Events',
-          city.events_md,
-          <span className="text-2xl">🎉</span>
-        )}
+            {/* Safety */}
+            <section id="safety" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">🛡️</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Safety
+                  </h2>
+                </div>
+                {getContent('safety_md') ? 
+                  renderMarkdown(getContent('safety_md')) :
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Safety information for {city.name} will be available soon.
+                  </p>
+                }
+              </div>
+            </section>
 
-        {renderMarkdownSection(
-          'Social Life',
-          city.social_md,
-          <span className="text-2xl">👫</span>
-        )}
+            {/* Rent & Housing */}
+            <section id="rent" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">🏠</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Rent & Housing
+                  </h2>
+                </div>
+                {getContent('rent_md') ? 
+                  renderMarkdown(getContent('rent_md')) :
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Housing and rent information for {city.name} will be available soon.
+                  </p>
+                }
+              </div>
+            </section>
 
-        {renderMarkdownSection(
-          'Universities',
-          city.universities_md,
-          <span className="text-2xl">🎓</span>
-        )}
+            {/* Events */}
+            <section id="events" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">🎉</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Events
+                  </h2>
+                </div>
+                {getContent('events_md') ? 
+                  renderMarkdown(getContent('events_md')) :
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Events and activities information for {city.name} will be available soon.
+                  </p>
+                }
+              </div>
+            </section>
 
-        {/* Navigation */}
-        <div className="flex justify-center mt-12">
-          <Link to="/cities">
-            <Button variant="outline" size="lg">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              {t('common.back_to_cities', 'Explore more cities')}
-            </Button>
-          </Link>
+            {/* Social Life */}
+            <section id="social" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">👫</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Social Life
+                  </h2>
+                </div>
+                {getContent('social_md') ? 
+                  renderMarkdown(getContent('social_md')) :
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    Social life information for {city.name} will be available soon.
+                  </p>
+                }
+              </div>
+            </section>
+
+            {/* Universities */}
+            <section id="universities" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-6">
+                  <span className="text-2xl mr-3">🎓</span>
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Universities
+                  </h2>
+                </div>
+                {getContent('universities_md') ? 
+                  renderMarkdown(getContent('universities_md')) :
+                  <p className="font-poppins text-muted-foreground leading-relaxed">
+                    University information for {city.name} will be available soon.
+                  </p>
+                }
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default CityDetail;
+export default CityDetailTemplate;
