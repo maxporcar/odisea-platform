@@ -7,37 +7,45 @@ import CountryMap2D from './CountryMap2D';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 
-// Enhanced markdown renderer with better formatting
+// Enhanced markdown renderer with standardized formatting
 const renderMarkdown = (content: string) => {
   if (!content) return null;
   
-  // Enhanced markdown parsing
+  // Enhanced markdown parsing with standardized formatting
   let html = content
-    // Handle headers
-    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4 flex items-center"><span class="text-primary mr-2">📍</span>$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6 flex items-center"><span class="text-primary mr-2">🔹</span>$1</h3>')
-    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-4 mt-6">$1</h2>')
+    // Remove blue triangles/icons from headers and reduce spacing
+    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-2 mt-3">$1</h4>')
+    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4">$1</h3>')
+    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-3 mt-4">$1</h2>')
     
-    // Handle lists
-    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-green-500 mr-2 mt-1">✓</span><span>$1</span></li>')
-    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-red-500 mr-2 mt-1">✗</span><span>$1</span></li>')
+    // Replace dashes with colons/commas and convert lists to organized tables when appropriate
+    .replace(/^- (.*?):\s*(.*)/gm, '<tr><td class="font-medium text-foreground pr-4 py-1 align-top">$1:</td><td class="text-muted-foreground py-1">$2</td></tr>')
+    .replace(/^- (.*)/gm, '<tr><td class="text-muted-foreground py-1" colspan="2">• $1</td></tr>')
     
-    // Handle emphasis
+    // Handle hyperlinks - integrate links into text, make bold, remove brackets
+    .replace(/\[(.*?)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="font-bold text-primary hover:text-primary/80 underline transition-colors">$1</a>')
+    
+    // Handle emphasis with reduced spacing
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
     
-    // Handle paragraphs and line breaks
-    .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-4">')
+    // Handle paragraphs with tighter line spacing
+    .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-normal mb-3">')
     .replace(/\n/g, '<br>');
 
-  // Wrap lists properly
-  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-6 space-y-2">$1</ul>');
+  // Convert table rows to proper tables
+  if (html.includes('<tr>')) {
+    html = html.replace(/(<tr>.*?<\/tr>(\s*<tr>.*?<\/tr>)*)/g, '<table class="w-full mb-4 border-collapse"><tbody>$1</tbody></table>');
+  }
+  
+  // Wrap remaining lists properly (remove checkmarks for cleaner look)
+  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-4 space-y-1 list-disc list-inside">$1</ul>');
   
   return (
     <div 
       className="markdown-content" 
       dangerouslySetInnerHTML={{ 
-        __html: `<div class="font-poppins text-muted-foreground leading-relaxed">${html}</div>` 
+        __html: `<div class="font-poppins text-muted-foreground leading-normal">${html}</div>` 
       }} 
     />
   );
@@ -152,17 +160,17 @@ const CountryDetailTemplate = () => {
     return translatedContent[field];
   };
 
-  // Define sections with proper translation keys and icons
+  // Define sections with clean titles (no emoji icons in navigation)
   const sections: Section[] = [
-    { id: 'overview', title: '📖 ' + t('countryDetail.sections.overview', 'Overview') },
-    { id: 'big-cities', title: '🏙️ ' + t('countryDetail.sections.bigCities') },
-    { id: 'culture', title: '🎭 ' + t('countryDetail.sections.culture') },
-    { id: 'life-activities', title: '✈️ ' + t('countryDetail.sections.lifeActivities') },
-    { id: 'scholarships', title: '🎓 ' + t('countryDetail.sections.scholarships') },
-    { id: 'visa', title: '📋 ' + t('countryDetail.sections.visa') },
-    { id: 'medical', title: '🏥 ' + t('countryDetail.sections.medical') },
-    { id: 'dos-donts', title: '✅ ' + t('countryDetail.sections.dosAndDonts', 'Dos and Don\'ts') },
-    { id: 'country-cities', title: '🗺️ ' + t('countryDetail.sections.cities') },
+    { id: 'overview', title: t('countryDetail.sections.overview', 'Overview') },
+    { id: 'big-cities', title: t('countryDetail.sections.bigCities', 'Big Cities vs Small Towns') },
+    { id: 'culture', title: t('countryDetail.sections.culture', 'Culture') },
+    { id: 'life-activities', title: t('countryDetail.sections.lifeActivities', 'Life, Activities & Travel') },
+    { id: 'scholarships', title: t('countryDetail.sections.scholarships', 'Student Benefits & Scholarships') },
+    { id: 'visa', title: t('countryDetail.sections.visa', 'Visa Information') },
+    { id: 'medical', title: t('countryDetail.sections.medical', 'Medical') },
+    { id: 'dos-donts', title: t('countryDetail.sections.dosAndDonts', 'Dos and Don\'ts') },
+    { id: 'country-cities', title: t('countryDetail.sections.cities', 'Cities to Explore') },
   ];
 
   useEffect(() => {
