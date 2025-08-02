@@ -50,6 +50,9 @@ const CityDetail = () => {
   const renderMarkdownSection = (title: string, content: string | null, icon: React.ReactNode) => {
     if (!content) return null;
     
+    // Clean the content - remove surrounding quotes if present
+    const cleanContent = content.replace(/^"|"$/g, '');
+    
     return (
       <Card className="mb-8">
         <CardContent className="p-6">
@@ -59,7 +62,7 @@ const CityDetail = () => {
           </div>
           <div 
             className="prose prose-neutral dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br>') }}
+            dangerouslySetInnerHTML={{ __html: cleanContent.replace(/\n/g, '<br>') }}
           />
         </CardContent>
       </Card>
@@ -121,43 +124,43 @@ const CityDetail = () => {
 
         {/* Markdown Sections */}
         {renderMarkdownSection(
-          '🌡️ Climate',
+          'Climate',
           city.climate_md,
           <span className="text-2xl">🌡️</span>
         )}
 
         {renderMarkdownSection(
-          '💰 Cost of Living',
+          'Cost of Living',
           city.cost_of_living_md,
           <span className="text-2xl">💰</span>
         )}
 
         {renderMarkdownSection(
-          '🛡️ Safety',
+          'Safety',
           city.safety_md,
           <span className="text-2xl">🛡️</span>
         )}
 
         {renderMarkdownSection(
-          '🏠 Rent & Housing',
+          'Rent & Housing',
           city.rent_md,
           <span className="text-2xl">🏠</span>
         )}
 
         {renderMarkdownSection(
-          '🎉 Events',
+          'Events',
           city.events_md,
           <span className="text-2xl">🎉</span>
         )}
 
         {renderMarkdownSection(
-          '👫 Social Life',
+          'Social Life',
           city.social_md,
           <span className="text-2xl">👫</span>
         )}
 
         {renderMarkdownSection(
-          '🎓 Universities',
+          'Universities',
           city.universities_md,
           <span className="text-2xl">🎓</span>
         )}
