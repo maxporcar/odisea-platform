@@ -11,47 +11,79 @@ import { supabase } from '@/integrations/supabase/client';
 const renderMarkdown = (content: string) => {
   if (!content) return null;
   
-  // Handle Festival Calendar sections
+  // Handle Festival Calendar sections - convert to chronological table by month
   let processedContent = content.replace(/(?:🎭\s*)?Festival Calendar[\s\S]*?(?=\n#{1,3}|$)/gi, (match) => {
     const lines = match.split('\n').filter(line => line.trim());
     const festivals = [];
     
+    // Parse various festival formats
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
-      if (line && !line.startsWith('#')) {
-        // Parse festival entries like "Festival d'Avignon | Avignon | Jul 4 – 23 | Description"
-        const parts = line.split('|').map(p => p.trim());
-        if (parts.length >= 4) {
-          festivals.push({
-            name: parts[0].replace(/^\*\*|\*\*$/g, ''),
-            location: parts[1],
-            dates: parts[2],
-            description: parts[3]
-          });
+      if (line && !line.startsWith('#') && !line.includes('---')) {
+        // Try different parsing formats
+        let festival = null;
+        
+        // Format: "Festival | Location | Date | Description"
+        if (line.includes('|') && line.split('|').length >= 3) {
+          const parts = line.split('|').map(p => p.trim());
+          festival = {
+            name: parts[0].replace(/^\*\*|\*\*$/g, '').replace(/^-\s*/, ''),
+            location: parts[1] || '',
+            dates: parts[2] || '',
+            description: parts[3] || parts[1] || ''
+          };
+        }
+        // Format: "- **Festival** (Month): Description"
+        else if (line.includes('**') && (line.includes('Jan') || line.includes('Feb') || line.includes('Mar') || 
+                 line.includes('Apr') || line.includes('May') || line.includes('Jun') || line.includes('Jul') || 
+                 line.includes('Aug') || line.includes('Sep') || line.includes('Oct') || line.includes('Nov') || 
+                 line.includes('Dec'))) {
+          const nameMatch = line.match(/\*\*(.*?)\*\*/);
+          const monthMatch = line.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s*\d*/);
+          const description = line.replace(/^\*\*.*?\*\*/, '').replace(/\(.*?\)/, '').replace(/^[:\-\s]*/, '');
+          
+          if (nameMatch && monthMatch) {
+            festival = {
+              name: nameMatch[1],
+              month: monthMatch[0],
+              dates: monthMatch[0],
+              description: description || 'Popular festival celebration'
+            };
+          }
+        }
+        
+        if (festival && festival.name) {
+          festivals.push(festival);
         }
       }
     }
     
     if (festivals.length === 0) return match;
     
+    // Sort festivals chronologically by month
+    const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    festivals.sort((a, b) => {
+      const aMonth = monthOrder.findIndex(m => a.dates?.includes(m)) || 0;
+      const bMonth = monthOrder.findIndex(m => b.dates?.includes(m)) || 0;
+      return aMonth - bMonth;
+    });
+    
     return `
-      <h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">🎭 Festival Calendar</h3>
+      <h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4">🎭 Festival Calendar</h3>
       <div class="overflow-x-auto mb-6">
         <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-card border border-border">
           <thead>
             <tr class="bg-muted/50">
+              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">📅 Month</th>
               <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">🎪 Festival / Event</th>
-              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">📍 Location</th>
-              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">📅 Dates (2025)</th>
-              <th class="px-4 py-3 text-left font-semibold text-foreground">✨ Highlights</th>
+              <th class="px-4 py-3 text-left font-semibold text-foreground">📍 Description / Location</th>
             </tr>
           </thead>
           <tbody>
             ${festivals.map((festival, index) => `
               <tr class="border-t border-border hover:bg-muted/30 transition-colors ${index % 2 === 0 ? 'bg-card' : 'bg-muted/20'}">
+                <td class="px-4 py-3 text-foreground border-r border-border font-semibold">${festival.dates || festival.month || 'Year-round'}</td>
                 <td class="px-4 py-3 text-foreground border-r border-border font-semibold">${festival.name}</td>
-                <td class="px-4 py-3 text-foreground border-r border-border">${festival.location}</td>
-                <td class="px-4 py-3 text-foreground border-r border-border">${festival.dates}</td>
                 <td class="px-4 py-3 text-foreground">${festival.description}</td>
               </tr>
             `).join('')}
@@ -111,46 +143,94 @@ const renderMarkdown = (content: string) => {
     `;
   });
   
-  // Handle Do & Don'ts sections - separate into two tables
+  // Handle Do & Don'ts sections - separate into distinct green/red tables with 2 columns
   processedContent = processedContent.replace(/(?:Do[s]?\s*&\s*Don'?ts?|Cultural\s*Tips?)[\s\S]*?(?=\n#{1,3}|$)/gi, (match) => {
     const lines = match.split('\n').filter(line => line.trim());
     const dos = [];
     const donts = [];
     
+    // Parse content and separate into DOs and DON'Ts
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
-      if (line.includes('✅') || line.includes('☑') || line.toLowerCase().includes('try speaking') || 
-          line.toLowerCase().includes('be polite') || line.toLowerCase().includes('greet properly') || 
-          line.toLowerCase().includes('respect') || line.toLowerCase().includes('observe') || 
-          line.toLowerCase().includes('take your time') || line.toLowerCase().includes('explore') || 
-          line.toLowerCase().includes('use apps')) {
-        const cleanLine = line.replace(/✅|☑/g, '').trim();
-        if (cleanLine) dos.push(cleanLine);
-      } else if (line.includes('❌') || line.includes('✗') || line.toLowerCase().includes("don't skip") || 
-                 line.toLowerCase().includes("don't assume")) {
-        const cleanLine = line.replace(/❌|✗/g, '').trim();
-        if (cleanLine) donts.push(cleanLine);
+      if (line && !line.includes('---')) {
+        // Check for explicit DO markers or positive language patterns
+        if (line.includes('✅') || line.includes('☑') || 
+            line.toLowerCase().includes('do greet') || line.toLowerCase().includes('be respectful') ||
+            line.toLowerCase().includes('try to') || line.toLowerCase().includes('always') ||
+            line.toLowerCase().includes('remember to') || line.toLowerCase().includes('make sure to') ||
+            line.toLowerCase().includes('validate') || line.toLowerCase().includes('learn basic')) {
+          let cleanLine = line.replace(/✅|☑/g, '').replace(/^[\-\*\s]*/, '').trim();
+          
+          // Try to split tip and explanation (look for common patterns)
+          let tip = cleanLine;
+          let explanation = 'Shows cultural awareness and respect';
+          
+          if (cleanLine.includes(' - ') || cleanLine.includes(': ')) {
+            const parts = cleanLine.split(/\s*[-:]\s*/);
+            if (parts.length >= 2) {
+              tip = parts[0];
+              explanation = parts.slice(1).join(' - ');
+            }
+          } else if (cleanLine.includes(' (') && cleanLine.includes(')')) {
+            const match = cleanLine.match(/(.*?)\s*\((.*?)\)/);
+            if (match) {
+              tip = match[1];
+              explanation = match[2];
+            }
+          }
+          
+          if (tip) dos.push({ tip, explanation });
+        }
+        // Check for explicit DON'T markers or negative language patterns
+        else if (line.includes('❌') || line.includes('✗') || 
+                 line.toLowerCase().includes("don't") || line.toLowerCase().includes("avoid") ||
+                 line.toLowerCase().includes("never") || line.toLowerCase().includes("not recommended") ||
+                 line.toLowerCase().includes("be careful") || line.toLowerCase().includes("watch out")) {
+          let cleanLine = line.replace(/❌|✗/g, '').replace(/^[\-\*\s]*/, '').trim();
+          
+          // Try to split tip and explanation
+          let tip = cleanLine;
+          let explanation = 'Can cause cultural misunderstandings';
+          
+          if (cleanLine.includes(' - ') || cleanLine.includes(': ')) {
+            const parts = cleanLine.split(/\s*[-:]\s*/);
+            if (parts.length >= 2) {
+              tip = parts[0];
+              explanation = parts.slice(1).join(' - ');
+            }
+          } else if (cleanLine.includes(' (') && cleanLine.includes(')')) {
+            const match = cleanLine.match(/(.*?)\s*\((.*?)\)/);
+            if (match) {
+              tip = match[1];
+              explanation = match[2];
+            }
+          }
+          
+          if (tip) donts.push({ tip, explanation });
+        }
       }
     }
     
     if (dos.length === 0 && donts.length === 0) return match;
     
-    let tablesHTML = '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">💡 Cultural Tips</h3>';
+    let tablesHTML = '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4">💡 Cultural Tips</h3>';
     
-    // Green table for DOs
+    // Green table for DOs with 2 columns
     if (dos.length > 0) {
       tablesHTML += `
         <div class="overflow-x-auto mb-4">
           <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
             <thead>
               <tr class="bg-green-100 dark:bg-green-900/30">
-                <th class="px-4 py-3 text-left font-semibold text-green-800 dark:text-green-200">✅ DO's - Cultural Best Practices</th>
+                <th class="px-4 py-3 text-left font-semibold text-green-800 dark:text-green-200 border-r border-green-200 dark:border-green-800">✔️ Do this</th>
+                <th class="px-4 py-3 text-left font-semibold text-green-800 dark:text-green-200">Why it matters</th>
               </tr>
             </thead>
             <tbody>
               ${dos.map((item, index) => `
                 <tr class="border-t border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors">
-                  <td class="px-4 py-3 text-green-800 dark:text-green-200">${item.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
+                  <td class="px-4 py-3 text-green-800 dark:text-green-200 border-r border-green-200 dark:border-green-800 font-medium">${item.tip.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
+                  <td class="px-4 py-3 text-green-700 dark:text-green-300">${item.explanation}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -159,20 +239,22 @@ const renderMarkdown = (content: string) => {
       `;
     }
     
-    // Red table for DON'Ts
+    // Red table for DON'Ts with 2 columns
     if (donts.length > 0) {
       tablesHTML += `
         <div class="overflow-x-auto mb-6">
           <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800">
             <thead>
               <tr class="bg-red-100 dark:bg-red-900/30">
-                <th class="px-4 py-3 text-left font-semibold text-red-800 dark:text-red-200">❌ DON'Ts - Cultural Pitfalls to Avoid</th>
+                <th class="px-4 py-3 text-left font-semibold text-red-800 dark:text-red-200 border-r border-red-200 dark:border-red-800">🚫 Don't do this</th>
+                <th class="px-4 py-3 text-left font-semibold text-red-800 dark:text-red-200">Why to avoid it</th>
               </tr>
             </thead>
             <tbody>
               ${donts.map((item, index) => `
                 <tr class="border-t border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
-                  <td class="px-4 py-3 text-red-800 dark:text-red-200">${item.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
+                  <td class="px-4 py-3 text-red-800 dark:text-red-200 border-r border-red-200 dark:border-red-800 font-medium">${item.tip.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
+                  <td class="px-4 py-3 text-red-700 dark:text-red-300">${item.explanation}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -253,10 +335,23 @@ const renderMarkdown = (content: string) => {
   
   // Enhanced markdown parsing with standardized formatting
   let html = processedContent
+    // Remove --- dividers between content sections
+    .replace(/^---\s*$/gm, '')
+    .replace(/^\s*[-]{3,}\s*$/gm, '')
+    
     // Remove blue triangles/icons from headers and reduce spacing
+    .replace(/🔹\s*/g, '') // Remove blue diamond icons
+    .replace(/▶️\s*/g, '') // Remove play button icons
+    .replace(/🔵\s*/g, '') // Remove blue circle icons
     .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-2 mt-3">$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4">$1</h3>')
-    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-3 mt-4">$1</h2>')
+    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-2 mt-3">$1</h3>')
+    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-2 mt-3">$1</h2>')
+    
+    // Remove checklists and checkmarks (replace with simple text)
+    .replace(/☑️|✅|✔️/g, '•')
+    .replace(/❌|✗|❎/g, '•')
+    .replace(/\[x\]|\[X\]/g, '•')
+    .replace(/\[\s\]/g, '•')
     
     // Replace dashes with colons/commas and convert lists to organized tables when appropriate
     .replace(/^- (.*?):\s*(.*)/gm, '<tr><td class="font-medium text-foreground pr-4 py-1 align-top">$1:</td><td class="text-muted-foreground py-1">$2</td></tr>')
@@ -270,7 +365,7 @@ const renderMarkdown = (content: string) => {
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
     
     // Handle paragraphs with tighter line spacing
-    .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-normal mb-3">')
+    .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-tight mb-2">')
     .replace(/\n/g, '<br>');
 
   // Convert table rows to proper tables (for non-markdown tables)
