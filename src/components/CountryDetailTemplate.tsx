@@ -149,60 +149,53 @@ const renderMarkdown = (content: string) => {
     const dos = [];
     const donts = [];
     
-    // Parse content and separate into DOs and DON'Ts
+    // Parse content and separate into DOs and DON'Ts based on exact symbols
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
       if (line && !line.includes('---')) {
-        // Check for explicit DO markers or positive language patterns
-        if (line.includes('✅') || line.includes('☑') || 
-            line.toLowerCase().includes('do greet') || line.toLowerCase().includes('be respectful') ||
-            line.toLowerCase().includes('try to') || line.toLowerCase().includes('always') ||
-            line.toLowerCase().includes('remember to') || line.toLowerCase().includes('make sure to') ||
-            line.toLowerCase().includes('validate') || line.toLowerCase().includes('learn basic')) {
-          let cleanLine = line.replace(/✅|☑/g, '').replace(/^[\-\*\s]*/, '').trim();
+        // Check for green checkmark (DOs) - keep the symbol
+        if (line.includes('✅')) {
+          let cleanLine = line.replace(/^[\-\*\s]*/, '').trim();
           
           // Try to split tip and explanation (look for common patterns)
           let tip = cleanLine;
           let explanation = 'Shows cultural awareness and respect';
           
-          if (cleanLine.includes(' - ') || cleanLine.includes(': ')) {
-            const parts = cleanLine.split(/\s*[-:]\s*/);
+          if (cleanLine.includes(' : ')) {
+            const parts = cleanLine.split(' : ');
+            if (parts.length >= 2) {
+              tip = parts[0];
+              explanation = parts.slice(1).join(' : ');
+            }
+          } else if (cleanLine.includes(' - ')) {
+            const parts = cleanLine.split(' - ');
             if (parts.length >= 2) {
               tip = parts[0];
               explanation = parts.slice(1).join(' - ');
-            }
-          } else if (cleanLine.includes(' (') && cleanLine.includes(')')) {
-            const match = cleanLine.match(/(.*?)\s*\((.*?)\)/);
-            if (match) {
-              tip = match[1];
-              explanation = match[2];
             }
           }
           
           if (tip) dos.push({ tip, explanation });
         }
-        // Check for explicit DON'T markers or negative language patterns
-        else if (line.includes('❌') || line.includes('✗') || 
-                 line.toLowerCase().includes("don't") || line.toLowerCase().includes("avoid") ||
-                 line.toLowerCase().includes("never") || line.toLowerCase().includes("not recommended") ||
-                 line.toLowerCase().includes("be careful") || line.toLowerCase().includes("watch out")) {
-          let cleanLine = line.replace(/❌|✗/g, '').replace(/^[\-\*\s]*/, '').trim();
+        // Check for red cross (DON'Ts) - keep the symbol
+        else if (line.includes('❌')) {
+          let cleanLine = line.replace(/^[\-\*\s]*/, '').trim();
           
           // Try to split tip and explanation
           let tip = cleanLine;
           let explanation = 'Can cause cultural misunderstandings';
           
-          if (cleanLine.includes(' - ') || cleanLine.includes(': ')) {
-            const parts = cleanLine.split(/\s*[-:]\s*/);
+          if (cleanLine.includes(' : ')) {
+            const parts = cleanLine.split(' : ');
+            if (parts.length >= 2) {
+              tip = parts[0];
+              explanation = parts.slice(1).join(' : ');
+            }
+          } else if (cleanLine.includes(' - ')) {
+            const parts = cleanLine.split(' - ');
             if (parts.length >= 2) {
               tip = parts[0];
               explanation = parts.slice(1).join(' - ');
-            }
-          } else if (cleanLine.includes(' (') && cleanLine.includes(')')) {
-            const match = cleanLine.match(/(.*?)\s*\((.*?)\)/);
-            if (match) {
-              tip = match[1];
-              explanation = match[2];
             }
           }
           
