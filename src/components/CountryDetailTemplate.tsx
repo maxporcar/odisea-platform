@@ -7,12 +7,79 @@ import CountryMap2D from './CountryMap2D';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 
-// Enhanced markdown renderer with standardized formatting
+// Enhanced markdown renderer with modern tables and standardized formatting
 const renderMarkdown = (content: string) => {
   if (!content) return null;
   
+  // First, handle markdown tables and convert them to modern HTML tables
+  let processedContent = content.replace(/(\|[^|\n]+\|[^|\n]+\|[\s\S]*?(?=\n\n|\n(?!\|)|\n$|$))/g, (match) => {
+    const lines = match.trim().split('\n').filter(line => line.trim());
+    if (lines.length < 2) return match;
+    
+    const headerLine = lines[0];
+    const separatorLine = lines[1];
+    const dataLines = lines.slice(2);
+    
+    // Check if it's a valid table (has separator line with dashes)
+    if (!separatorLine.includes('-')) return match;
+    
+    // Parse headers
+    const headers = headerLine.split('|').map(h => h.trim()).filter(h => h);
+    
+    // Parse data rows
+    const rows = dataLines.map(line => 
+      line.split('|').map(cell => cell.trim()).filter(cell => cell)
+    );
+    
+    // Generate modern HTML table with responsive design
+    let tableHTML = `
+      <div class="overflow-x-auto mb-6">
+        <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-card border border-border">
+          <thead>
+            <tr class="bg-muted/50">`;
+    
+    headers.forEach(header => {
+      // Add contextual emojis if header doesn't already have one
+      let displayHeader = header;
+      if (header.toLowerCase().includes('dish') && !header.includes('🍽️')) {
+        displayHeader = `🍽️ ${header}`;
+      } else if ((header.toLowerCase().includes('what') || header.toLowerCase().includes('why')) && !header.includes('📌')) {
+        displayHeader = `📌 ${header}`;
+      } else if (header.toLowerCase().includes('scholarship') && !header.includes('🎓')) {
+        displayHeader = `🎓 ${header}`;
+      } else if (header.toLowerCase().includes('requirement') && !header.includes('📋')) {
+        displayHeader = `📋 ${header}`;
+      } else if (header.toLowerCase().includes('cost') && !header.includes('💰')) {
+        displayHeader = `💰 ${header}`;
+      } else if (header.toLowerCase().includes('benefit') && !header.includes('✨')) {
+        displayHeader = `✨ ${header}`;
+      }
+      
+      tableHTML += `<th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border last:border-r-0">${displayHeader}</th>`;
+    });
+    
+    tableHTML += `</tr></thead><tbody>`;
+    
+    rows.forEach((row, index) => {
+      const isEven = index % 2 === 0;
+      tableHTML += `<tr class="border-t border-border hover:bg-muted/30 transition-colors ${isEven ? 'bg-card' : 'bg-muted/20'}">`;
+      row.forEach((cell, cellIndex) => {
+        // Process bold text in cells and clean up formatting
+        const processedCell = cell
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>');
+        tableHTML += `<td class="px-4 py-3 text-foreground border-r border-border last:border-r-0 align-top">${processedCell}</td>`;
+      });
+      tableHTML += `</tr>`;
+    });
+    
+    tableHTML += `</tbody></table></div>`;
+    
+    return tableHTML;
+  });
+  
   // Enhanced markdown parsing with standardized formatting
-  let html = content
+  let html = processedContent
     // Remove blue triangles/icons from headers and reduce spacing
     .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-2 mt-3">$1</h4>')
     .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4">$1</h3>')
@@ -33,9 +100,9 @@ const renderMarkdown = (content: string) => {
     .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-normal mb-3">')
     .replace(/\n/g, '<br>');
 
-  // Convert table rows to proper tables
-  if (html.includes('<tr>')) {
-    html = html.replace(/(<tr>.*?<\/tr>(\s*<tr>.*?<\/tr>)*)/g, '<table class="w-full mb-4 border-collapse"><tbody>$1</tbody></table>');
+  // Convert table rows to proper tables (for non-markdown tables)
+  if (html.includes('<tr>') && !html.includes('<table')) {
+    html = html.replace(/(<tr>.*?<\/tr>(\s*<tr>.*?<\/tr>)*)/g, '<table class="w-full mb-4 border-collapse bg-card rounded-lg border border-border overflow-hidden"><tbody>$1</tbody></table>');
   }
   
   // Wrap remaining lists properly (remove checkmarks for cleaner look)
