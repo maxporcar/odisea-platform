@@ -143,18 +143,19 @@ const renderMarkdown = (content: string) => {
     `;
   });
   
-  // Handle Do & Don'ts sections - separate into distinct green/red tables with 2 columns
-  processedContent = processedContent.replace(/(?:Do[s]?\s*&\s*Don'?ts?|Cultural\s*Tips?)[\s\S]*?(?=\n#{1,3}|$)/gi, (match) => {
+  // Handle Do & Don'ts sections - target the specific content format
+  processedContent = processedContent.replace(/([\s\S]*(?:✅|❌)[\s\S]*?)(?=\n#{1,3}(?!.*(?:✅|❌))|$)/gi, (match) => {
     const lines = match.split('\n').filter(line => line.trim());
     const dos = [];
     const donts = [];
     
     // Parse content and separate into DOs and DON'Ts based on exact symbols
-    for (let i = 1; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
+      
       if (line && !line.includes('---')) {
-        // Check for green checkmark (DOs) - keep the symbol
-        if (line.includes('✅')) {
+        // Check for green checkmark (DOs) - skip header lines that contain both symbols and headers
+        if (line.includes('✅') && !line.match(/^#{1,6}.*✅.*DOs/i)) {
           let cleanLine = line.replace(/^[\-\*\s]*/, '').trim();
           
           // Try to split tip and explanation (look for common patterns)
@@ -175,10 +176,12 @@ const renderMarkdown = (content: string) => {
             }
           }
           
-          if (tip) dos.push({ tip, explanation });
+          if (tip && !tip.match(/^#{1,6}/) && tip !== cleanLine.split(' : ')[1]) {
+            dos.push({ tip, explanation });
+          }
         }
-        // Check for red cross (DON'Ts) - keep the symbol
-        else if (line.includes('❌')) {
+        // Check for red cross (DON'Ts) - skip header lines
+        else if (line.includes('❌') && !line.match(/^#{1,6}.*❌.*DON'?Ts/i)) {
           let cleanLine = line.replace(/^[\-\*\s]*/, '').trim();
           
           // Try to split tip and explanation
@@ -199,7 +202,9 @@ const renderMarkdown = (content: string) => {
             }
           }
           
-          if (tip) donts.push({ tip, explanation });
+          if (tip && !tip.match(/^#{1,6}/) && tip !== cleanLine.split(' : ')[1]) {
+            donts.push({ tip, explanation });
+          }
         }
       }
     }
@@ -814,24 +819,7 @@ const CountryDetailTemplate = () => {
                   </h2>
                 </div>
                 {getContent('dos_and_donts_md') ? 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <h3 className="font-poppins text-lg font-semibold text-green-800 mb-3 flex items-center">
-                        ✅ DOs
-                      </h3>
-                      <div className="do-content">
-                        {renderMarkdown(getContent('dos_and_donts_md'))}
-                      </div>
-                    </div>
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h3 className="font-poppins text-lg font-semibold text-red-800 mb-3 flex items-center">
-                        ❌ DON'Ts
-                      </h3>
-                      <div className="dont-content">
-                        {renderMarkdown(getContent('dos_and_donts_md'))}
-                      </div>
-                    </div>
-                  </div> :
+                  renderMarkdown(getContent('dos_and_donts_md')) :
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                       <h3 className="font-poppins text-lg font-semibold text-green-800 mb-3">
