@@ -11,8 +11,181 @@ import { supabase } from '@/integrations/supabase/client';
 const renderMarkdown = (content: string) => {
   if (!content) return null;
   
-  // First, handle markdown tables and convert them to modern HTML tables
-  let processedContent = content.replace(/(\|[^|\n]+\|[^|\n]+\|[\s\S]*?(?=\n\n|\n(?!\|)|\n$|$))/g, (match) => {
+  // Handle Festival Calendar sections
+  let processedContent = content.replace(/(?:🎭\s*)?Festival Calendar[\s\S]*?(?=\n#{1,3}|$)/gi, (match) => {
+    const lines = match.split('\n').filter(line => line.trim());
+    const festivals = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line && !line.startsWith('#')) {
+        // Parse festival entries like "Festival d'Avignon | Avignon | Jul 4 – 23 | Description"
+        const parts = line.split('|').map(p => p.trim());
+        if (parts.length >= 4) {
+          festivals.push({
+            name: parts[0].replace(/^\*\*|\*\*$/g, ''),
+            location: parts[1],
+            dates: parts[2],
+            description: parts[3]
+          });
+        }
+      }
+    }
+    
+    if (festivals.length === 0) return match;
+    
+    return `
+      <h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">🎭 Festival Calendar</h3>
+      <div class="overflow-x-auto mb-6">
+        <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-card border border-border">
+          <thead>
+            <tr class="bg-muted/50">
+              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">🎪 Festival / Event</th>
+              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">📍 Location</th>
+              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">📅 Dates (2025)</th>
+              <th class="px-4 py-3 text-left font-semibold text-foreground">✨ Highlights</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${festivals.map((festival, index) => `
+              <tr class="border-t border-border hover:bg-muted/30 transition-colors ${index % 2 === 0 ? 'bg-card' : 'bg-muted/20'}">
+                <td class="px-4 py-3 text-foreground border-r border-border font-semibold">${festival.name}</td>
+                <td class="px-4 py-3 text-foreground border-r border-border">${festival.location}</td>
+                <td class="px-4 py-3 text-foreground border-r border-border">${festival.dates}</td>
+                <td class="px-4 py-3 text-foreground">${festival.description}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  });
+  
+  // Handle Activity List sections
+  processedContent = processedContent.replace(/(?:📋\s*)?Activity List[\s\S]*?(?=\n#{1,3}|$)/gi, (match) => {
+    const lines = match.split('\n').filter(line => line.trim());
+    const activities = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line && !line.startsWith('#')) {
+        // Parse activity entries like "Activity | Location | Season | Description"
+        const parts = line.split('|').map(p => p.trim());
+        if (parts.length >= 4) {
+          activities.push({
+            name: parts[0].replace(/^\*\*|\*\*$/g, ''),
+            location: parts[1],
+            season: parts[2],
+            description: parts[3]
+          });
+        }
+      }
+    }
+    
+    if (activities.length === 0) return match;
+    
+    return `
+      <h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">📋 Activity List</h3>
+      <div class="overflow-x-auto mb-6">
+        <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-card border border-border">
+          <thead>
+            <tr class="bg-muted/50">
+              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">🎯 Activity</th>
+              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">📍 Go-to Location</th>
+              <th class="px-4 py-3 text-left font-semibold text-foreground border-r border-border">🌤️ Prime Season</th>
+              <th class="px-4 py-3 text-left font-semibold text-foreground">❓ Why / What's special?</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${activities.map((activity, index) => `
+              <tr class="border-t border-border hover:bg-muted/30 transition-colors ${index % 2 === 0 ? 'bg-card' : 'bg-muted/20'}">
+                <td class="px-4 py-3 text-foreground border-r border-border font-semibold">${activity.name}</td>
+                <td class="px-4 py-3 text-foreground border-r border-border">${activity.location}</td>
+                <td class="px-4 py-3 text-foreground border-r border-border">${activity.season}</td>
+                <td class="px-4 py-3 text-foreground">${activity.description}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  });
+  
+  // Handle Do & Don'ts sections - separate into two tables
+  processedContent = processedContent.replace(/(?:Do[s]?\s*&\s*Don'?ts?|Cultural\s*Tips?)[\s\S]*?(?=\n#{1,3}|$)/gi, (match) => {
+    const lines = match.split('\n').filter(line => line.trim());
+    const dos = [];
+    const donts = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.includes('✅') || line.includes('☑') || line.toLowerCase().includes('try speaking') || 
+          line.toLowerCase().includes('be polite') || line.toLowerCase().includes('greet properly') || 
+          line.toLowerCase().includes('respect') || line.toLowerCase().includes('observe') || 
+          line.toLowerCase().includes('take your time') || line.toLowerCase().includes('explore') || 
+          line.toLowerCase().includes('use apps')) {
+        const cleanLine = line.replace(/✅|☑/g, '').trim();
+        if (cleanLine) dos.push(cleanLine);
+      } else if (line.includes('❌') || line.includes('✗') || line.toLowerCase().includes("don't skip") || 
+                 line.toLowerCase().includes("don't assume")) {
+        const cleanLine = line.replace(/❌|✗/g, '').trim();
+        if (cleanLine) donts.push(cleanLine);
+      }
+    }
+    
+    if (dos.length === 0 && donts.length === 0) return match;
+    
+    let tablesHTML = '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6">💡 Cultural Tips</h3>';
+    
+    // Green table for DOs
+    if (dos.length > 0) {
+      tablesHTML += `
+        <div class="overflow-x-auto mb-4">
+          <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+            <thead>
+              <tr class="bg-green-100 dark:bg-green-900/30">
+                <th class="px-4 py-3 text-left font-semibold text-green-800 dark:text-green-200">✅ DO's - Cultural Best Practices</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${dos.map((item, index) => `
+                <tr class="border-t border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors">
+                  <td class="px-4 py-3 text-green-800 dark:text-green-200">${item.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    
+    // Red table for DON'Ts
+    if (donts.length > 0) {
+      tablesHTML += `
+        <div class="overflow-x-auto mb-6">
+          <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800">
+            <thead>
+              <tr class="bg-red-100 dark:bg-red-900/30">
+                <th class="px-4 py-3 text-left font-semibold text-red-800 dark:text-red-200">❌ DON'Ts - Cultural Pitfalls to Avoid</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${donts.map((item, index) => `
+                <tr class="border-t border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
+                  <td class="px-4 py-3 text-red-800 dark:text-red-200">${item.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    
+    return tablesHTML;
+  });
+  
+  // Handle markdown tables and convert them to modern HTML tables
+  processedContent = processedContent.replace(/(\|[^|\n]+\|[^|\n]+\|[\s\S]*?(?=\n\n|\n(?!\|)|\n$|$))/g, (match) => {
     const lines = match.trim().split('\n').filter(line => line.trim());
     if (lines.length < 2) return match;
     
