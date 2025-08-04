@@ -143,7 +143,7 @@ const renderMarkdown = (content: string) => {
     `;
   });
   
-  // Handle Do & Don'ts sections - target the specific content format
+  // Handle Do & Don'ts sections - create simple lists instead of tables
   processedContent = processedContent.replace(/([\s\S]*(?:✅|❌)[\s\S]*?)(?=\n#{1,3}(?!.*(?:✅|❌))|$)/gi, (match) => {
     const lines = match.split('\n').filter(line => line.trim());
     const dos = [];
@@ -154,56 +154,18 @@ const renderMarkdown = (content: string) => {
       const line = lines[i].trim();
       
       if (line && !line.includes('---')) {
-        // Check for green checkmark (DOs) - skip header lines that contain both symbols and headers
+        // Check for green checkmark (DOs) - skip header lines
         if (line.includes('✅') && !line.match(/^#{1,6}.*✅.*DOs/i)) {
           let cleanLine = line.replace(/^[\-\*\s]*/, '').trim();
-          
-          // Try to split tip and explanation (look for common patterns)
-          let tip = cleanLine;
-          let explanation = 'Shows cultural awareness and respect';
-          
-          if (cleanLine.includes(' : ')) {
-            const parts = cleanLine.split(' : ');
-            if (parts.length >= 2) {
-              tip = parts[0];
-              explanation = parts.slice(1).join(' : ');
-            }
-          } else if (cleanLine.includes(' - ')) {
-            const parts = cleanLine.split(' - ');
-            if (parts.length >= 2) {
-              tip = parts[0];
-              explanation = parts.slice(1).join(' - ');
-            }
-          }
-          
-          if (tip && !tip.match(/^#{1,6}/) && tip !== cleanLine.split(' : ')[1]) {
-            dos.push({ tip, explanation });
+          if (cleanLine && !cleanLine.match(/^#{1,6}/)) {
+            dos.push(cleanLine);
           }
         }
         // Check for red cross (DON'Ts) - skip header lines
         else if (line.includes('❌') && !line.match(/^#{1,6}.*❌.*DON'?Ts/i)) {
           let cleanLine = line.replace(/^[\-\*\s]*/, '').trim();
-          
-          // Try to split tip and explanation
-          let tip = cleanLine;
-          let explanation = 'Can cause cultural misunderstandings';
-          
-          if (cleanLine.includes(' : ')) {
-            const parts = cleanLine.split(' : ');
-            if (parts.length >= 2) {
-              tip = parts[0];
-              explanation = parts.slice(1).join(' : ');
-            }
-          } else if (cleanLine.includes(' - ')) {
-            const parts = cleanLine.split(' - ');
-            if (parts.length >= 2) {
-              tip = parts[0];
-              explanation = parts.slice(1).join(' - ');
-            }
-          }
-          
-          if (tip && !tip.match(/^#{1,6}/) && tip !== cleanLine.split(' : ')[1]) {
-            donts.push({ tip, explanation });
+          if (cleanLine && !cleanLine.match(/^#{1,6}/)) {
+            donts.push(cleanLine);
           }
         }
       }
@@ -211,57 +173,50 @@ const renderMarkdown = (content: string) => {
     
     if (dos.length === 0 && donts.length === 0) return match;
     
-    let tablesHTML = '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4">💡 Cultural Tips</h3>';
+    let sectionsHTML = '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4">💡 Cultural Tips</h3>';
     
-    // Green table for DOs with 2 columns
+    // Create two columns with simple lists
+    sectionsHTML += '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
+    
+    // Green section for DOs
     if (dos.length > 0) {
-      tablesHTML += `
-        <div class="overflow-x-auto mb-4">
-          <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
-            <thead>
-              <tr class="bg-green-100 dark:bg-green-900/30">
-                <th class="px-4 py-3 text-left font-semibold text-green-800 dark:text-green-200 border-r border-green-200 dark:border-green-800">✔️ Do this</th>
-                <th class="px-4 py-3 text-left font-semibold text-green-800 dark:text-green-200">Why it matters</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${dos.map((item, index) => `
-                <tr class="border-t border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors">
-                  <td class="px-4 py-3 text-green-800 dark:text-green-200 border-r border-green-200 dark:border-green-800 font-medium">${item.tip.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
-                  <td class="px-4 py-3 text-green-700 dark:text-green-300">${item.explanation}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
+      sectionsHTML += `
+        <div class="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+          <h3 class="font-poppins text-lg font-semibold text-green-800 dark:text-green-200 mb-3 flex items-center">
+            ✅ DOs
+          </h3>
+          <div class="space-y-2">
+            ${dos.map(item => `
+              <div class="text-green-700 dark:text-green-300 text-sm leading-relaxed">
+                ${item.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}
+              </div>
+            `).join('')}
+          </div>
         </div>
       `;
     }
     
-    // Red table for DON'Ts with 2 columns
+    // Red section for DON'Ts
     if (donts.length > 0) {
-      tablesHTML += `
-        <div class="overflow-x-auto mb-6">
-          <table class="w-full border-collapse rounded-xl overflow-hidden shadow-sm bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800">
-            <thead>
-              <tr class="bg-red-100 dark:bg-red-900/30">
-                <th class="px-4 py-3 text-left font-semibold text-red-800 dark:text-red-200 border-r border-red-200 dark:border-red-800">🚫 Don't do this</th>
-                <th class="px-4 py-3 text-left font-semibold text-red-800 dark:text-red-200">Why to avoid it</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${donts.map((item, index) => `
-                <tr class="border-t border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
-                  <td class="px-4 py-3 text-red-800 dark:text-red-200 border-r border-red-200 dark:border-red-800 font-medium">${item.tip.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}</td>
-                  <td class="px-4 py-3 text-red-700 dark:text-red-300">${item.explanation}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
+      sectionsHTML += `
+        <div class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <h3 class="font-poppins text-lg font-semibold text-red-800 dark:text-red-200 mb-3 flex items-center">
+            ❌ DON'Ts
+          </h3>
+          <div class="space-y-2">
+            ${donts.map(item => `
+              <div class="text-red-700 dark:text-red-300 text-sm leading-relaxed">
+                ${item.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')}
+              </div>
+            `).join('')}
+          </div>
         </div>
       `;
     }
     
-    return tablesHTML;
+    sectionsHTML += '</div>';
+    
+    return sectionsHTML;
   });
   
   // Handle markdown tables and convert them to modern HTML tables
