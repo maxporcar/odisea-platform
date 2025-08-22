@@ -100,15 +100,15 @@ export const renderMarkdown = (content: string): ReactElement | null => {
   });
 
   // Handle DO's and DON'Ts sections as styled cards
-  cleanContent = cleanContent.replace(/(?:✅\s*)?(?:DO['']?s|DOs)[\s\S]*?(?=\n#{1,3}|❌|$)/gi, (match) => {
+  cleanContent = cleanContent.replace(/\*\*Do['']?s?\*\*:?[\s\S]*?(?=\*\*Don['']?t['']?s?\*\*|$)/gi, (match) => {
     const lines = match.split('\n').filter(line => line.trim());
     const doItems = [];
     
-    for (let i = 0; i < lines.length; i++) {
+    for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
-      if (line && (line.includes('✓') || line.includes('✅'))) {
-        const text = line.replace(/^[✓✅]\s*/, '').replace(/^-\s*/, '').trim();
-        if (text) doItems.push(text);
+      if (line && line.startsWith('-')) {
+        const text = line.replace(/^-\s*/, '').trim();
+        if (text && !text.includes('**Don')) doItems.push(text);
       }
     }
     
@@ -134,14 +134,14 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     </div>`;
   });
 
-  cleanContent = cleanContent.replace(/(?:❌\s*)?(?:DON['']?T['']?s|DONTs)[\s\S]*?(?=\n#{1,3}|✅|$)/gi, (match) => {
+  cleanContent = cleanContent.replace(/\*\*Don['']?t['']?s?\*\*:?[\s\S]*?$/gi, (match) => {
     const lines = match.split('\n').filter(line => line.trim());
     const dontItems = [];
     
-    for (let i = 0; i < lines.length; i++) {
+    for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
-      if (line && (line.includes('✗') || line.includes('❌'))) {
-        const text = line.replace(/^[✗❌]\s*/, '').replace(/^-\s*/, '').trim();
+      if (line && line.startsWith('-')) {
+        const text = line.replace(/^-\s*/, '').trim();
         if (text) dontItems.push(text);
       }
     }
