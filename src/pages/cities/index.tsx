@@ -93,68 +93,67 @@ const CitiesIndex = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {availableCities.map((city) => (
-                <Card key={city.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-                  <CardContent className="p-0">
-                    {city.image_url && (
-                      <div className="h-48 bg-gradient-to-br from-primary/20 to-primary-glow/20 flex items-center justify-center">
-                        <img 
-                          src={city.image_url} 
-                          alt={city.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    {!city.image_url && (
-                      <div className="h-48 bg-gradient-to-br from-primary/20 to-primary-glow/20 flex items-center justify-center">
-                        <MapPin className="w-16 h-16 text-primary/60" />
-                      </div>
-                    )}
-                    
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                          {city.name}
-                        </h3>
-                        {(city as any).countries?.flag && (
+                <Link key={city.id} to={`/cities/${city.slug}`} className="group">
+                  <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-md hover:-translate-y-1">
+                    <CardContent className="p-0">
+                      {/* City Image */}
+                      <div className="relative h-56 overflow-hidden">
+                        {city.image_url ? (
                           <img 
-                            src={(city as any).countries.flag} 
-                            alt={`${(city as any).countries.name} flag`}
-                            className="w-6 h-4 object-cover rounded"
+                            src={city.image_url} 
+                            alt={city.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary-glow/30 flex items-center justify-center">
+                            <MapPin className="w-16 h-16 text-primary/40" />
+                          </div>
+                        )}
+                        
+                        {/* Country Flag Overlay */}
+                        {(city as any).countries?.flag && (
+                          <div className="absolute top-4 left-4">
+                            <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5">
+                              <img 
+                                src={(city as any).countries.flag} 
+                                alt={`${(city as any).countries.name} flag`}
+                                className="w-5 h-3.5 object-cover rounded-sm"
+                              />
+                            </div>
+                          </div>
                         )}
                       </div>
                       
-                      {(city as any).countries?.name && (
-                        <p className="text-sm text-muted-foreground mb-3 flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {(city as any).countries.name}
-                        </p>
-                      )}
-                      
-                      {city.description && (
-                        <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
-                          {city.description}
-                        </p>
-                      )}
-                      
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {city.climate_md && <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">Climate</span>}
-                        {city.cost_of_living_md && <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-2 py-1 rounded">Cost</span>}
-                        {city.safety_md && <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded">Safety</span>}
-                        {city.universities_md && <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Universities</span>}
+                      {/* City Info */}
+                      <div className="p-6">
+                        <h3 className="text-2xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+                          {city.name}
+                        </h3>
+                        
+                        {(city as any).countries?.name && (
+                          <p className="text-muted-foreground mb-4 font-medium">
+                            {(city as any).countries.name}
+                          </p>
+                        )}
+                        
+                        {city.description && (
+                          <p className="text-muted-foreground text-sm leading-relaxed mb-6 line-clamp-3">
+                            {city.description}
+                          </p>
+                        )}
+                        
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full">
+                            City destination
+                          </span>
+                          <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                        </div>
                       </div>
-                      
-                      <Link to={`/cities/${city.slug}`}>
-                        <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                          {t('cities.explore', 'Explore City Guide')}
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </>

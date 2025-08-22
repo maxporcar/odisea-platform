@@ -115,13 +115,23 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     if (doItems.length === 0) return '';
     
     const listItems = doItems.map(item => 
-      `<div class="flex items-start p-3 bg-green-50 border border-green-200 rounded-lg mb-2">
-        <span class="text-green-600 mr-3 mt-0.5 flex-shrink-0 text-lg">✅</span>
-        <span class="text-green-800 font-medium text-sm leading-relaxed">${item}</span>
-      </div>`
+      `<li class="flex items-start text-white text-base leading-relaxed">
+        <span class="mr-3 mt-1 flex-shrink-0">•</span>
+        <span>${item}</span>
+      </li>`
     ).join('');
     
-    return `<div class="grid gap-2 mb-6">${listItems}</div>`;
+    return `<div class="bg-green-600 rounded-2xl p-6 mb-6 shadow-lg">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
+          <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-2xl text-white">DOS</h3>
+      </div>
+      <ul class="space-y-3">${listItems}</ul>
+    </div>`;
   });
 
   cleanContent = cleanContent.replace(/(?:❌\s*)?(?:DON['']?T['']?s|DONTs)[\s\S]*?(?=\n#{1,3}|✅|$)/gi, (match) => {
@@ -139,13 +149,23 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     if (dontItems.length === 0) return '';
     
     const listItems = dontItems.map(item => 
-      `<div class="flex items-start p-3 bg-red-50 border border-red-200 rounded-lg mb-2">
-        <span class="text-red-600 mr-3 mt-0.5 flex-shrink-0 text-lg">❌</span>
-        <span class="text-red-800 font-medium text-sm leading-relaxed">${item}</span>
-      </div>`
+      `<li class="flex items-start text-white text-base leading-relaxed">
+        <span class="mr-3 mt-1 flex-shrink-0">•</span>
+        <span>${item}</span>
+      </li>`
     ).join('');
     
-    return `<div class="grid gap-2 mb-6">${listItems}</div>`;
+    return `<div class="bg-red-500 rounded-2xl p-6 mb-6 shadow-lg">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
+          <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-2xl text-white">DON'TS</h3>
+      </div>
+      <ul class="space-y-3">${listItems}</ul>
+    </div>`;
   });
 
   // Handle markdown tables with modern styling

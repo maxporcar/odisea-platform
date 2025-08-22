@@ -80,37 +80,69 @@ const CitiesIndex = () => {
             <p className="text-muted-foreground">{t('cities.noCities.description')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {cities.map((city) => (
               <Link
                 key={city.id}
                 to={`/paises/${countryId}/ciudades/${city.slug}`}
-                className="bg-card rounded-2xl shadow-sm border hover:shadow-lg transition-all transform hover:scale-105 overflow-hidden"
+                className="group"
               >
-                <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden">
-                  {city.image_url ? (
-                    <img 
-                      src={city.image_url} 
-                      alt={city.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <MapPin className="w-12 h-12 text-primary" />
-                  )}
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-2">{city.name}</h3>
-                  <p className="text-muted-foreground line-clamp-3 mb-4">
-                    {city.description || t('cities.defaultDescription')}
-                  </p>
+                <div className="bg-card rounded-2xl shadow-md border-0 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                  {/* City Image */}
+                  <div className="relative h-56 overflow-hidden">
+                    {city.image_url ? (
+                      <img 
+                        src={city.image_url} 
+                        alt={city.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/30 flex items-center justify-center">
+                        <MapPin className="w-16 h-16 text-primary/40" />
+                      </div>
+                    )}
+                    
+                    {/* Country Flag Overlay */}
+                    {country?.flag && (
+                      <div className="absolute top-4 left-4">
+                        <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5">
+                          <img 
+                            src={country.flag} 
+                            alt={`${country.name} flag`}
+                            className="w-5 h-3.5 object-cover rounded-sm"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   
-                  {city.latitude && city.longitude && (
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      <span>Lat: {city.latitude}, Lng: {city.longitude}</span>
+                  {/* City Info */}
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+                      {city.name}
+                    </h3>
+                    
+                    {country?.name && (
+                      <p className="text-muted-foreground mb-4 font-medium">
+                        {country.name}
+                      </p>
+                    )}
+                    
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-6 line-clamp-3">
+                      {city.description || t('cities.defaultDescription')}
+                    </p>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full">
+                        City destination
+                      </span>
+                      <div className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </Link>
             ))}
