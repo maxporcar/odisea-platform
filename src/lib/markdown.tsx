@@ -78,26 +78,28 @@ export const renderMarkdown = (content: string): ReactElement | null => {
       </tr>`
     ).join('');
     
-    return `<div class="mb-4">
-      <h3 class="font-poppins text-lg font-semibold text-foreground mb-3 flex items-center">
-        <span class="text-primary mr-2">🎭</span>Festival Calendar
+    return `<div class="mb-6">
+      <h3 class="font-poppins text-lg font-semibold text-foreground mb-3">
+        Festival Calendar
       </h3>
       <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead>
-            <tr class="border-b-2 border-border">
-              <th class="text-left py-2 pr-4 font-semibold text-foreground">Festival</th>
-              <th class="text-left py-2 pr-4 font-semibold text-foreground">Date</th>
-              <th class="text-left py-2 font-semibold text-foreground">Description</th>
-            </tr>
-          </thead>
-          <tbody>${tableRows}</tbody>
-        </table>
+        <div class="bg-card border border-border rounded-lg shadow-sm">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="text-left py-3 px-4 font-semibold text-foreground bg-muted/30 first:rounded-tl-lg">Festival</th>
+                <th class="text-left py-3 px-4 font-semibold text-foreground bg-muted/30">Date</th>
+                <th class="text-left py-3 px-4 font-semibold text-foreground bg-muted/30 last:rounded-tr-lg">Description</th>
+              </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+        </div>
       </div>
     </div>`;
   });
 
-  // Handle DO's and DON'Ts sections with compact formatting
+  // Handle DO's and DON'Ts sections as styled cards
   cleanContent = cleanContent.replace(/(?:✅\s*)?(?:DO['']?s|DOs)[\s\S]*?(?=\n#{1,3}|❌|$)/gi, (match) => {
     const lines = match.split('\n').filter(line => line.trim());
     const doItems = [];
@@ -113,13 +115,13 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     if (doItems.length === 0) return '';
     
     const listItems = doItems.map(item => 
-      `<li class="flex items-start mb-2">
-        <span class="text-green-500 mr-2 mt-1 flex-shrink-0">✅</span>
-        <span class="text-muted-foreground">${item}</span>
-      </li>`
+      `<div class="flex items-start p-3 bg-green-50 border border-green-200 rounded-lg mb-2">
+        <span class="text-green-600 mr-3 mt-0.5 flex-shrink-0 text-lg">✅</span>
+        <span class="text-green-800 font-medium text-sm leading-relaxed">${item}</span>
+      </div>`
     ).join('');
     
-    return `<ul class="space-y-2 mb-4">${listItems}</ul>`;
+    return `<div class="grid gap-2 mb-6">${listItems}</div>`;
   });
 
   cleanContent = cleanContent.replace(/(?:❌\s*)?(?:DON['']?T['']?s|DONTs)[\s\S]*?(?=\n#{1,3}|✅|$)/gi, (match) => {
@@ -137,16 +139,16 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     if (dontItems.length === 0) return '';
     
     const listItems = dontItems.map(item => 
-      `<li class="flex items-start mb-2">
-        <span class="text-red-500 mr-2 mt-1 flex-shrink-0">❌</span>
-        <span class="text-muted-foreground">${item}</span>
-      </li>`
+      `<div class="flex items-start p-3 bg-red-50 border border-red-200 rounded-lg mb-2">
+        <span class="text-red-600 mr-3 mt-0.5 flex-shrink-0 text-lg">❌</span>
+        <span class="text-red-800 font-medium text-sm leading-relaxed">${item}</span>
+      </div>`
     ).join('');
     
-    return `<ul class="space-y-2 mb-4">${listItems}</ul>`;
+    return `<div class="grid gap-2 mb-6">${listItems}</div>`;
   });
 
-  // Handle markdown tables
+  // Handle markdown tables with modern styling
   cleanContent = cleanContent.replace(/^\|(.+)\|/gm, (match) => {
     const lines = cleanContent.split('\n');
     const tableLines = [];
@@ -185,29 +187,31 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     );
     
     const headerCells = headers.map(h => 
-      `<th class="text-left py-2 px-3 font-semibold text-foreground border-b border-border">${h}</th>`
+      `<th class="text-left py-3 px-4 font-semibold text-foreground bg-muted/30 first:rounded-tl-lg last:rounded-tr-lg border-b border-border">${h}</th>`
     ).join('');
     
-    const bodyCells = rows.map(row => 
-      `<tr class="border-b border-border/50">
-        ${row.map(cell => `<td class="py-2 px-3 text-muted-foreground">${cell}</td>`).join('')}
+    const bodyCells = rows.map((row, index) => 
+      `<tr class="border-b border-border/30 hover:bg-muted/20 transition-colors ${index === rows.length - 1 ? 'last:border-b-0' : ''}">
+        ${row.map((cell, cellIndex) => `<td class="py-3 px-4 text-muted-foreground ${cellIndex === 0 ? 'font-medium text-foreground' : ''}">${cell}</td>`).join('')}
       </tr>`
     ).join('');
     
-    return `<div class="overflow-x-auto mb-4">
-      <table class="w-full">
-        <thead><tr>${headerCells}</tr></thead>
-        <tbody>${bodyCells}</tbody>
-      </table>
+    return `<div class="overflow-x-auto mb-6">
+      <div class="bg-card border border-border rounded-lg shadow-sm">
+        <table class="w-full">
+          <thead><tr>${headerCells}</tr></thead>
+          <tbody>${bodyCells}</tbody>
+        </table>
+      </div>
     </div>`;
   });
 
   // Enhanced markdown parsing with consistent 1em spacing
   let html = cleanContent
-    // Handle headers with consistent spacing
-    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4 flex items-center"><span class="text-primary mr-2">📍</span>$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-4 flex items-center"><span class="text-primary mr-2">🔹</span>$1</h3>')
-    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-3 mt-4">$1</h2>')
+    // Handle headers with consistent spacing - clean, professional look
+    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-2 mt-4">$1</h4>')
+    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-5">$1</h3>')
+    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-3 mt-6">$1</h2>')
     
     // Handle lists with consistent spacing
     .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-1 flex items-start"><span class="text-green-500 mr-2 mt-1">✓</span><span>$1</span></li>')
@@ -217,8 +221,8 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
     
-    // Handle paragraphs with consistent 1em spacing - avoid double paragraph tags
-    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-4">')
+    // Handle paragraphs with consistent spacing - avoid double paragraph tags
+    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-3">')
     .replace(/\n/g, '<br>');
 
   // Wrap lists properly with consistent spacing
@@ -233,7 +237,7 @@ export const renderMarkdown = (content: string): ReactElement | null => {
   
   return (
     <div 
-      className="markdown-content prose prose-sm max-w-none [&>*]:mb-4 [&>h2]:mt-6 [&>h3]:mt-5 [&>h4]:mt-4" 
+      className="markdown-content prose prose-sm max-w-none [&>*]:mb-3 [&>h2]:mt-5 [&>h3]:mt-4 [&>h4]:mt-3 [&>ul]:mb-3 [&>div]:mb-4" 
       dangerouslySetInnerHTML={{ 
         __html: html
       }} 
