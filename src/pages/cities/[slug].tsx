@@ -5,44 +5,7 @@ import { useCity } from '@/hooks/useCities';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 
-// Enhanced markdown renderer with better formatting (same as countries)
-const renderMarkdown = (content: string) => {
-  if (!content) return null;
-  
-  // Clean content - remove surrounding quotes if present
-  const cleanContent = content.replace(/^"|"$/g, '');
-  
-  // Enhanced markdown parsing
-  let html = cleanContent
-    // Handle headers
-    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-3 mt-4 flex items-center"><span class="text-primary mr-2">📍</span>$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-4 mt-6 flex items-center"><span class="text-primary mr-2">🔹</span>$1</h3>')
-    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-4 mt-6">$1</h2>')
-    
-    // Handle lists
-    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-green-500 mr-2 mt-1">✓</span><span>$1</span></li>')
-    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-2 flex items-start"><span class="text-red-500 mr-2 mt-1">✗</span><span>$1</span></li>')
-    
-    // Handle emphasis
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-    
-    // Handle paragraphs and line breaks
-    .replace(/\n\n/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-4">')
-    .replace(/\n/g, '<br>');
-
-  // Wrap lists properly
-  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-6 space-y-2">$1</ul>');
-  
-  return (
-    <div 
-      className="markdown-content" 
-      dangerouslySetInnerHTML={{ 
-        __html: `<div class="font-poppins text-muted-foreground leading-relaxed">${html}</div>` 
-      }} 
-    />
-  );
-};
+import { renderMarkdown } from '@/lib/markdown';
 
 // Translation cache to avoid repeated API calls
 const translationCache = new Map<string, string>();

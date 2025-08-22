@@ -219,6 +219,61 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Markdown content styles - optimized spacing */
+.markdown-content {
+  /* Reset margins and ensure consistent spacing */
+  & > * {
+    margin-bottom: 1rem; /* 16px consistent spacing */
+  }
+  
+  /* Headers have slightly more top margin for better separation */
+  & h2 {
+    margin-top: 1.5rem; /* 24px */
+    margin-bottom: 0.75rem; /* 12px */
+  }
+  
+  & h3 {
+    margin-top: 1.25rem; /* 20px */
+    margin-bottom: 0.75rem; /* 12px */
+  }
+  
+  & h4 {
+    margin-top: 1rem; /* 16px */
+    margin-bottom: 0.5rem; /* 8px */
+  }
+  
+  /* Lists have tighter spacing */
+  & ul, & ol {
+    margin-bottom: 1rem;
+    padding-left: 0; /* Remove default padding since we use flex layout */
+  }
+  
+  & li {
+    margin-bottom: 0.25rem; /* 4px between list items */
+  }
+  
+  /* Paragraphs have consistent spacing */
+  & p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  
+  /* Tables have proper spacing */
+  & table {
+    margin-bottom: 1rem;
+  }
+  
+  /* Remove excessive spacing from last elements */
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Ensure line breaks don't create excessive space */
+  & br + br {
+    display: none; /* Hide double line breaks */
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
