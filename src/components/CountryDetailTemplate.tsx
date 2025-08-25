@@ -324,34 +324,84 @@ const CountryDetailTemplate = () => {
             {/* Culture */}
             <section id="culture" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center mb-6">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Culture
                   </h2>
                 </div>
-                {getContent('culture_md') ? 
-                  renderMarkdown(getContent('culture_md')) :
-                  <div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div className="border border-border rounded-lg p-4">
-                        <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
-                          📅 Schedule
-                        </h4>
-                        <p className="font-poppins text-sm text-muted-foreground">
-                          Daily routines and academic schedules
-                        </p>
-                      </div>
-                      <div className="border border-border rounded-lg p-4">
-                        <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
-                          🍽️ Food Culture
-                        </h4>
-                        <p className="font-poppins text-sm text-muted-foreground">
-                          Local cuisine and dining customs
-                        </p>
+                
+                {/* Culture Text Content */}
+                <div className="mb-8">
+                  {getContent('culture_md') ? 
+                    renderMarkdown(getContent('culture_md')) :
+                    <div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div className="border border-border rounded-lg p-4">
+                          <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
+                            📅 Schedule
+                          </h4>
+                          <p className="font-poppins text-sm text-muted-foreground">
+                            Daily routines and academic schedules
+                          </p>
+                        </div>
+                        <div className="border border-border rounded-lg p-4">
+                          <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
+                            🍽️ Food Culture
+                          </h4>
+                          <p className="font-poppins text-sm text-muted-foreground">
+                            Local cuisine and dining customs
+                          </p>
+                        </div>
                       </div>
                     </div>
+                  }
+                </div>
+
+                {/* Culture Image Gallery */}
+                {(country as any)?.country_image && Array.isArray((country as any).country_image) && (country as any).country_image.length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="font-montserrat text-lg font-semibold text-foreground">
+                      Arts & Traditions
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {(country as any).country_image.map((imageUrl: string, index: number) => {
+                        const titles = ['Cuisine', 'Museums', 'Nature', 'Festivals'];
+                        const descriptions = [
+                          'Enjoy French culinary delights',
+                          'Visit French art and history', 
+                          'Explore France\'s beautiful variety',
+                          'Experience vibrant French traditions'
+                        ];
+                        
+                        return (
+                          <div 
+                            key={index}
+                            className="group bg-white rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+                          >
+                            <div className="aspect-square overflow-hidden">
+                              <img 
+                                src={imageUrl} 
+                                alt={titles[index] || `Culture image ${index + 1}`}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                onError={(e) => {
+                                  e.currentTarget.src = '/placeholder.svg';
+                                }}
+                              />
+                            </div>
+                            <div className="p-4">
+                              <h4 className="font-montserrat font-semibold text-foreground mb-1">
+                                {titles[index] || `Culture ${index + 1}`}
+                              </h4>
+                              <p className="font-poppins text-sm text-muted-foreground">
+                                {descriptions[index] || 'Discover cultural aspects'}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                }
+                )}
               </div>
             </section>
 
