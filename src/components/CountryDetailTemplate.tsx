@@ -330,91 +330,80 @@ const CountryDetailTemplate = () => {
                   </h2>
                 </div>
                 
-                {/* Culture Text Content */}
-                <div className="mb-8">
-                  {getContent('culture_md') ? 
-                    renderMarkdown(getContent('culture_md')) :
-                    <div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div className="border border-border rounded-lg p-4">
-                          <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
-                            📅 Schedule
-                          </h4>
-                          <p className="font-poppins text-sm text-muted-foreground">
-                            Daily routines and academic schedules
-                          </p>
+                <div className="space-y-8">
+                  {/* Food & Lifestyle Section */}
+                  <div className="space-y-4">
+                    <h3 className="font-montserrat text-xl font-semibold text-foreground">
+                      Food & Lifestyle
+                    </h3>
+                    
+                    {/* Food Gallery */}
+                    {(() => {
+                      const cultureImageData = (country as any)?.culture_image;
+                      let imageUrls: string[] = [];
+                      
+                      if (cultureImageData && typeof cultureImageData === 'string') {
+                        // Extract URLs from the SQL-like text format
+                        const urlMatches = cultureImageData.match(/https:\/\/[^\s\]]+/g);
+                        imageUrls = urlMatches || [];
+                      } else if (Array.isArray(cultureImageData)) {
+                        imageUrls = cultureImageData;
+                      }
+                      
+                      return imageUrls.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {imageUrls.map((imageUrl: string, index: number) => {
+                            // Extract filename from URL and remove extension
+                            const filename = imageUrl.split('/').pop()?.split('.')[0] || '';
+                            const dishName = filename.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                            
+                            return (
+                              <div
+                                key={index}
+                                className="group cursor-pointer"
+                              >
+                                <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 border border-border">
+                                  <div className="aspect-square overflow-hidden">
+                                    <img
+                                      src={imageUrl}
+                                      alt={dishName}
+                                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                      loading="lazy"
+                                      onError={(e) => {
+                                        e.currentTarget.src = '/placeholder.svg';
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="p-3">
+                                    <p className="font-montserrat font-medium text-foreground text-sm text-center">
+                                      {dishName}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
-                        <div className="border border-border rounded-lg p-4">
-                          <h4 className="font-poppins text-lg font-semibold text-foreground mb-2 flex items-center">
-                            🍽️ Food Culture
-                          </h4>
-                          <p className="font-poppins text-sm text-muted-foreground">
-                            Local cuisine and dining customs
-                          </p>
-                        </div>
+                      ) : null;
+                    })()}
+                  </div>
+                  
+                  {/* Arts & Traditions Section */}
+                  <div className="space-y-4">
+                    <h3 className="font-montserrat text-xl font-semibold text-foreground">
+                      Arts & Traditions
+                    </h3>
+                    
+                    {getContent('culture_md') ? 
+                      renderMarkdown(getContent('culture_md')) :
+                      <div>
+                        <p className="font-poppins text-muted-foreground leading-relaxed">
+                          France is a leader in cinema, theater, literature, and fashion. Students can attend film festivals (Cannes, Lumière in Lyon), theater festivals (Avignon), and explore world-class museums and cultural sites.
+                        </p>
                       </div>
-                    </div>
-                  }
+                    }
+                  </div>
                 </div>
-
-                {/* Culture Image Gallery */}
-                {(() => {
-                  const cultureImageData = (country as any)?.culture_image;
-                  let imageUrls: string[] = [];
-                  
-                  if (cultureImageData && typeof cultureImageData === 'string') {
-                    // Extract URLs from the SQL-like text format
-                    const urlMatches = cultureImageData.match(/https:\/\/[^\s\]]+/g);
-                    imageUrls = urlMatches || [];
-                  } else if (Array.isArray(cultureImageData)) {
-                    imageUrls = cultureImageData;
-                  }
-                  
-                  return imageUrls.length > 0 ? (
-                    <div className="space-y-4">
-                      <h3 className="font-montserrat text-lg font-semibold text-foreground">
-                        Arts & Traditions
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {imageUrls.map((imageUrl: string, index: number) => {
-                        const titles = ['Cuisine', 'Museums', 'Nature', 'Festivals'];
-                        const descriptions = [
-                          'Enjoy French culinary delights',
-                          'Visit French art and history', 
-                          'Explore France\'s beautiful variety',
-                          'Experience vibrant French traditions'
-                        ];
-                        
-                        return (
-                          <div 
-                            key={index}
-                            className="group bg-white rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
-                          >
-                            <div className="aspect-square overflow-hidden">
-                              <img 
-                                src={imageUrl} 
-                                alt={titles[index] || `Culture image ${index + 1}`}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                onError={(e) => {
-                                  e.currentTarget.src = '/placeholder.svg';
-                                }}
-                              />
-                            </div>
-                            <div className="p-4">
-                              <h4 className="font-montserrat font-semibold text-foreground mb-1">
-                                {titles[index] || `Culture ${index + 1}`}
-                              </h4>
-                              <p className="font-poppins text-sm text-muted-foreground">
-                                {descriptions[index] || 'Discover cultural aspects'}
-                              </p>
-                            </div>
-                          </div>
-                        );
-                        })}
-                      </div>
-                    </div>
-                  ) : null;
-                })()}
               </div>
             </section>
 
