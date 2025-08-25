@@ -99,74 +99,97 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     </div>`;
   });
 
-  // Handle DO's and DON'Ts sections as styled cards
-  cleanContent = cleanContent.replace(/\*\*Do['']?s?\*\*:?[\s\S]*?(?=\*\*Don['']?t['']?s?\*\*|$)/gi, (match) => {
-    const lines = match.split('\n').filter(line => line.trim());
-    const doItems = [];
+  // Handle DO's and DON'Ts as a two-column table
+  cleanContent = cleanContent.replace(/\*\*Do['']?s?\*\*:?[\s\S]*?(?=\*\*Don['']?t['']?s?\*\*|$)/gi, (dosMatch) => {
+    const allContent = cleanContent;
+    const dosStartIndex = allContent.indexOf(dosMatch);
+    const dontsStartIndex = allContent.indexOf('**Don', dosStartIndex);
     
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
+    let dosItems = [];
+    let dontItems = [];
+    
+    // Parse Do's
+    const dosLines = dosMatch.split('\n').filter(line => line.trim());
+    for (let i = 1; i < dosLines.length; i++) {
+      const line = dosLines[i].trim();
       if (line && line.startsWith('-')) {
         const text = line.replace(/^-\s*/, '').trim();
-        if (text && !text.includes('**Don')) doItems.push(text);
+        if (text && !text.includes('**Don')) dosItems.push(text);
       }
     }
     
-    if (doItems.length === 0) return '';
+    // Parse Don'ts if they exist
+    if (dontsStartIndex > -1) {
+      const dontsSection = allContent.substring(dontsStartIndex);
+      const dontsMatch = dontsSection.match(/\*\*Don['']?t['']?s?\*\*:?[\s\S]*$/gi);
+      if (dontsMatch) {
+        const dontsLines = dontsMatch[0].split('\n').filter(line => line.trim());
+        for (let i = 1; i < dontsLines.length; i++) {
+          const line = dontsLines[i].trim();
+          if (line && line.startsWith('-')) {
+            const text = line.replace(/^-\s*/, '').trim();
+            if (text) dontItems.push(text);
+          }
+        }
+      }
+    }
     
-    const listItems = doItems.map(item => 
-      `<li class="flex items-start text-white text-base leading-relaxed">
-        <span class="mr-3 mt-1 flex-shrink-0">•</span>
-        <span>${item}</span>
-      </li>`
-    ).join('');
+    if (dosItems.length === 0 && dontItems.length === 0) return '';
     
-    return `<div class="bg-green-600 rounded-2xl p-6 mb-6 shadow-lg">
-      <div class="flex items-center mb-4">
-        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
-          <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+    const dosItemsHtml = dosItems.map(item => 
+      `<div class="flex items-start p-3 rounded-lg bg-green-50 border-l-4 border-green-500">
+        <div class="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
           </svg>
         </div>
-        <h3 class="font-bold text-2xl text-white">DOS</h3>
-      </div>
-      <ul class="space-y-3">${listItems}</ul>
-    </div>`;
-  });
-
-  cleanContent = cleanContent.replace(/\*\*Don['']?t['']?s?\*\*:?[\s\S]*?$/gi, (match) => {
-    const lines = match.split('\n').filter(line => line.trim());
-    const dontItems = [];
-    
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (line && line.startsWith('-')) {
-        const text = line.replace(/^-\s*/, '').trim();
-        if (text) dontItems.push(text);
-      }
-    }
-    
-    if (dontItems.length === 0) return '';
-    
-    const listItems = dontItems.map(item => 
-      `<li class="flex items-start text-white text-base leading-relaxed">
-        <span class="mr-3 mt-1 flex-shrink-0">•</span>
-        <span>${item}</span>
-      </li>`
+        <span class="text-green-800 text-sm leading-relaxed">${item}</span>
+      </div>`
     ).join('');
     
-    return `<div class="bg-red-500 rounded-2xl p-6 mb-6 shadow-lg">
-      <div class="flex items-center mb-4">
-        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
-          <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+    const dontItemsHtml = dontItems.map(item => 
+      `<div class="flex items-start p-3 rounded-lg bg-red-50 border-l-4 border-red-500">
+        <div class="flex-shrink-0 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
           </svg>
         </div>
-        <h3 class="font-bold text-2xl text-white">DON'TS</h3>
+        <span class="text-red-800 text-sm leading-relaxed">${item}</span>
+      </div>`
+    ).join('');
+    
+    return `<div class="bg-white rounded-xl border border-border shadow-sm p-6 mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        ${dosItems.length > 0 ? `
+        <div>
+          <h4 class="font-poppins text-lg font-semibold text-green-700 mb-4 flex items-center">
+            <span class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </span>
+            Do's
+          </h4>
+          <div class="space-y-3">${dosItemsHtml}</div>
+        </div>` : ''}
+        ${dontItems.length > 0 ? `
+        <div>
+          <h4 class="font-poppins text-lg font-semibold text-red-700 mb-4 flex items-center">
+            <span class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-3">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+              </svg>
+            </span>
+            Don'ts
+          </h4>
+          <div class="space-y-3">${dontItemsHtml}</div>
+        </div>` : ''}
       </div>
-      <ul class="space-y-3">${listItems}</ul>
     </div>`;
   });
+
+  // Remove separate Don'ts processing since it's handled above
+  cleanContent = cleanContent.replace(/\*\*Don['']?t['']?s?\*\*:?[\s\S]*?$/gi, '');
 
   // Handle markdown tables with modern styling
   cleanContent = cleanContent.replace(/^\|(.+)\|/gm, (match) => {
@@ -226,38 +249,38 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     </div>`;
   });
 
-  // Enhanced markdown parsing with consistent 1em spacing
+  // Enhanced markdown parsing with reduced spacing and modern styling
   let html = cleanContent
-    // Handle headers with consistent spacing - clean, professional look
-    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-2 mt-4">$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-3 mt-5">$1</h3>')
-    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-3 mt-6">$1</h2>')
+    // Handle headers with minimal spacing and clean typography
+    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-2 mt-3">$1</h4>')
+    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-2 mt-4">$1</h3>')
+    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-2 mt-4">$1</h2>')
     
-    // Handle lists with consistent spacing
-    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-1 flex items-start"><span class="text-green-500 mr-2 mt-1">✓</span><span>$1</span></li>')
-    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-1 flex items-start"><span class="text-primary mr-2 mt-1">•</span><span>$1</span></li>')
+    // Handle lists with minimal spacing
+    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-1 flex items-start"><span class="text-green-500 mr-2 mt-1 text-sm">✓</span><span>$1</span></li>')
+    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-1 flex items-start"><span class="text-primary mr-2 mt-1 text-sm">•</span><span>$1</span></li>')
     
     // Handle emphasis
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
     
-    // Handle paragraphs with consistent spacing - avoid double paragraph tags
-    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-3">')
+    // Handle paragraphs with tight spacing
+    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-2">')
     .replace(/\n/g, '<br>');
 
-  // Wrap lists properly with consistent spacing
-  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-4 space-y-1">$1</ul>');
+  // Wrap lists properly with tight spacing
+  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-3 space-y-1">$1</ul>');
   
   // Ensure content starts with a paragraph tag
   if (!html.startsWith('<')) {
-    html = `<p class="font-poppins text-muted-foreground leading-relaxed mb-4">${html}</p>`;
+    html = `<p class="font-poppins text-muted-foreground leading-relaxed mb-2">${html}</p>`;
   } else {
     html = `<div class="font-poppins text-muted-foreground leading-relaxed">${html}</div>`;
   }
   
   return (
     <div 
-      className="markdown-content prose prose-sm max-w-none [&>*]:mb-3 [&>h2]:mt-5 [&>h3]:mt-4 [&>h4]:mt-3 [&>ul]:mb-3 [&>div]:mb-4" 
+      className="markdown-content prose prose-sm max-w-none [&>*]:mb-2 [&>h2]:mt-3 [&>h3]:mt-3 [&>h4]:mt-2 [&>ul]:mb-2 [&>div]:mb-3 animate-fade-in" 
       dangerouslySetInnerHTML={{ 
         __html: html
       }} 

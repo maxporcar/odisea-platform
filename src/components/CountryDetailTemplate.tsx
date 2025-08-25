@@ -249,7 +249,7 @@ const CountryDetailTemplate = () => {
           </div>
 
           {/* Content Column */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-6">
             {/* Header Section */}
             <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 text-center">
               <h1 className="font-montserrat text-4xl font-bold text-foreground mb-2">
@@ -264,7 +264,7 @@ const CountryDetailTemplate = () => {
             <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
               <div className="p-6 border-b border-border">
                 <h3 className="font-montserrat text-xl font-bold text-foreground flex items-center">
-                  🗺️ Explore {country.name}
+                  Explore {country.name}
                 </h3>
               </div>
               <div className="p-6">
@@ -275,8 +275,7 @@ const CountryDetailTemplate = () => {
             {/* Overview Section */}
             <section id="overview" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">📖</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     {t('countryDetail.sections.overview', 'Overview')}
                   </h2>
@@ -293,8 +292,7 @@ const CountryDetailTemplate = () => {
             {/* Big Cities vs Small Towns */}
             <section id="big-cities" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">📍</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Big Cities vs Small Towns
                   </h2>
@@ -326,8 +324,7 @@ const CountryDetailTemplate = () => {
             {/* Culture */}
             <section id="culture" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">👥</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Culture
                   </h2>
@@ -361,8 +358,7 @@ const CountryDetailTemplate = () => {
             {/* Life Activities & Travel */}
             <section id="life-activities" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">✈️</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Life, Activities & Travel
                   </h2>
@@ -380,8 +376,7 @@ const CountryDetailTemplate = () => {
             {/* Scholarships & Student Benefits */}
             <section id="scholarships" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">🎓</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Student Benefits & Scholarships
                   </h2>
@@ -399,8 +394,7 @@ const CountryDetailTemplate = () => {
             {/* Visa Information */}
             <section id="visa" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">📋</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Visa Information
                   </h2>
@@ -418,8 +412,7 @@ const CountryDetailTemplate = () => {
             {/* Medical & Healthcare */}
             <section id="medical" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">❤️</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Medical
                   </h2>
@@ -437,10 +430,9 @@ const CountryDetailTemplate = () => {
             {/* Dos and Don'ts */}
             <section id="dos-donts" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">✅</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
-                    DOs and DON'Ts
+                    Dos and Don'ts
                   </h2>
                 </div>
                 {getContent('dos_and_donts_md') ? 
@@ -470,8 +462,7 @@ const CountryDetailTemplate = () => {
             {/* Cities Section */}
             <section id="country-cities" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-6">
-                  <span className="text-2xl mr-3">🗺️</span>
+                <div className="flex items-center mb-4">
                   <h2 className="font-montserrat text-2xl font-bold text-foreground">
                     Cities to Explore
                   </h2>
