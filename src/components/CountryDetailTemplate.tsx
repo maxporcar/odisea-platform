@@ -358,13 +358,25 @@ const CountryDetailTemplate = () => {
                 </div>
 
                 {/* Culture Image Gallery */}
-                {(country as any)?.country_image && Array.isArray((country as any).country_image) && (country as any).country_image.length > 0 && (
-                  <div className="space-y-4">
-                    <h3 className="font-montserrat text-lg font-semibold text-foreground">
-                      Arts & Traditions
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                      {(country as any).country_image.map((imageUrl: string, index: number) => {
+                {(() => {
+                  const cultureImageData = (country as any)?.culture_image;
+                  let imageUrls: string[] = [];
+                  
+                  if (cultureImageData && typeof cultureImageData === 'string') {
+                    // Extract URLs from the SQL-like text format
+                    const urlMatches = cultureImageData.match(/https:\/\/[^\s\]]+/g);
+                    imageUrls = urlMatches || [];
+                  } else if (Array.isArray(cultureImageData)) {
+                    imageUrls = cultureImageData;
+                  }
+                  
+                  return imageUrls.length > 0 ? (
+                    <div className="space-y-4">
+                      <h3 className="font-montserrat text-lg font-semibold text-foreground">
+                        Arts & Traditions
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {imageUrls.map((imageUrl: string, index: number) => {
                         const titles = ['Cuisine', 'Museums', 'Nature', 'Festivals'];
                         const descriptions = [
                           'Enjoy French culinary delights',
@@ -398,10 +410,11 @@ const CountryDetailTemplate = () => {
                             </div>
                           </div>
                         );
-                      })}
+                        })}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  ) : null;
+                })()}
               </div>
             </section>
 
