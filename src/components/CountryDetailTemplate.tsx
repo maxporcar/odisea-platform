@@ -433,7 +433,7 @@ const CountryDetailTemplate = () => {
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 border border-border">
                           <div className="aspect-[4/3] overflow-hidden">
                             <img
-                              src="https://xuckhytnscruefakvmkh.supabase.co/storage/v1/object/public/Culture%20Image/Films%20and%20Theater%20Festival.jpg"
+                              src="https://wqmokzfmioaqqlitlvnb.supabase.co/storage/v1/object/public/Culture%20Image/Films%20and%20Theater%20Festivals%20.png"
                               alt="Film and Theater festivals"
                               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                               loading="lazy"
@@ -451,7 +451,7 @@ const CountryDetailTemplate = () => {
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 border border-border">
                           <div className="aspect-[4/3] overflow-hidden">
                             <img
-                              src="https://xuckhytnscruefakvmkh.supabase.co/storage/v1/object/public/Culture%20Image/Music%20Festivals.jpg"
+                              src="https://wqmokzfmioaqqlitlvnb.supabase.co/storage/v1/object/public/Culture%20Image/Music%20Festivals.png"
                               alt="Music festivals"
                               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                               loading="lazy"
