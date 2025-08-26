@@ -330,160 +330,90 @@ const CountryDetailTemplate = () => {
                   </h2>
                 </div>
                 
-                <div className="space-y-8">
-                  {/* Food & Lifestyle Section */}
-                  <div className="space-y-4">
-                    <h3 className="font-montserrat text-xl font-semibold text-foreground">
-                      Food & Lifestyle
-                    </h3>
-                    
-                    {getContent('culture_md') ? 
-                      (() => {
-                        const content = getContent('culture_md');
-                        const splitText = "Food is central: long lunches, local bakeries, wine tastings, and seasonal markets. Each region has its specialties:";
-                        const parts = content.split(splitText);
-                        
-                        if (parts.length > 1) {
-                          return (
-                            <div className="space-y-6">
-                              {/* Content before the split */}
-                              {renderMarkdown(parts[0] + splitText)}
-                              
-                              {/* Food Gallery */}
-                              {(() => {
-                                const cultureImageData = (country as any)?.culture_image;
-                                let imageUrls: string[] = [];
-                                
-                                if (cultureImageData && typeof cultureImageData === 'string') {
-                                  // Extract URLs from the SQL-like text format
-                                  const urlMatches = cultureImageData.match(/https:\/\/[^\s\]]+/g);
-                                  imageUrls = urlMatches || [];
-                                } else if (Array.isArray(cultureImageData)) {
-                                  imageUrls = cultureImageData;
-                                }
-                                
-                                return imageUrls.length > 0 ? (
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
-                                    {imageUrls.map((imageUrl: string, index: number) => {
-                                      // Extract filename from URL and remove extension
-                                      const filename = imageUrl.split('/').pop()?.split('.')[0] || '';
-                                      const dishName = filename.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                                      
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="group cursor-pointer"
-                                        >
-                                          <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 border border-border">
-                                            <div className="aspect-square overflow-hidden">
-                                              <img
-                                                src={imageUrl}
-                                                alt={dishName}
-                                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                                loading="lazy"
-                                                onError={(e) => {
-                                                  e.currentTarget.src = '/placeholder.svg';
-                                                }}
-                                              />
-                                            </div>
-                                            <div className="p-3">
-                                              <p className="font-montserrat font-medium text-foreground text-sm text-center">
-                                                {dishName}
-                                              </p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                ) : null;
-                              })()}
-                              
-                              {/* Content after the split */}
-                              {parts[1] && renderMarkdown(parts[1])}
-                            </div>
-                          );
-                        } else {
-                          // If the split text is not found, render normally with gallery after
-                          return (
-                            <div className="space-y-6">
-                              {renderMarkdown(content)}
-                              
-                              {/* Food Gallery */}
-                              {(() => {
-                                const cultureImageData = (country as any)?.culture_image;
-                                let imageUrls: string[] = [];
-                                
-                                if (cultureImageData && typeof cultureImageData === 'string') {
-                                  // Extract URLs from the SQL-like text format
-                                  const urlMatches = cultureImageData.match(/https:\/\/[^\s\]]+/g);
-                                  imageUrls = urlMatches || [];
-                                } else if (Array.isArray(cultureImageData)) {
-                                  imageUrls = cultureImageData;
-                                }
-                                
-                                return imageUrls.length > 0 ? (
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                    {imageUrls.map((imageUrl: string, index: number) => {
-                                      // Extract filename from URL and remove extension
-                                      const filename = imageUrl.split('/').pop()?.split('.')[0] || '';
-                                      const dishName = filename.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                                      
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="group cursor-pointer"
-                                        >
-                                          <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 border border-border">
-                                            <div className="aspect-square overflow-hidden">
-                                              <img
-                                                src={imageUrl}
-                                                alt={dishName}
-                                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                                loading="lazy"
-                                                onError={(e) => {
-                                                  e.currentTarget.src = '/placeholder.svg';
-                                                }}
-                                              />
-                                            </div>
-                                            <div className="p-3">
-                                              <p className="font-montserrat font-medium text-foreground text-sm text-center">
-                                                {dishName}
-                                              </p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                ) : null;
-                              })()}
-                            </div>
-                          );
-                        }
-                      })() :
-                      <div>
-                        <p className="font-poppins text-muted-foreground leading-relaxed">
-                          France is known for its rich culinary traditions and lifestyle culture.
-                        </p>
-                      </div>
-                    }
-                  </div>
+                <div className="space-y-6">
+                  {/* Intro Text */}
+                  <p className="font-poppins text-muted-foreground leading-relaxed text-lg">
+                    French culture is globally famous and deeply embedded in daily life.
+                  </p>
                   
-                  {/* Arts & Traditions Section */}
+                  {/* Food Section */}
                   <div className="space-y-4">
                     <h3 className="font-montserrat text-xl font-semibold text-foreground">
-                      Arts & Traditions
+                      Food
                     </h3>
                     
-                    {getContent('culture_md') ? 
-                      renderMarkdown(getContent('culture_md')) :
-                      <div>
-                        <p className="font-poppins text-muted-foreground leading-relaxed">
-                          France is a leader in cinema, theater, literature, and fashion. Students can attend film festivals (Cannes, Lumière in Lyon), theater festivals (Avignon), and explore world-class museums and cultural sites.
-                        </p>
-                      </div>
-                    }
+                    <p className="font-poppins text-muted-foreground leading-relaxed">
+                      Food is central: long lunches, local bakeries, wine tastings, and seasonal markets. Each region has its specialties:
+                    </p>
+                    
+                    {/* Food Gallery */}
+                    {(() => {
+                      const cultureImageData = (country as any)?.culture_image;
+                      let imageUrls: string[] = [];
+                      
+                      if (cultureImageData && typeof cultureImageData === 'string') {
+                        // Extract URLs from the SQL-like text format
+                        const urlMatches = cultureImageData.match(/https:\/\/[^\s\]]+/g);
+                        imageUrls = urlMatches || [];
+                      } else if (Array.isArray(cultureImageData)) {
+                        imageUrls = cultureImageData;
+                      }
+                      
+                      // Map filenames to regions
+                      const getRegionForDish = (filename: string) => {
+                        const dishMap: { [key: string]: string } = {
+                          'bouillabaisse': '(Marseille)',
+                          'crepes and cider': '(Brittany)',
+                          'foie gras and duck confit': '(Southwest)',
+                          'fondue': '(Alps)'
+                        };
+                        
+                        const dishName = filename.replace(/[-_]/g, ' ').toLowerCase();
+                        return dishMap[dishName] || '';
+                      };
+                      
+                      return imageUrls.length > 0 ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 my-6">
+                          {imageUrls.map((imageUrl: string, index: number) => {
+                            // Extract filename from URL and remove extension
+                            const filename = imageUrl.split('/').pop()?.split('.')[0] || '';
+                            const dishName = filename.replace(/[-_]/g, ' ');
+                            const region = getRegionForDish(filename);
+                            
+                            return (
+                              <div
+                                key={index}
+                                className="group cursor-pointer"
+                              >
+                                <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 border border-border">
+                                  <div className="aspect-square overflow-hidden">
+                                    <img
+                                      src={imageUrl}
+                                      alt={dishName}
+                                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                      loading="lazy"
+                                      onError={(e) => {
+                                        e.currentTarget.src = '/placeholder.svg';
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="p-2">
+                                    <p className="font-montserrat font-medium text-foreground text-xs text-center">
+                                      {dishName} {region}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : null;
+                    })()}
+                    
+                    {/* Conclusion Text */}
+                    <p className="font-poppins text-muted-foreground leading-relaxed">
+                      Meals are moments for socializing and enjoying time with friends or family.
+                    </p>
                   </div>
                 </div>
               </div>
