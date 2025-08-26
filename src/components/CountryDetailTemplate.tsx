@@ -334,7 +334,7 @@ const CountryDetailTemplate = () => {
                 
                 <div className="space-y-8">
                   {/* Intro Text */}
-                  <p className="font-poppins text-muted-foreground leading-relaxed text-lg">
+                  <p className="font-poppins text-muted-foreground leading-none text-lg text-justify">
                     French culture is globally famous and deeply embedded in daily life.
                   </p>
                   
@@ -344,77 +344,16 @@ const CountryDetailTemplate = () => {
                       Food
                     </h3>
                     
-                    <p className="font-poppins text-muted-foreground leading-relaxed">
-                      Food is central: long lunches, local bakeries, wine tastings, and seasonal markets. Each region has its specialties:
-                    </p>
-                    
-                    {/* Food Gallery */}
-                    {(() => {
-                      const cultureImageData = (country as any)?.culture_image;
-                      let imageUrls: string[] = [];
-                      
-                      if (cultureImageData && typeof cultureImageData === 'string') {
-                        // Extract URLs from the SQL-like text format
-                        const urlMatches = cultureImageData.match(/https:\/\/[^\s\]]+/g);
-                        imageUrls = urlMatches || [];
-                      } else if (Array.isArray(cultureImageData)) {
-                        imageUrls = cultureImageData;
-                      }
-                      
-                      return imageUrls.length > 0 ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 my-6">
-                          {imageUrls.map((imageUrl: string, index: number) => {
-                            // Extract filename from URL and remove extension
-                            const filename = imageUrl.split('/').pop()?.split('.')[0] || '';
-                            
-                            // Map specific dishes to their regions
-                            let caption = '';
-                            if (filename.includes('bouillabaisse')) {
-                              caption = 'bouillabaisse (Marseille)';
-                            } else if (filename.includes('crepes') || filename.includes('cider')) {
-                              caption = 'crepes and cider (Brittany)';
-                            } else if (filename.includes('foie') || filename.includes('duck')) {
-                              caption = 'foie gras and duck confit (Southwest)';
-                            } else if (filename.includes('fondue')) {
-                              caption = 'fondue (Alps)';
-                            } else {
-                              caption = filename.replace(/[-_]/g, ' ');
-                            }
-                            
-                            return (
-                              <div
-                                key={index}
-                                className="group cursor-pointer"
-                              >
-                                <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 border border-border">
-                                  <div className="aspect-[4/3] overflow-hidden">
-                                    <img
-                                      src={imageUrl}
-                                      alt={caption}
-                                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                      loading="lazy"
-                                      onError={(e) => {
-                                        e.currentTarget.src = '/placeholder.svg';
-                                      }}
-                                    />
-                                  </div>
-                                  <div className="p-2">
-                                    <p className="font-montserrat font-medium text-foreground text-xs text-center">
-                                      {caption}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : null;
-                    })()}
-                    
-                    {/* Conclusion Text */}
-                    <p className="font-poppins text-muted-foreground leading-relaxed">
-                      Meals are moments for socializing and enjoying time with friends or family.
-                    </p>
+                    <div className="font-poppins text-muted-foreground leading-none text-justify">
+                      <p>Food is central: long lunches, local bakeries, wine tastings, and seasonal markets. Each region has its specialties:</p>
+                      <ul className="mt-2 space-y-1">
+                        <li className="flex items-start"><span className="text-primary mr-2 mt-1 text-sm">•</span><span>Brittany: crêpes and cider</span></li>
+                        <li className="flex items-start"><span className="text-primary mr-2 mt-1 text-sm">•</span><span>Marseille: bouillabaisse</span></li>
+                        <li className="flex items-start"><span className="text-primary mr-2 mt-1 text-sm">•</span><span>Alps: fondue and raclette</span></li>
+                        <li className="flex items-start"><span className="text-primary mr-2 mt-1 text-sm">•</span><span>Southwest: foie gras and duck confit</span></li>
+                      </ul>
+                      <p className="mt-2">Meals are moments for socializing and enjoying time with friends or family.</p>
+                    </div>
                   </div>
                   
                   {/* Arts & Traditions Section */}

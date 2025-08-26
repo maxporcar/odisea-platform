@@ -256,31 +256,31 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-2 mt-4">$1</h3>')
     .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-2 mt-4">$1</h2>')
     
-    // Handle lists with improved spacing
-    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-6 mb-1.5 flex items-start"><span class="text-green-500 mr-2 mt-1 text-sm">✓</span><span>$1</span></li>')
-    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-6 mb-1.5 flex items-start"><span class="text-primary mr-2 mt-1 text-sm">•</span><span>$1</span></li>')
+    // Handle lists with line spacing of 1
+    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-none mb-1 flex items-start text-justify"><span class="text-green-500 mr-2 mt-1 text-sm">✓</span><span>$1</span></li>')
+    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-none mb-1 flex items-start text-justify"><span class="text-primary mr-2 mt-1 text-sm">•</span><span>$1</span></li>')
     
     // Handle emphasis
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
     
-    // Handle paragraphs with tight spacing
-    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-2">')
+    // Handle paragraphs with line spacing of 1 and justified text
+    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-none mb-2 text-justify">')
     .replace(/\n/g, '<br>');
 
-  // Wrap lists properly with improved spacing  
-  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-4 space-y-1.5">$1</ul>');
+  // Wrap lists properly with line spacing of 1
+  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-4 space-y-1">$1</ul>');
   
-  // Ensure content starts with a paragraph tag
+  // Ensure content starts with a paragraph tag with justified text and line spacing 1
   if (!html.startsWith('<')) {
-    html = `<p class="font-poppins text-muted-foreground leading-relaxed mb-2">${html}</p>`;
+    html = `<p class="font-poppins text-muted-foreground leading-none mb-2 text-justify">${html}</p>`;
   } else {
-    html = `<div class="font-poppins text-muted-foreground leading-relaxed">${html}</div>`;
+    html = `<div class="font-poppins text-muted-foreground leading-none text-justify">${html}</div>`;
   }
   
   return (
     <div 
-      className="markdown-content prose prose-sm max-w-none [&>*]:mb-2 [&>h2]:mt-3 [&>h3]:mt-3 [&>h4]:mt-2 [&>ul]:mb-2 [&>div]:mb-3 animate-fade-in" 
+      className="markdown-content prose prose-sm max-w-none [&>*]:mb-2 [&>h2]:mt-3 [&>h3]:mt-3 [&>h4]:mt-2 [&>ul]:mb-2 [&>div]:mb-3 animate-fade-in text-justify leading-none" 
       dangerouslySetInnerHTML={{ 
         __html: html
       }} 
