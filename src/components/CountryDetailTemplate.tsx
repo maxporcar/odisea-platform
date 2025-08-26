@@ -330,7 +330,7 @@ const CountryDetailTemplate = () => {
                   </h2>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {/* Intro Text */}
                   <p className="font-poppins text-muted-foreground leading-relaxed text-lg">
                     French culture is globally famous and deeply embedded in daily life.
@@ -359,26 +359,25 @@ const CountryDetailTemplate = () => {
                         imageUrls = cultureImageData;
                       }
                       
-                      // Map filenames to regions
-                      const getRegionForDish = (filename: string) => {
-                        const dishMap: { [key: string]: string } = {
-                          'bouillabaisse': '(Marseille)',
-                          'crepes and cider': '(Brittany)',
-                          'foie gras and duck confit': '(Southwest)',
-                          'fondue': '(Alps)'
-                        };
-                        
-                        const dishName = filename.replace(/[-_]/g, ' ').toLowerCase();
-                        return dishMap[dishName] || '';
-                      };
-                      
                       return imageUrls.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 my-6">
                           {imageUrls.map((imageUrl: string, index: number) => {
                             // Extract filename from URL and remove extension
                             const filename = imageUrl.split('/').pop()?.split('.')[0] || '';
-                            const dishName = filename.replace(/[-_]/g, ' ');
-                            const region = getRegionForDish(filename);
+                            
+                            // Map specific dishes to their regions
+                            let caption = '';
+                            if (filename.includes('bouillabaisse')) {
+                              caption = 'bouillabaisse (Marseille)';
+                            } else if (filename.includes('crepes') || filename.includes('cider')) {
+                              caption = 'crepes and cider (Brittany)';
+                            } else if (filename.includes('foie') || filename.includes('duck')) {
+                              caption = 'foie gras and duck confit (Southwest)';
+                            } else if (filename.includes('fondue')) {
+                              caption = 'fondue (Alps)';
+                            } else {
+                              caption = filename.replace(/[-_]/g, ' ');
+                            }
                             
                             return (
                               <div
@@ -386,10 +385,10 @@ const CountryDetailTemplate = () => {
                                 className="group cursor-pointer"
                               >
                                 <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 border border-border">
-                                  <div className="aspect-square overflow-hidden">
+                                  <div className="aspect-[4/3] overflow-hidden">
                                     <img
                                       src={imageUrl}
-                                      alt={dishName}
+                                      alt={caption}
                                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                                       loading="lazy"
                                       onError={(e) => {
@@ -399,7 +398,7 @@ const CountryDetailTemplate = () => {
                                   </div>
                                   <div className="p-2">
                                     <p className="font-montserrat font-medium text-foreground text-xs text-center">
-                                      {dishName} {region}
+                                      {caption}
                                     </p>
                                   </div>
                                 </div>
@@ -414,6 +413,22 @@ const CountryDetailTemplate = () => {
                     <p className="font-poppins text-muted-foreground leading-relaxed">
                       Meals are moments for socializing and enjoying time with friends or family.
                     </p>
+                  </div>
+                  
+                  {/* Arts & Traditions Section */}
+                  <div className="space-y-4">
+                    <h3 className="font-montserrat text-xl font-semibold text-foreground">
+                      Arts & Traditions
+                    </h3>
+                    
+                    {getContent('culture_md') ? 
+                      renderMarkdown(getContent('culture_md')) :
+                      <div>
+                        <p className="font-poppins text-muted-foreground leading-relaxed">
+                          France is a leader in cinema, theater, literature, and fashion. Students can attend film festivals (Cannes, Lumière in Lyon), theater festivals (Avignon), and explore world-class museums and cultural sites.
+                        </p>
+                      </div>
+                    }
                   </div>
                 </div>
               </div>
