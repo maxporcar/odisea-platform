@@ -143,7 +143,7 @@ export const renderMarkdown = (content: string): ReactElement | null => {
             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
           </svg>
         </div>
-        <span class="text-green-800 text-sm leading-relaxed">${item}</span>
+        <span class="text-green-800 text-sm leading-none">${item}</span>
       </div>`
     ).join('');
     
@@ -154,7 +154,7 @@ export const renderMarkdown = (content: string): ReactElement | null => {
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
           </svg>
         </div>
-        <span class="text-red-800 text-sm leading-relaxed">${item}</span>
+        <span class="text-red-800 text-sm leading-none">${item}</span>
       </div>`
     ).join('');
     
@@ -251,10 +251,10 @@ export const renderMarkdown = (content: string): ReactElement | null => {
 
   // Enhanced markdown parsing with reduced spacing and modern styling
   let html = cleanContent
-    // Handle headers with minimal spacing and clean typography
-    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-2 mt-3">$1</h4>')
-    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-2 mt-4">$1</h3>')
-    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-2 mt-4">$1</h2>')
+    // Handle headers with tight spacing
+    .replace(/### (.*)/g, '<h4 class="font-poppins text-lg font-semibold text-foreground mb-1 mt-2">$1</h4>')
+    .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-1 mt-2">$1</h3>')
+    .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-1 mt-2">$1</h2>')
     
     // Handle lists with line spacing of 1
     .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-none mb-1 flex items-start text-justify"><span class="text-green-500 mr-2 mt-1 text-sm">✓</span><span>$1</span></li>')
@@ -265,22 +265,22 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
     
     // Handle paragraphs with line spacing of 1 and justified text
-    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-none mb-2 text-justify">')
+    .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-none mb-1 text-justify">')
     .replace(/\n/g, '<br>');
 
   // Wrap lists properly with line spacing of 1
-  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-4 space-y-1">$1</ul>');
+  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-2 space-y-1">$1</ul>');
   
   // Ensure content starts with a paragraph tag with justified text and line spacing 1
   if (!html.startsWith('<')) {
-    html = `<p class="font-poppins text-muted-foreground leading-none mb-2 text-justify">${html}</p>`;
+    html = `<p class="font-poppins text-muted-foreground leading-none mb-1 text-justify">${html}</p>`;
   } else {
     html = `<div class="font-poppins text-muted-foreground leading-none text-justify">${html}</div>`;
   }
   
   return (
     <div 
-      className="markdown-content prose prose-sm max-w-none [&>*]:mb-2 [&>h2]:mt-3 [&>h3]:mt-3 [&>h4]:mt-2 [&>ul]:mb-2 [&>div]:mb-3 animate-fade-in text-justify leading-none" 
+      className="markdown-content prose prose-sm max-w-none [&>*]:mb-1 [&>h2]:mt-2 [&>h3]:mt-2 [&>h4]:mt-1 [&>ul]:mb-1 [&>div]:mb-2 animate-fade-in text-justify leading-none" 
       dangerouslySetInnerHTML={{ 
         __html: html
       }} 
