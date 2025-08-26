@@ -256,9 +256,9 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     .replace(/## (.*)/g, '<h3 class="font-poppins text-xl font-semibold text-foreground mb-2 mt-4">$1</h3>')
     .replace(/# (.*)/g, '<h2 class="font-poppins text-2xl font-bold text-foreground mb-2 mt-4">$1</h2>')
     
-    // Handle lists with minimal spacing
-    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-1 flex items-start"><span class="text-green-500 mr-2 mt-1 text-sm">✓</span><span>$1</span></li>')
-    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-relaxed mb-1 flex items-start"><span class="text-primary mr-2 mt-1 text-sm">•</span><span>$1</span></li>')
+    // Handle lists with improved spacing
+    .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-6 mb-1.5 flex items-start"><span class="text-green-500 mr-2 mt-1 text-sm">✓</span><span>$1</span></li>')
+    .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-6 mb-1.5 flex items-start"><span class="text-primary mr-2 mt-1 text-sm">•</span><span>$1</span></li>')
     
     // Handle emphasis
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
@@ -268,8 +268,8 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     .replace(/\n\n+/g, '</p><p class="font-poppins text-muted-foreground leading-relaxed mb-2">')
     .replace(/\n/g, '<br>');
 
-  // Wrap lists properly with tight spacing
-  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-3 space-y-1">$1</ul>');
+  // Wrap lists properly with improved spacing  
+  html = html.replace(/(<li.*?<\/li>(\s*<li.*?<\/li>)*)/g, '<ul class="mb-4 space-y-1.5">$1</ul>');
   
   // Ensure content starts with a paragraph tag
   if (!html.startsWith('<')) {

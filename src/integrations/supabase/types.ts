@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -188,6 +188,7 @@ export type Database = {
           continent: string
           cost_of_living: Database["public"]["Enums"]["cost_level"]
           created_at: string | null
+          culture_image: string | null
           culture_md: string | null
           currency: string
           description: string
@@ -219,6 +220,7 @@ export type Database = {
           continent: string
           cost_of_living?: Database["public"]["Enums"]["cost_level"]
           created_at?: string | null
+          culture_image?: string | null
           culture_md?: string | null
           currency: string
           description: string
@@ -250,6 +252,7 @@ export type Database = {
           continent?: string
           cost_of_living?: Database["public"]["Enums"]["cost_level"]
           created_at?: string | null
+          culture_image?: string | null
           culture_md?: string | null
           currency?: string
           description?: string
