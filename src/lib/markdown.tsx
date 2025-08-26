@@ -260,8 +260,8 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     .replace(/^\* (.*)/gm, '<li class="font-poppins text-muted-foreground leading-none mb-1 flex items-start text-justify"><span class="text-green-500 mr-2 mt-1 text-sm">✓</span><span>$1</span></li>')
     .replace(/^- (.*)/gm, '<li class="font-poppins text-muted-foreground leading-none mb-1 flex items-start text-justify"><span class="text-primary mr-2 mt-1 text-sm">•</span><span>$1</span></li>')
     
-    // Handle emphasis
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
+    // Handle emphasis - make bold text orange
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-orange-600">$1</strong>')
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
     
     // Handle paragraphs with line spacing of 1 and justified text

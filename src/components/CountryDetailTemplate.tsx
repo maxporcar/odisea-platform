@@ -125,11 +125,11 @@ const CountryDetailTemplate = () => {
     { id: 'overview', title: t('countryDetail.sections.overview', 'Overview') },
     { id: 'big-cities', title: t('countryDetail.sections.bigCities', 'Big Cities vs Small Towns') },
     { id: 'culture', title: t('countryDetail.sections.culture', 'Culture') },
+    { id: 'dos-donts', title: t('countryDetail.sections.dosAndDonts', 'Dos and Don\'ts') },
     { id: 'life-activities', title: t('countryDetail.sections.lifeActivities', 'Life, Activities & Travel') },
     { id: 'scholarships', title: t('countryDetail.sections.scholarships', 'Student Benefits & Scholarships') },
     { id: 'visa', title: t('countryDetail.sections.visa', 'Visa Information') },
     { id: 'medical', title: t('countryDetail.sections.medical', 'Medical') },
-    { id: 'dos-donts', title: t('countryDetail.sections.dosAndDonts', 'Dos and Don\'ts') },
     { id: 'country-cities', title: t('countryDetail.sections.cities', 'Cities to Explore') },
   ];
 
@@ -438,6 +438,38 @@ const CountryDetailTemplate = () => {
               </div>
             </section>
 
+            {/* Dos and Don'ts - moved after Culture */}
+            <section id="dos-donts" className="animate-fade-in-up">
+              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
+                <div className="flex items-center mb-4">
+                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
+                    Dos and Don'ts
+                  </h2>
+                </div>
+                {getContent('dos_and_donts_md') ? 
+                  renderMarkdown(getContent('dos_and_donts_md')) :
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <h3 className="font-poppins text-lg font-semibold text-green-800 mb-3">
+                        ✅ DOs
+                      </h3>
+                      <p className="font-poppins text-sm text-green-700">
+                        Essential guidelines for positive interactions and cultural respect.
+                      </p>
+                    </div>
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <h3 className="font-poppins text-lg font-semibold text-red-800 mb-3">
+                        ❌ DON'Ts
+                      </h3>
+                      <p className="font-poppins text-sm text-red-700">
+                        Common mistakes to avoid and cultural sensitivities to respect.
+                      </p>
+                    </div>
+                  </div>
+                }
+              </div>
+            </section>
+
             {/* Life Activities & Travel */}
             <section id="life-activities" className="animate-fade-in-up">
               <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
@@ -510,37 +542,7 @@ const CountryDetailTemplate = () => {
               </div>
             </section>
 
-            {/* Dos and Don'ts */}
-            <section id="dos-donts" className="animate-fade-in-up">
-              <div className="bg-white rounded-2xl p-6 border border-border shadow-sm">
-                <div className="flex items-center mb-4">
-                  <h2 className="font-montserrat text-2xl font-bold text-foreground">
-                    Dos and Don'ts
-                  </h2>
-                </div>
-                {getContent('dos_and_donts_md') ? 
-                  renderMarkdown(getContent('dos_and_donts_md')) :
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <h3 className="font-poppins text-lg font-semibold text-green-800 mb-3">
-                        ✅ DOs
-                      </h3>
-                      <p className="font-poppins text-sm text-green-700">
-                        Essential guidelines for positive interactions and cultural respect.
-                      </p>
-                    </div>
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h3 className="font-poppins text-lg font-semibold text-red-800 mb-3">
-                        ❌ DON'Ts
-                      </h3>
-                      <p className="font-poppins text-sm text-red-700">
-                        Common mistakes to avoid and cultural sensitivities to respect.
-                      </p>
-                    </div>
-                  </div>
-                }
-              </div>
-            </section>
+            {/* Dos and Don'ts - removed from here, moved after Culture */}
 
             {/* Cities Section */}
             <section id="country-cities" className="animate-fade-in-up">
