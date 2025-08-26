@@ -59,6 +59,8 @@ const CountryDetailTemplate = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [translatedContent, setTranslatedContent] = useState<Record<string, string>>({});
   const [isTranslating, setIsTranslating] = useState(false);
+  const [showFilmFestivals, setShowFilmFestivals] = useState(false);
+  const [showMusicFestivals, setShowMusicFestivals] = useState(false);
 
   // Handle content translation when language changes
   useEffect(() => {
@@ -416,19 +418,82 @@ const CountryDetailTemplate = () => {
                   </div>
                   
                   {/* Arts & Traditions Section */}
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <h3 className="font-montserrat text-xl font-semibold text-foreground">
                       Arts & Traditions
                     </h3>
                     
-                    {getContent('culture_md') ? 
-                      renderMarkdown(getContent('culture_md')) :
-                      <div>
-                        <p className="font-poppins text-muted-foreground leading-relaxed">
-                          France is a leader in cinema, theater, literature, and fashion. Students can attend film festivals (Cannes, Lumière in Lyon), theater festivals (Avignon), and explore world-class museums and cultural sites.
-                        </p>
+                    <p className="font-poppins text-muted-foreground leading-relaxed">
+                      France is a leader in cinema, theater, literature, and fashion. Students can attend:
+                    </p>
+                    
+                    {/* Festival Images */}
+                    <div className="grid grid-cols-2 gap-4 my-6">
+                      <div className="group cursor-pointer" onClick={() => setShowFilmFestivals(true)}>
+                        <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 border border-border">
+                          <div className="aspect-[4/3] overflow-hidden">
+                            <img
+                              src="https://xuckhytnscruefakvmkh.supabase.co/storage/v1/object/public/Culture%20Image/Films%20and%20Theater%20Festival.jpg"
+                              alt="Film and Theater festivals"
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className="p-3">
+                            <p className="font-montserrat font-medium text-foreground text-sm text-center">
+                              Film and Theater festivals
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    }
+                      
+                      <div className="group cursor-pointer" onClick={() => setShowMusicFestivals(true)}>
+                        <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 border border-border">
+                          <div className="aspect-[4/3] overflow-hidden">
+                            <img
+                              src="https://xuckhytnscruefakvmkh.supabase.co/storage/v1/object/public/Culture%20Image/Music%20Festivals.jpg"
+                              alt="Music festivals"
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className="p-3">
+                            <p className="font-montserrat font-medium text-foreground text-sm text-center">
+                              Music festivals
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Museum and Heritage Section */}
+                    <div className="space-y-4">
+                      <p className="font-poppins text-muted-foreground leading-relaxed">
+                        Most museums and cultural sites are free or discounted for students under 26. From the{' '}
+                        <a href="https://www.louvre.fr" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 underline">
+                          Louvre
+                        </a>{' '}
+                        and{' '}
+                        <a href="https://www.musee-orsay.fr" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 underline">
+                          Musée d'Orsay
+                        </a>{' '}
+                        in Paris to smaller museums in every city, students have access to centuries of creativity. Architecture varies from medieval{' '}
+                        <a href="https://www.valdeloire.org/en/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 underline">
+                          castles in the Loire Valley
+                        </a>{' '}
+                        to modern high-tech districts like{' '}
+                        <a href="https://www.ladefense.fr/en" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 underline">
+                          La Défense
+                        </a>. Festivals and traditions also shape cultural life: Bastille Day on July 14 celebrates national pride with fireworks, while the Fête de la Musique turns every street into a stage.
+                      </p>
+                    </div>
+                    
+                    {/* Social Codes from culture_md if exists */}
+                    {getContent('culture_md') && (
+                      <div className="mt-6">
+                        {renderMarkdown(getContent('culture_md'))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -594,6 +659,58 @@ const CountryDetailTemplate = () => {
           </div>
         </div>
       </div>
+      
+      {/* Film & Theater Festivals Pop-up */}
+      {showFilmFestivals && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowFilmFestivals(false)}>
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-montserrat text-lg font-semibold text-foreground">
+                Film & Theater festivals
+              </h3>
+              <button 
+                onClick={() => setShowFilmFestivals(false)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                ✕
+              </button>
+            </div>
+            <ul className="space-y-2">
+              <li className="font-poppins text-sm text-muted-foreground">• Festival de Cannes (Cannes)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Festival Lumière (Lyon)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Avignon Theater Festival (Avignon)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Annecy International Animation Festival (Annecy)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Clermont-Ferrand Short Film Festival (Clermont-Ferrand)</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Music Festivals Pop-up */}
+      {showMusicFestivals && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowMusicFestivals(false)}>
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-montserrat text-lg font-semibold text-foreground">
+                Music festivals
+              </h3>
+              <button 
+                onClick={() => setShowMusicFestivals(false)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                ✕
+              </button>
+            </div>
+            <ul className="space-y-2">
+              <li className="font-poppins text-sm text-muted-foreground">• Fête de la Musique (nationwide, June 21)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Rock en Seine (Paris)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Les Vieilles Charrues (Brittany)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Hellfest (Clisson)</li>
+              <li className="font-poppins text-sm text-muted-foreground">• Eurockéennes (Belfort)</li>
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
