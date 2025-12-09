@@ -47,18 +47,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      const { data, error } = await supabase
+      // Fetch profile data
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
 
-      if (error) {
-        console.error('Error fetching profile:', error);
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
         return;
       }
 
-      setProfile(data);
+      // Check for admin role in user_roles table
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id);
+
+      if (roleError) {
+        console.error('Error fetching user roles:', roleError);
+      }
+
+      // Determine if user has admin role
+      const isAdmin = roleData?.some(r => r.role === 'admin') ?? false;
+
+      setProfile({
+        ...profileData,
+        is_admin: isAdmin
+      });
     } catch (error) {
       console.error('Error refreshing profile:', error);
     }
@@ -75,15 +92,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Refresh profile when user logs in
           setTimeout(async () => {
             try {
-              const { data, error } = await supabase
+              // Fetch profile data
+              const { data: profileData, error: profileError } = await supabase
                 .from('profiles')
                 .select('*')
                 .eq('id', session.user.id)
                 .single();
 
-              if (!error && data) {
-                setProfile(data);
+              if (profileError) {
+                console.error('Error fetching profile:', profileError);
+                return;
               }
+
+              // Check for admin role in user_roles table
+              const { data: roleData, error: roleError } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', session.user.id);
+
+              if (roleError) {
+                console.error('Error fetching user roles:', roleError);
+              }
+
+              // Determine if user has admin role
+              const isAdmin = roleData?.some(r => r.role === 'admin') ?? false;
+
+              setProfile({
+                ...profileData,
+                is_admin: isAdmin
+              });
             } catch (error) {
               console.error('Error fetching profile:', error);
             }

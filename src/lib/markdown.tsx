@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
+import DOMPurify from 'dompurify';
 
-// Centralized markdown renderer with optimized spacing
+// Centralized markdown renderer with optimized spacing and XSS protection
 export const renderMarkdown = (content: string): ReactElement | null => {
   if (!content) return null;
   
@@ -278,11 +279,17 @@ export const renderMarkdown = (content: string): ReactElement | null => {
     html = `<div class="font-poppins text-muted-foreground leading-none text-justify">${html}</div>`;
   }
   
+  // Sanitize HTML to prevent XSS attacks
+  const sanitizedHtml = DOMPurify.sanitize(html, {
+    ADD_ATTR: ['class', 'fill', 'viewBox', 'fill-rule', 'clip-rule', 'd'],
+    ADD_TAGS: ['svg', 'path']
+  });
+
   return (
     <div 
       className="markdown-content prose prose-sm max-w-none [&>*]:mb-1 [&>h2]:mt-2 [&>h3]:mt-2 [&>h4]:mt-1 [&>ul]:mb-1 [&>div]:mb-2 animate-fade-in text-justify leading-none" 
       dangerouslySetInnerHTML={{ 
-        __html: html
+        __html: sanitizedHtml
       }} 
     />
   );
