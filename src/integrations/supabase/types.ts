@@ -354,13 +354,6 @@ export type Database = {
             referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "profiles_institution_id_fkey"
-            columns: ["institution_id"]
-            isOneToOne: false
-            referencedRelation: "institutions_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       subscribers: {
@@ -412,13 +405,6 @@ export type Database = {
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "institutions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "subscribers_institution_id_fkey"
-            columns: ["institution_id"]
-            isOneToOne: false
-            referencedRelation: "institutions_public"
             referencedColumns: ["id"]
           },
         ]
@@ -652,33 +638,7 @@ export type Database = {
       }
     }
     Views: {
-      institutions_public: {
-        Row: {
-          active_subscription: boolean | null
-          created_at: string | null
-          domain: string | null
-          id: string | null
-          name: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          active_subscription?: boolean | null
-          created_at?: string | null
-          domain?: string | null
-          id?: string | null
-          name?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          active_subscription?: boolean | null
-          created_at?: string | null
-          domain?: string | null
-          id?: string | null
-          name?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       has_role: {
